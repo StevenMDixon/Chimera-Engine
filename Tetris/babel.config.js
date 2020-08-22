@@ -1,5 +1,10 @@
 // babel.config.js
 
 module.exports = {
-    'presets': ['@babel/env']
+    'presets': ['@babel/env'],
+    'plugins': [["@babel/plugin-transform-runtime",
+    {
+      "regenerator": true
+    }
+  ]]
   }
