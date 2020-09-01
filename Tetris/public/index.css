@@ -1,0 +1,19 @@
+html {
+    background-color: rgb(232, 235, 235);
+    width: 100%;
+}
+
+#root {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.banner {
+    width: 100%;
+    text-align: center;
+    background-color: black;
+    color: white;
+    margin-bottom: 1em;
+    font-size: 2em;
+}

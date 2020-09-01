@@ -14,7 +14,7 @@ class Game {
         this.score = 0;
     }
     setup(){
-        this.canvas = document.getElementById('tetris');
+        this.canvas = document.getElementById('game');
         this.ctx = this.canvas.getContext('2d');
         this.ctx.scale(this.scale, this.scale);
         this.player = new Player((this.canvas.height/ this.scale),(this.canvas.clientWidth / this.scale));
