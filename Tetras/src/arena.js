@@ -34,6 +34,13 @@ class Arena {
             }
         }
     }
+    clearAll() {
+        for(let i = this.matrix.length - 1; i > 0; i--){
+            for(let j = 0; j < this.matrix[i].length; j ++){
+                this.matrix[i][j] = 0;
+            }
+        }
+    }
 }
 
 export default Arena;

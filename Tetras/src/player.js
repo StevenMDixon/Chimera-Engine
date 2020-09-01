@@ -4,11 +4,12 @@ import getPiece from './pieces';
 class Player {
     constructor(h, w) {
         this.piece = getPiece();
+        this.w = w;
         this.loc = {x: w/2, y: 0};
     }
     reset(){
         this.piece = getPiece();
-        this.loc = {x: 1, y:1};
+        this.loc = {x: this.w/2, y:0};
     }
     rotate(dir){
         let rotated = this.piece.map(row => [...row]);
@@ -21,14 +22,10 @@ class Player {
             this.piece = rotated.map(row => row.reverse());
         }else{
             this.piece = rotated.reverse();
-        }
-            
+        }   
     }
     move(dir){
         this.loc.x += dir;
-    }
-    getStartingX (){
-
     }
 }
 
