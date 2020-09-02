@@ -8,6 +8,8 @@ I remember really wanting to learn how to make games when I was younger. This re
 - [ ] Resource management
 - [ ] Game Loops
 - [ ] Game States
+- [ ] Event management
+- [ ] Cameras
 - [ ] And more
 
 ## How do you expect to learn this stuff? Books or tutorials
