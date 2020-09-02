@@ -1,17 +1,16 @@
 import Player from '../player';
 import Arena from '../arena';
+import Scene from './scene.js'
 
-class GameScreen {
-    constructor(ctx, canvas, scale, nextScene) {
-        this.player = new Player((canvas.height/ scale),(canvas.clientWidth / scale));
-        this.arena = new Arena((canvas.height/ scale),(canvas.clientWidth / scale));
-        this.ctx = ctx;
-        this.canvas = canvas;
-        this.scale = scale;
+
+class GameScreen extends Scene{
+    constructor(gameProps) {
+        super(gameProps);
+        this.player = new Player((this.canvas.height/ this.scale),(this.canvas.clientWidth / this.scale));
+        this.arena = new Arena((this.canvas.height/ this.scale),(this.canvas.clientWidth / this.scale));
         this.dropInterval = 1000;
         this.dropCounter = 0;
         this.score = 0;
-        this.nextScene = nextScene;
         this.collided = false;
     }
     update(dt){

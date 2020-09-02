@@ -1,9 +1,8 @@
-class StartScreen {
-    constructor(ctx, canvas, scale, nextScene){
-        this.ctx = ctx;
-        this.canvas = canvas;
-        this.scale = scale;
-        this.nextScene = nextScene;
+import Scene from './scene.js'
+
+class StartScreen extends Scene{
+    constructor(gameProps){
+        super(gameProps);
     }
 
     update(dt){

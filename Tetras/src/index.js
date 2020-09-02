@@ -39,7 +39,13 @@ class Game {
         document.addEventListener('keydown', event => {this.scenes[this.currentScene].handleInput(event)})
     }
     setupScenes(scenes){
-        scenes.forEach(scene => this.scenes.push(new scene(this.ctx, this.canvas, this.scale, this.nextScene.bind(this))));
+        scenes.forEach(scene => this.scenes.push(new scene(
+            {
+                ctx: this.ctx, 
+                canvas: this.canvas, 
+                scale: this.scale, 
+                nextScene: this.nextScene.bind(this)
+            })));
     }
     nextScene(com){
         if(com == 'end'){
@@ -49,7 +55,6 @@ class Game {
         }
     }
     resetGame(){
-        console.log('sdfsd')
         this.lastTime = 0;
         this.scenes = [];
         this.currentScene = 0;
