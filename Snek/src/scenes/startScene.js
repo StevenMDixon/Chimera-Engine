@@ -14,6 +14,12 @@ class StartScreen extends Scene {
         this.ctx.fillText("Snek", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
         this.ctx.fillText("Press Any button to start!", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2 + 10);
     }
+    handleInput(event){
+        console.log('test')
+        if(event.keyCode > 0){
+            this.nextScene();
+        }
+    }
 }
 
 export default StartScreen;
