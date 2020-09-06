@@ -6,7 +6,7 @@ class Game {
         this.lastTime = 0;
         this.originalScenes = [];
         this.scenes = [];
-        this.currentScene = 0;
+        this.currentScene = 1;
     }
     setup(target, scale){
         this.canvas = document.getElementById(target);
@@ -33,6 +33,7 @@ class Game {
         this.scenes[this.currentScene].draw();
     }
     handleInput(){
+       // this.InputHandler.startListening().then(e => console.log(e))
         document.addEventListener('keydown', event => {this.scenes[this.currentScene].handleInput(event)})
     }
     addScenes(scenes){
