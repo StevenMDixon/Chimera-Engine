@@ -7,14 +7,13 @@ class MainScreen extends Scene {
         super(gameProps);
         this.player = null;
         this.fruit = null;
-        this.updateInterval = 100;
+        this.updateInterval = 150;
         this.currentInterval = 0;
         this.setup();
     }
     setup(){
         this.player = new Player(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
         this.fruit = new Fruit(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
-        console.log(this.fruit)
     }
     update(deltaTime){
         this.currentInterval = this.currentInterval += deltaTime;
@@ -27,6 +26,8 @@ class MainScreen extends Scene {
             if(this.checkForFruitCollision()){
                 this.player.addBody();
                 this.fruit = new Fruit(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
+                this.updateInterval = (this.updateInterval - this.player.snake.length * 2 ) > 50 ? (this.updateInterval - this.player.snake.length * 2 ) : 50;
+                console.log(this.updateInterval)
             }
             this.currentInterval = 0;
         }
@@ -69,9 +70,11 @@ class MainScreen extends Scene {
     }
     checkForEndCollision() {
         let head = this.player.getHeadLocation();
-        if (head.x > this.canvas.clientWidth/this.ctx.scale || head.x < 0){
+        console.log(this.canvas.clientWidth/this.scale)
+        if (head.x > this.canvas.clientWidth/this.scale - 1|| head.x < 0){
+            console.log('x')
             return true;
-        } else if (head.y > this.canvas.height/this.ctx.scale || head.y < 0) {
+        } else if (head.y > this.canvas.height/this.scale - 1 || head.y < 0) {
             return true;
         } 
         return false;
