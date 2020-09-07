@@ -15,7 +15,7 @@ class MainScreen extends Scene {
         this.player = new Player(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
         this.food = new Food(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
     }
-    update(deltaTime, updateStore){
+    update(deltaTime, updateStore, playSound){
         this.currentInterval = this.currentInterval += deltaTime;
         if(this.currentInterval > this.updateInterval){
             // checks for self collision
@@ -28,6 +28,7 @@ class MainScreen extends Scene {
                 this.food = new Food(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
                 this.updateInterval = (this.updateInterval - this.player.snake.length * 2 ) > 50 ? (this.updateInterval - this.player.snake.length * 2 ) : 50;
                 updateStore({score: this.data.score += 1});
+                playSound('upgrade');
             }
             this.currentInterval = 0;
         }
