@@ -1,3 +1,5 @@
+import DataManager from './data';
+
 class Game {
     constructor() {
         this.scale = 1;
@@ -6,13 +8,18 @@ class Game {
         this.lastTime = 0;
         this.originalScenes = [];
         this.scenes = [];
-        this.currentScene = 1;
+        this.currentScene = 0;
+        this.dataMan = null;
     }
     setup(target, scale){
         this.canvas = document.getElementById(target);
         this.ctx = this.canvas.getContext('2d');
         this.scale = scale;
         this.ctx.scale(scale, scale);
+
+        this.dataMan = new DataManager({
+            score: 0
+        });
     }
     start(){
         this.handleInput();
@@ -21,7 +28,8 @@ class Game {
     update(time = 0){
         const dt = time - this.lastTime;
         this.lastTime = time;
-        this.scenes[this.currentScene].update(dt);
+        this.scenes[this.currentScene].updateGameData(this.dataMan.store);
+        this.scenes[this.currentScene].update(dt, this.dataMan.update.bind(this.dataMan));
         this.draw();   
         requestAnimationFrame((time) => this.update(time));
     }
@@ -46,7 +54,8 @@ class Game {
                 ctx: this.ctx, 
                 canvas: this.canvas, 
                 scale: this.scale, 
-                nextScene: this.nextScene.bind(this)
+                nextScene: this.nextScene.bind(this),
+                data: this.dataMan.store
             })));
     }
     nextScene(com){

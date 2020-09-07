@@ -4,40 +4,39 @@ class Player extends Entity{
     constructor(x, y, h, w){
         super(x,y,h,w);
         this.snake = [{x: x, y: y}];
-        this.direction = ['r'];
+        this.direction = 'r';
     }
     move(){
         let headNewLoc;
-        if (this.direction[0] == 'r'){
+        if (this.direction == 'r'){
             headNewLoc = {x: this.snake[0].x + 1, y: this.snake[0].y }
         }
-        else if (this.direction[0] == 'l'){
+        else if (this.direction == 'l'){
             headNewLoc = {x: this.snake[0].x - 1, y: this.snake[0].y }
         }
-        else if (this.direction[0] == 'u'){
+        else if (this.direction == 'u'){
             headNewLoc = {x: this.snake[0].x, y: this.snake[0].y + 1 }
         }
-        else if (this.direction[0] == 'd'){
+        else if (this.direction == 'd'){
             headNewLoc = {x: this.snake[0].x, y: this.snake[0].y - 1}
         }
-        this.direction = [this.direction[0]];
         return this.moveBody(headNewLoc);
     }
     changeDirection(dir){
-        this.direction.unshift(dir);
+        this.direction = dir;
     }
     addBody(){
-        if(this.direction[0] == 'l'){
-            this.snake.unshift({x: this.snake[0].x - 1, y: this.snake[0].y})
+        if(this.direction == 'l'){
+            this.snake.push({x: this.getTailLocation().x + 1, y: this.getTailLocation().y})
         }
-        else  if(this.direction[0] == 'r'){
-            this.snake.unshift({x: this.snake[0].x + 1, y: this.snake[0].y})
+        else  if(this.direction == 'r'){
+            this.snake.push({x: this.getTailLocation().x - 1, y: this.getTailLocation().y})
         }
-        else  if(this.direction[0] == 'u'){
-            this.snake.unshift({x: this.snake[0].x, y: this.snake[0].y + 1})
+        else  if(this.direction == 'u'){
+            this.snake.push({x: this.getTailLocation().x, y: this.getTailLocation().y - 1})
         }
-        else  if(this.direction[0] == 'd'){
-            this.snake.unshift({x: this.snake[0].x, y: this.snake[0].y - 1})
+        else  if(this.direction == 'd'){
+            this.snake.push({x: this.getTailLocation().x, y: this.getTailLocation().y + 1})
         }
     }
     moveBody(newLoc){
@@ -55,6 +54,9 @@ class Player extends Entity{
     }
     getHeadLocation(){
         return this.snake[0];
+    }
+    getTailLocation(){
+        return this.snake[this.snake.length - 1]; 
     }
 }
 

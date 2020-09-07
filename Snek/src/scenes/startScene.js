@@ -5,7 +5,7 @@ class StartScreen extends Scene {
         super(gameProps);
     }
     update(deltaTime){
-
+       
     }
     draw(){
         this.ctx.fillStyle = "White";
@@ -15,7 +15,6 @@ class StartScreen extends Scene {
         this.ctx.fillText("Press Any button to start!", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2 + 10);
     }
     handleInput(event){
-        console.log('test')
         if(event.keyCode > 0){
             this.nextScene();
         }

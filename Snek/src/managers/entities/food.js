@@ -1,9 +1,9 @@
 import Entity from "./enitity";
 
-class Fruit extends Entity {
+class Food extends Entity {
     constructor(x, y, w, h){
         super(x, y, w, h);
     }
 }
 
-export default Fruit;
+export default Food;

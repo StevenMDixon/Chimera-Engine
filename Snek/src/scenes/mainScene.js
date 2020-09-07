@@ -1,33 +1,33 @@
 import Scene from './scene.js';
 import Player from '../managers/entities/player';
-import Fruit from '../managers/entities/fruit';
+import Food from '../managers/entities/food';
 
 class MainScreen extends Scene {
     constructor(gameProps){
         super(gameProps);
         this.player = null;
-        this.fruit = null;
+        this.food = null;
         this.updateInterval = 150;
         this.currentInterval = 0;
         this.setup();
     }
     setup(){
         this.player = new Player(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
-        this.fruit = new Fruit(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
+        this.food = new Food(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
     }
-    update(deltaTime){
+    update(deltaTime, updateStore){
         this.currentInterval = this.currentInterval += deltaTime;
         if(this.currentInterval > this.updateInterval){
             // checks for self collision
             if(this.player.move() || this.checkForEndCollision()){
                 this.nextScene();
             }
-            // checks for fruit collision
-            if(this.checkForFruitCollision()){
+            // checks for food collision
+            if(this.checkForFoodCollision()){
                 this.player.addBody();
-                this.fruit = new Fruit(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
+                this.food = new Food(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
                 this.updateInterval = (this.updateInterval - this.player.snake.length * 2 ) > 50 ? (this.updateInterval - this.player.snake.length * 2 ) : 50;
-                console.log(this.updateInterval)
+                updateStore({score: this.data.score += 1});
             }
             this.currentInterval = 0;
         }
@@ -38,7 +38,7 @@ class MainScreen extends Scene {
             this.ctx.fillRect(part.x, part.y, this.player.w, this.player.h);
         });
         this.ctx.fillStyle = '#fff';
-        this.ctx.fillRect(this.fruit.x, this.fruit.y, this.fruit.w, this.fruit.h);
+        this.ctx.fillRect(this.food.x, this.food.y, this.food.w, this.food.h);
     }   
     handleInput(event){
         if(event.keyCode === 37){
@@ -59,20 +59,17 @@ class MainScreen extends Scene {
             case 'h' : return Math.floor(Math.random() * this.canvas.height / this.scale)
             case 'w' : return Math.floor(Math.random() * this.canvas.clientWidth / this.scale)
         }
-        
     }
-    checkForFruitCollision() {
+    checkForFoodCollision() {
         let head = this.player.getHeadLocation();
-        if(head.x == this.fruit.x && head.y == this.fruit.y){
+        if(head.x == this.food.x && head.y == this.food.y){
             return true;
         }
         return false;
     }
     checkForEndCollision() {
         let head = this.player.getHeadLocation();
-        console.log(this.canvas.clientWidth/this.scale)
         if (head.x > this.canvas.clientWidth/this.scale - 1|| head.x < 0){
-            console.log('x')
             return true;
         } else if (head.y > this.canvas.height/this.scale - 1 || head.y < 0) {
             return true;
