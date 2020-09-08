@@ -1,6 +1,6 @@
-import Scene from './scene';
+import Screen from '../../managers/screen';
 
-class StartScreen extends Scene {
+class StartScreen extends Screen {
     constructor(gameProps: any){
         super(gameProps);
     }
@@ -13,7 +13,7 @@ class StartScreen extends Scene {
     }
     handleInput(event: KeyboardEvent){
         if(event.keyCode > 0){
-            this.gotoNextScene();
+            this.gotoNextScene('');
         }
     }
 }

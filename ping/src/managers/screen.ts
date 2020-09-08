@@ -2,7 +2,7 @@ interface SceneData {
     ctx: any,
     canvas: any,
     scale: number,
-    nextScene: () => void,
+    gotoScreen: () => void,
     updateGameStore: () => void;
     data: any
 }
@@ -12,14 +12,14 @@ class Scene {
     private _ctx: any;
     private _canvas: any;
     private _data: object;
-    private _nextScene: () => void;
+    private _gotoScreen: (target: string) => void;
     private _updateGameStore: (data: any) => void;
     
-    constructor({ctx, canvas, scale, nextScene, updateGameStore, data}: SceneData){
+    constructor({ctx, canvas, scale, gotoScreen, updateGameStore, data}: SceneData){
         this._ctx = ctx;
         this._canvas = canvas;
         this._scale = scale;
-        this._nextScene = nextScene;
+        this._gotoScreen = gotoScreen;
         this._updateGameStore = updateGameStore;
         this._data = data;
     }
@@ -38,7 +38,7 @@ class Scene {
     updateGameData(data: object): void{
         this._data = {...this._data, ...data};
     }
-    update(deltaTime: number, updateStore: object): void{
+    update(deltaTime: number, updateStore: object, soundController: object): void{
 
     }
     draw(deltaTime: number): void{
@@ -46,8 +46,8 @@ class Scene {
 
     handleInput(event: object): void{
     }
-    gotoNextScene(): void {
-        this._nextScene()
+    gotoNextScene(target: string): void {
+        this._gotoScreen(target);
     }
     updateGameStore(data: any){
         this._updateGameStore(data);
