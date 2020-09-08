@@ -23,5 +23,3 @@ I expect that by the end of this I will have a good concept of how games work th
 
 
 
-
-

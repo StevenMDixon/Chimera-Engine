@@ -1,6 +1,8 @@
 import DataManager from './data';
 import SoundManager from './soundManager';
 
+
+
 class Game {
     constructor() {
         this.scale = 1;
@@ -22,11 +24,7 @@ class Game {
             score: 0
         });
 
-        this.soundManager = new SoundManager(
-            {
-                'upgrade': './sounds/upSound.wav'
-            }
-        );
+        this.soundManager = new SoundManager();
     }
     start(){
         this.handleInput();
@@ -36,7 +34,7 @@ class Game {
         const dt = time - this.lastTime;
         this.lastTime = time;
         this.scenes[this.currentScene].updateGameData(this.dataMan.store);
-        this.scenes[this.currentScene].update(dt, this.dataMan.update.bind(this.dataMan), this.soundManager.playSound.bind(this.soundManager));
+        this.scenes[this.currentScene].update(dt, this.dataMan.update.bind(this.dataMan), this.soundManager.playEffect.bind(this.soundManager));
         this.draw();   
         requestAnimationFrame((time) => this.update(time));
     }
@@ -79,6 +77,9 @@ class Game {
         this.scenes = [];
         this.currentScene = 0;
         this.setupScenes(this.originalScenes);
+    }
+    loadSounds(sounds){
+        this.soundManager.addSounds(sounds);
     }
 }
 

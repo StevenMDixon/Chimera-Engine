@@ -8,7 +8,6 @@ class EndScreen extends Scene{
         
     }
     draw(dt){
-        console.log(this.data)
         this.ctx.fillStyle = "Red";
         this.ctx.textAlign = "center";
         this.ctx.font = "2px Arial";

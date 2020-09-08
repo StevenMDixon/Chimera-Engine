@@ -15,11 +15,12 @@ class MainScreen extends Scene {
         this.player = new Player(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
         this.food = new Food(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
     }
-    update(deltaTime, updateStore, playSound){
+    update(deltaTime, updateStore, playEffect){
         this.currentInterval = this.currentInterval += deltaTime;
         if(this.currentInterval > this.updateInterval){
             // checks for self collision
             if(this.player.move() || this.checkForEndCollision()){
+                playEffect('dead');
                 this.nextScene();
             }
             // checks for food collision
@@ -28,7 +29,7 @@ class MainScreen extends Scene {
                 this.food = new Food(this.getRandomLoc('w'), this.getRandomLoc('h'), 1, 1);
                 this.updateInterval = (this.updateInterval - this.player.snake.length * 2 ) > 50 ? (this.updateInterval - this.player.snake.length * 2 ) : 50;
                 updateStore({score: this.data.score += 1});
-                playSound('upgrade');
+                playEffect('upgrade');
             }
             this.currentInterval = 0;
         }

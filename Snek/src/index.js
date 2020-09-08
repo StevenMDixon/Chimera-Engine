@@ -5,10 +5,13 @@ import StartScene from './scenes/startScene';
 import MainScene from './scenes/mainScene';
 import EndScene from './scenes/endScene';
 
+import sounds from './sounds';
 
 
 const myGame = new Game();
 myGame.setup('game', 10);
+
+myGame.loadSounds(sounds);
 
 myGame.addScenes(
     [
@@ -17,5 +20,7 @@ myGame.addScenes(
         EndScene
     ]
 );
+
+
 
 myGame.start();
