@@ -1,15 +1,18 @@
 class soundManager {
-    constructor(sounds){
+    sounds: any;
+    currentBG: any;
+
+    constructor(sounds?: object){
         this.sounds = sounds;
         this.currentBG = null;
     }
-    addSounds(soundFiles){
+    addSounds(soundFiles: object){
         this.sounds = {...this.sounds, ...soundFiles};
     }
-    playEffect(name, volume){
+    playEffect(name: string, volume: number){
         new Audio(this.sounds[name]).play();
     }
-    playBG(name, volume){
+    playBG(name: string, volume: number){
         this.currentBG = new Audio(this.sounds[name]);
         this.currentBG.play();
     }

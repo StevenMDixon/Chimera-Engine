@@ -3,7 +3,7 @@ import Game from './managers/gameManager';
 
 import StartScene from './scenes/startScene';
 
-import sounds from './sounds.ts';
+import sounds from './sounds';
 
 
 const myGame = new Game();

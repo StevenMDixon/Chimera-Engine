@@ -1,11 +1,8 @@
-import Scene from './scene.js';
+import Scene from './scene';
 
 class StartScreen extends Scene {
-    constructor(gameProps){
+    constructor(gameProps: any){
         super(gameProps);
-    }
-    update(deltaTime){
-       
     }
     draw(){
         this.ctx.fillStyle = "White";
@@ -14,9 +11,9 @@ class StartScreen extends Scene {
         this.ctx.fillText("Ping", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
         this.ctx.fillText("Press Any button to start!", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2 + 10);
     }
-    handleInput(event){
+    handleInput(event: KeyboardEvent){
         if(event.keyCode > 0){
-            this.nextScene();
+            this.gotoNextScene();
         }
     }
 }

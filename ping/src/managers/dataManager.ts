@@ -1,8 +1,10 @@
 class dataManager {
-    constructor(data){
+    store: any;
+
+    constructor(data: object){
         this.store = data
     }
-    update(data) {
+    update(data: object) {
         this.store = {...this.store, ...data};
     }
 

@@ -4,7 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  entry: './src/index.js',
+  entry: './src/index.ts',
   mode: 'development',
   module: {
     rules: [
@@ -29,7 +29,7 @@ module.exports = {
     
     ]
   },
-  resolve: { extensions: ["*", ".js", ".jsx"] },
+  resolve: { extensions: ["*", ".js", ".jsx", '.ts'] },
   output: {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '/dist/',

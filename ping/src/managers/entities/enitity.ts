@@ -1,5 +1,9 @@
 class Entity {
-    constructor(x, y, w, h){
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    constructor(x: number, y: number, w: number, h: number){
         this.x = x;
         this.y = y;
         this.w = w;
