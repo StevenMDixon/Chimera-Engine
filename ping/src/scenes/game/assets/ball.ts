@@ -24,8 +24,9 @@ class Ball {
     resetBall(x, y): void{
         this.y = y;
         this.x = x;
-        this.xVelocity = Math.random();
-        this.yVelocity = Math.random();
+        this.xVelocity = (Math.floor(Math.random() * 3) + 1.5) ;
+        this.yVelocity = (Math.floor(Math.random() * 3) + 1.5) ;
+        console.log(this.xVelocity, this.yVelocity)
     }
 }
 

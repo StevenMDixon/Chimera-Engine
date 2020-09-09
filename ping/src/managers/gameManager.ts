@@ -66,7 +66,7 @@ class Game {
                     ctx: this.ctx, 
                     canvas: this.canvas, 
                     scale: this.scale, 
-                    nextScene: this.gotoScreen.bind(this),
+                    gotoScreen: this.gotoScreen.bind(this),
                     data: this.dataManager.store
                 })
         }

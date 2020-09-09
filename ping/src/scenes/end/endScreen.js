@@ -10,13 +10,13 @@ class EndScreen extends Screen{
     draw(dt){
         this.ctx.fillStyle = "Red";
         this.ctx.textAlign = "center";
-        this.ctx.font = "2px Arial";
-        this.ctx.fillText("Game Over", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2- 3);
-        this.ctx.fillText(`${this.data.score}`, this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
+        this.ctx.font = "20px Arial";
+        this.ctx.fillText(`${this.data.playerWin? 'You Win!': 'You Lost!'}`, this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
+        this.ctx.fillText(`${this.data.playerScore} - ${this.data.aiScore}`, this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2 + 30);
     }
     handleInput(event){
         if(event.keyCode > 0){
-            this.nextScreen('end');
+            this.nextScreen('StartScreen');
         }
     }
 }

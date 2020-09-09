@@ -1,13 +1,13 @@
-interface SceneData {
+interface ScreenData {
     ctx: any,
     canvas: any,
     scale: number,
     gotoScreen: () => void,
-    updateGameStore: () => void;
+    //updateGameStore: () => void;
     data: any
 }
 
-class Scene {
+class Screen {
     private _scale : number;
     private _ctx: any;
     private _canvas: any;
@@ -15,12 +15,12 @@ class Scene {
     private _gotoScreen: (target: string) => void;
     private _updateGameStore: (data: any) => void;
     
-    constructor({ctx, canvas, scale, gotoScreen, updateGameStore, data}: SceneData){
+    constructor({ctx, canvas, scale, gotoScreen, data}: ScreenData){
         this._ctx = ctx;
         this._canvas = canvas;
         this._scale = scale;
         this._gotoScreen = gotoScreen;
-        this._updateGameStore = updateGameStore;
+        //this._updateGameStore = updateGameStore;
         this._data = data;
     }
     get scale(): number {
@@ -45,12 +45,12 @@ class Scene {
     }
     handleInput(event: object): void{
     }
-    gotoNextScene(target: string): void {
+    gotoNextScreen(target: string): void {
         this._gotoScreen(target);
     }
-    updateGameStore(data: any){
-        this._updateGameStore(data);
-    }
+    // updateGameStore(data: any){
+    //     this._updateGameStore(data);
+    // }
 }
 
-export default Scene;
+export default Screen;
