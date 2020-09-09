@@ -1,4 +1,4 @@
-import Screen from '../../managers/screen'
+import Screen from '../../managers/classes/screen'
 
 class EndScreen extends Screen{
     constructor(gameProps){

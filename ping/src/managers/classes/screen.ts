@@ -43,7 +43,6 @@ class Scene {
     }
     draw(deltaTime: number): void{
     }
-
     handleInput(event: object): void{
     }
     gotoNextScene(target: string): void {

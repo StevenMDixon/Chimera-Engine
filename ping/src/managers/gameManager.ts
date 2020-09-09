@@ -1,44 +1,36 @@
 import DataManager from './dataManager';
 import SoundManager from './soundManager';
-import Screen from './screen';
+import Screen from './classes/screen';
 
-// interface Scene {
-//     updateGameData(fn: object): void;
-//     update(dt: number, fn: object, fn2: object): void;
-//     draw(dt: number): void;
-//     handleInput(event: object): void;
-// }
+interface isScreens {
+   [key: string]: Screen
+}
 
 class Game {
         scale: number;
         ctx: CanvasRenderingContext2D;
         canvas: HTMLCanvasElement;
         lastTime: number;
-        originalScreens : any;
-        screens: any;
+        screens: isScreens;
         currentScreen: string;
-        dataMan: any;
-        soundManager: any;
+        dataManager: DataManager;
+        soundManager: SoundManager;
          
     constructor() {
         this.scale = 1;
         this.ctx = null;
         this.canvas = null;
         this.lastTime = 0;
-        this.originalScreens = {};
         this.screens = {};
         this.currentScreen = '';
-        this.dataMan = null;
+        this.dataManager = new DataManager({});;
+        this.soundManager = new SoundManager();
     }
     setup(target: string, scale: number, startingScreen: string): void {
         this.canvas = document.getElementById(target) as any;
         this.ctx = this.canvas.getContext('2d');
         this.scale = scale;
         this.ctx.scale(scale, scale);
-        this.dataMan = new DataManager({
-            score: 0
-        });
-        this.soundManager = new SoundManager();
         this.currentScreen = startingScreen;
     }
     start(): void{
@@ -48,8 +40,8 @@ class Game {
     update(time: number = 0): void{
         const dt = time - this.lastTime;
         this.lastTime = time;
-        this.screens[this.currentScreen].updateGameData(this.dataMan.store);
-        this.screens[this.currentScreen].update(dt, this.dataMan.update.bind(this.dataMan), this.soundManager.playEffect.bind(this.soundManager));
+        this.screens[this.currentScreen].updateGameData(this.dataManager.store);
+        this.screens[this.currentScreen].update(dt, this.dataManager.update.bind(this.dataManager), this.soundManager.playEffect.bind(this.soundManager));
         this.draw(dt);   
         requestAnimationFrame((time) => this.update(time));
     }
@@ -65,7 +57,6 @@ class Game {
         document.addEventListener('keydown', event => {this.screens[this.currentScreen].handleInput(event)})
     }
     addScreens(screens): void{
-        this.originalScreens = screens;
         this.setupScreens(screens);
     }
     setupScreens(screens): void{
@@ -76,23 +67,18 @@ class Game {
                     canvas: this.canvas, 
                     scale: this.scale, 
                     nextScene: this.gotoScreen.bind(this),
-                    data: this.dataMan.store
+                    data: this.dataManager.store
                 })
         }
-
-        //screens.forEach(screen => this.screens.push());
     }
     gotoScreen(target: string): void{
         this.currentScreen = target;
     }
-    // resetGame(): void{
-    //     this.lastTime = 0;
-    //     this.screens = [];
-    //     this.currentScreen = 0;
-    //     this.setupScreen(this.originalScreens);
-    // }
-    loadSounds(sounds): void{
+    loadSounds(sounds: object): void{
         this.soundManager.addSounds(sounds);
+    }
+    loadData(data: object) {
+        this.dataManager.update(data);
     }
 }
 
