@@ -47,10 +47,12 @@ class Game {
     }
     draw(dt): void{
         //draw background
+        this.ctx.clearRect(0,0,this.canvas.clientWidth, this.canvas.height)
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
          // draw current scene
-         this.screens[this.currentScreen].draw(dt);
+        this.screens[this.currentScreen].draw(dt);
+        
     }
     handleInput(): void{
        // this.InputHandler.startListening().then(e => console.log(e))
