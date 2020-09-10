@@ -1,6 +1,6 @@
 import DataManager from './dataManager';
 import SoundManager from './soundManager';
-import Screen from './classes/screen';
+import Screen from '../classes/screen';
 
 interface isScreens {
    [key: string]: Screen

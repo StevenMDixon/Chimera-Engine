@@ -1,4 +1,4 @@
-import Screen from '../../managers/classes/screen';
+import {Screen} from '../../lib/index';
 import Ball from './assets/ball';
 import Paddle from './assets/paddle';
 

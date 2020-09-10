@@ -1,4 +1,4 @@
-import Screen from '../../managers/classes/screen';
+import {Screen} from '../../lib/index';
 
 class StartScreen extends Screen {
     constructor(gameProps: any){

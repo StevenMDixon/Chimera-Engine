@@ -1,6 +1,6 @@
 
 // import game library to handle the game
-import Game from './managers/gameManager';
+import {GameManager} from './lib/index';
 
 //import user defined scenes
 import StartScreen from './scenes/start/startScreen';
@@ -12,7 +12,7 @@ import sounds from './sounds';
 // import user defined images
 
 //create a new game object
-const myGame = new Game();
+const myGame = new GameManager();
 
 //tell the game to use the canvas object with and id of game and a scale of 1 and tell it which screen to start on
 myGame.setup('game', 1, 'StartScreen');
