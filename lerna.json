@@ -1,9 +1,0 @@
-{
-    "packages": [
-      "ping",
-      "snek",
-      "Tetras",
-      "template"
-    ],
-    "version": "1.0.0"
-  }
