@@ -1,0 +1,29 @@
+{
+  "name": "js-games",
+  "version": "1.0.0",
+  "description": "I remember really wanting to learn how to make games when I was younger. This repo chronicles my expereince with game developement in JS. I wanted to start out with simple concepts and work my way into some fully functioning games. I also wanted to learn these concepts without using any game development libraries.",
+  "main": "index.js",
+  "dependencies": {
+    
+  },
+  "devDependencies": {
+    "lerna": "^3.22.1"
+  },
+  "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+,    "build-snek": "lerna bootstrap && cd snek && npm run build",
+     "build-ping": "lerna bootstrap && cd ping && npm run build",
+     "build-tetras": "lerna bootstrap && cd tetras && npm run build",
+     "postinstall": "lerna bootstrap"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/StevenDixonDev/Js-Games.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StevenDixonDev/Js-Games/issues"
+  },
+  "homepage": "https://github.com/StevenDixonDev/Js-Games#readme"
+}

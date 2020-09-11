@@ -12,15 +12,15 @@ class StartScreen extends Screen {
                 {
                  x: gameProps.canvas.clientWidth/ 2, 
                  y: gameProps.canvas.height/ 2 + 30,
-                 optionsList: [ 'Start Game', 'Exit'],
-                 cursor: true,
+                 optionsList: [ 'Start Game'],
                  buttons: {
-                    13: 'accept',
+                    32: 'accept',
                     38: 'up',
                     40: 'down'
                  },
                  fontSize: 18,
                  vSpace: 10,
+                 font: 'Orbitron'
                 }
             )]
         
@@ -30,7 +30,7 @@ class StartScreen extends Screen {
     draw(){
         this.ctx.fillStyle = "White";
         this.ctx.textAlign = "center";
-        this.ctx.font = "20px Arial";
+        this.ctx.font = "20px Orbitron";
         this.ctx.fillText("This is the template", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
 
         if (this.displayMenu){
@@ -40,7 +40,12 @@ class StartScreen extends Screen {
     }
     handleInput(event: KeyboardEvent){
         if (this.displayMenu){
-            this.menus[this.currentMenu].handleInput(event.keyCode);
+           let o =  this.menus[this.currentMenu].handleInput(event.keyCode);
+           console.log(o)
+
+           if(o === 'Start Game'){
+               this.gotoNextScreen('StartScreen')
+           }
         }
         if(event.keyCode > 0){
             //this.gotoNextScreen('GameScreen');
