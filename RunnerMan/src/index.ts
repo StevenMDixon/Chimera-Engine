@@ -9,7 +9,7 @@ import GameScreen from './scenes/game/gamescreen';
 // import user defined sounds
 import sounds from './sounds';
 // import user defined images
-import images from './image'
+import {images, imageData} from './image'
 //create a new game object
 const myGame = new GameManager();
 
@@ -18,13 +18,13 @@ myGame.setup(
     {
         target: 'game',
         scale: 1,
-        startingScreen: 'StartScreen',
-        size: {h: 400, w: 500}
+        startingScreen: 'GameScreen',
+        size: {h: 600, w: 700}
     });
 // load user defined sounds into game
 myGame.addSounds(sounds);
 
-myGame.addImages(images);
+myGame.addImages(images, imageData);
 
 myGame.addData({
     playerScore: 0,

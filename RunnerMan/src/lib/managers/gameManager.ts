@@ -62,7 +62,6 @@ class Game {
         }else {
             throw new Error('Image loader failed to load images');
         }
-        
         return
     }
     update(time: number = 0): void{
@@ -79,7 +78,12 @@ class Game {
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
          // draw current scene
-        this.screens[this.currentScreen].draw(dt, this.imageManager.images);
+        this.screens[this.currentScreen].draw(
+                dt, 
+                 {
+                    drawTile: this.imageManager.drawTile.bind(this.imageManager),
+                    drawSprite: this.imageManager.drawSprite.bind(this.imageManager),
+                });
         
     }
     handleInput(): void{
@@ -110,8 +114,8 @@ class Game {
     addData(data: object) {
         this.dataManager.update(data);
     }
-    addImages(images: object){
-        this.imageManager.addImages(images)
+    addImages(images: object, imageData){
+        this.imageManager.addImages(images, imageData)
     }
 
 }

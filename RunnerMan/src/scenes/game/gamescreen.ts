@@ -8,13 +8,17 @@ class GameScreen extends Screen {
         super(gameProps);
 
     }
-    draw(delta, images){
+    draw(delta, renderer){
         this.ctx.fillStyle = "White";
         this.ctx.textAlign = "center";
         this.ctx.font = "20px Orbitron";
-        this.ctx.drawImage(images['tiles'], 0, 0);
-        this.ctx.fillText("This is the game", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
+        renderer.drawTile(0, 16,16);
+        renderer.drawTile(0, 32,16);
+        renderer.drawTile(0, 48,16);
+        renderer.drawTile(0, 64,16);
 
+        renderer.drawSprite('player', 'idle', 100, 100, 180);
+        renderer.drawSprite('player', 'idle', 116, 100);
     }
     handleInput(event: KeyboardEvent){
         

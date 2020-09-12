@@ -48,9 +48,6 @@ class Screen {
     gotoNextScreen(target: string): void {
         this._gotoScreen(target);
     }
-    // updateGameStore(data: any){
-    //     this._updateGameStore(data);
-    // }
 }
 
 export default Screen;
