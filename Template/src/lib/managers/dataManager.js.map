@@ -1,1 +1,0 @@
-{"version":3,"file":"dataManager.js","sourceRoot":"","sources":["dataManager.ts"],"names":[],"mappings":";;AAAA,MAAM,WAAW;IAGb,YAAY,IAAY;QACpB,IAAI,CAAC,KAAK,GAAG,IAAI,CAAA;IACrB,CAAC;IACD,MAAM,CAAC,IAAY;QACf,IAAI,CAAC,KAAK,mCAAO,IAAI,CAAC,KAAK,GAAK,IAAI,CAAC,CAAC;IAC1C,CAAC;CAEJ;AAED,kBAAe,WAAW,CAAC"}
