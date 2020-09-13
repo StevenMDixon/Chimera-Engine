@@ -1,50 +1,24 @@
 import {Screen, Menu} from '../../lib/index';
 import tileMap from './maps/tileMap'
+import Player from './components/player';
 
 
-const player = {
-    x: 100,
-    y: 100,
-    w: 16,
-    h: 16,
-    currentFrame: 0,
-    state: 'run',
-    sprite: 'player',
-    animate: function(dt){
-        console.log(dt)
-        this.currentFrame = Math.ceil(((this.currentFrame + 1) % 5) / 2)
-        console.log(this.currentFrame)
-    }
-}
-
-const frameL = 100;
-let amount = 0;
 
 class GameScreen extends Screen {
-    xScroll: number
+    xScroll: number;
+    player: Player;
 
     constructor(gameProps: any){
         super(gameProps);
         this.xScroll = 0;  
+        this.player = new Player(0,0,16,16,0,'player');
     }
     update(dt){
-        //console.log(++player.currentFrame % 5)
 
-        // amount += dt;
-
-        // if (amount > frameL){
-        //     player.currentFrame += 1;
-        //     if(player.currentFrame >= 5){
-        //         player.currentFrame = 0
-        //     }
-        //     amount = 0;
-        // }
-
-        player.animate(dt)
+        this.player.animate(dt);
 
     }
     draw(delta, renderer){
-
         // scrolling background effect
         renderer.drawBackGround('bg', this.xScroll,0);
         renderer.drawBackGround('bg', this.xScroll - this.canvas.width,0);
@@ -60,7 +34,7 @@ class GameScreen extends Screen {
             }
         }
        
-        renderer.drawSprite(player, 100, 100, 0);
+        renderer.drawSprite(this.player, this.player.x, this.player.y);
     }
     handleInput(event: KeyboardEvent){
         

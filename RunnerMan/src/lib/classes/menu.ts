@@ -1,4 +1,3 @@
-import Entity from "./entity";
 
 interface MenuOptions {
     x: number,
@@ -10,16 +9,20 @@ interface MenuOptions {
     font?: string
 }
 
-class Menu extends Entity{
+class Menu{
     options: string[] ;
     currentOption:  number;
     mappedButtons: object;
     fontSize: number;
     vSpace: number;
     font: string;
+    x: number;
+    y: number;
 
     constructor({x, y, optionsList, buttons, fontSize, vSpace, font}: MenuOptions){
-        super(x, y, 0, 0);
+    
+        this.x = x;
+        this.y = y;
         this.options = optionsList;
         this.currentOption = 0;
         this.mappedButtons = buttons;

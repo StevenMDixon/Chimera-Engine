@@ -75,27 +75,25 @@ class ImageManager {
             this.ctx.drawImage(image, target.x, target.y, width, height, x, y, width, height);
         }
     }
-    drawSprite(object, x: number, y: number, rotation?: number){
-        console.log(object)
-        let target = {x: 0, y: 0}
-        let width = this.imageData.sprites[object.sprite].width;
-        let height = this.imageData.sprites[object.sprite].height;
-        let image = this.images[this.imageData.sprites[object.sprite].sheet];
-        target.x = this.imageData.sprites[object.sprite].animationKeys[object.state].row *  width + object.currentFrame *  width;
-        console.log(target.x)
-        target.y = this.imageData.sprites[object.sprite].animationKeys[object.state].column * height;
-
+    drawSprite(object, x: number, y: number){
+        
+        let sprite = object.getSpriteInfo();
+        let target = {x: 0, y: 0};
+        let width = sprite.w;
+        let height = sprite.h;
+        let image = this.images[sprite.spriteSheet];
+        target.x = sprite.state[0] * sprite.w + object.currentFrame *  sprite.w;
+        target.y = sprite.state[1] * sprite.h;
 
         //check if rotation is null
-        if (rotation ! === 0 || rotation == null){
+        if (sprite.r ! === 0 || sprite.r == null){
             this.ctx.drawImage(image, target.x, target.y, width, height, x, y, width, height);
         }else {
-            
             // move to center of image
             this.ctx.translate(x + width/2, y + height/2);
 
             // rotate by specific degree
-            this.ctx.rotate(rotation * Math.PI / 180 );
+            this.ctx.rotate(sprite.r * Math.PI / 180 );
             // this.ctx.strokeStyle = "red";
             // this.ctx.beginPath();
             // this.ctx.rect(0, 0, 100, 100);
@@ -104,7 +102,7 @@ class ImageManager {
             this.ctx.drawImage(image, target.x, target.y, width, height, 0 - width/2, 0 - height/2, width, height);
 
             // rotate back
-            this.ctx.rotate(-rotation * Math.PI / 180);
+            this.ctx.rotate(-sprite.r * Math.PI / 180);
             // move back to regular offst
             this.ctx.translate(-x - width/2 , -y -  height/2);
            
