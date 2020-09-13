@@ -13,8 +13,5 @@
     "baseUrl": "src",
     "exclude": [
     "node_modules"
-    ],
-    "paths": {
-        "@GameLib": ["lib/index.ts"]
-    }
+    ]
 }

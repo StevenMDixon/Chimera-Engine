@@ -19,7 +19,7 @@ myGame.setup(
         target: 'game',
         scale: 1,
         startingScreen: 'GameScreen',
-        size: {h: 600, w: 700}
+        size: {h: 240, w: 608}
     });
 // load user defined sounds into game
 myGame.addSounds(sounds);

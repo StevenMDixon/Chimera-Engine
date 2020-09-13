@@ -83,6 +83,7 @@ class Game {
                  {
                     drawTile: this.imageManager.drawTile.bind(this.imageManager),
                     drawSprite: this.imageManager.drawSprite.bind(this.imageManager),
+                    drawBackGround: this.imageManager.drawBG.bind(this.imageManager),
                 });
         
     }

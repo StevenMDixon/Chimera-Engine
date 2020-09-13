@@ -50,7 +50,6 @@ class ImageManager {
     }
     async loadImages() :Promise<boolean>{
         let p = [];
-
         for(const ikey in this.imageSrc){
             this.images[ikey] = new Image();
 
@@ -59,15 +58,13 @@ class ImageManager {
                     resolve({ikey: this.images[ikey]});
                 })
             })
-
             p.push(promise);
-
             this.images[ikey].src = this.imageSrc[ikey];
         }
-
         return Promise.all(p).then(v => {return true})
     }
     drawTile(tile: string, x: number, y: number) {
+        if(tile == '0') {return}
         if(this.imageData['tiles']){
             let target = {x: 0, y: 0}
             let width = this.imageData.tiles.width;
@@ -78,15 +75,17 @@ class ImageManager {
             this.ctx.drawImage(image, target.x, target.y, width, height, x, y, width, height);
         }
     }
-    drawSprite(sprite: string, state: number, x: number, y: number, rotation?: number){
+    drawSprite(object, x: number, y: number, rotation?: number){
+        console.log(object)
         let target = {x: 0, y: 0}
-        let width = this.imageData.sprites[sprite].width;
-        let height = this.imageData.sprites[sprite].height;
+        let width = this.imageData.sprites[object.sprite].width;
+        let height = this.imageData.sprites[object.sprite].height;
+        let image = this.images[this.imageData.sprites[object.sprite].sheet];
+        target.x = this.imageData.sprites[object.sprite].animationKeys[object.state].row *  width + object.currentFrame *  width;
+        console.log(target.x)
+        target.y = this.imageData.sprites[object.sprite].animationKeys[object.state].column * height;
 
-        let image = this.images[this.imageData.sprites[sprite].sheet];
 
-        target.x = this.imageData.sprites[sprite].animationKeys[state].row * width;
-        target.y = this.imageData.sprites[sprite].animationKeys[state].column * height;
         //check if rotation is null
         if (rotation ! === 0 || rotation == null){
             this.ctx.drawImage(image, target.x, target.y, width, height, x, y, width, height);
@@ -101,10 +100,7 @@ class ImageManager {
             // this.ctx.beginPath();
             // this.ctx.rect(0, 0, 100, 100);
             // this.ctx.stroke();
-            
-
-            
-
+        
             this.ctx.drawImage(image, target.x, target.y, width, height, 0 - width/2, 0 - height/2, width, height);
 
             // rotate back
@@ -113,11 +109,13 @@ class ImageManager {
             this.ctx.translate(-x - width/2 , -y -  height/2);
            
         }
-    }
-    drawBG(image: string, rotation: number){
-        this.ctx.save();
+    };
+    drawBG(bg: string, x: number, y: number, rotation: number){
+    
+        let image = this.images[bg];
+        
+        this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.canvas.width, this.canvas.height);
 
-        this.ctx.restore();
     };
     drawText(text: string, x: number, y: number){
         this.ctx.fillText(text, x, y);
