@@ -63,16 +63,17 @@ class ImageManager {
         }
         return Promise.all(p).then(v => {return true})
     }
-    drawTile(tile: string, x: number, y: number) {
-        if(tile == '0') {return}
-        if(this.imageData['tiles']){
+    drawTile(object) {
+        
+        let tile = object.getSpriteInfo();
+        if(this.imageData[tile.spriteSheet] && tile.type > 0){
             let target = {x: 0, y: 0}
-            let width = this.imageData.tiles.width;
-            let height = this.imageData.tiles.height;
-            let image = this.images[this.imageData.tiles.sheet];
-            target.x = this.imageData.tiles.mapAlias[tile][0] * width;
-            target.y = this.imageData.tiles.mapAlias[tile][1] * height;
-            this.ctx.drawImage(image, target.x, target.y, width, height, x, y, width, height);
+            let width = tile.w;
+            let height = tile.h;
+            let image = this.images[tile.spriteSheet];
+            target.x = (tile.type - 1 ) * width;
+            target.y = 0;
+            this.ctx.drawImage(image, target.x, target.y, width, height, tile.x, tile.y, width, height);
         }
     }
     drawSprite(object, x: number, y: number){

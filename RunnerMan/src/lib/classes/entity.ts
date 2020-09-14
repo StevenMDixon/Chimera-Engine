@@ -58,7 +58,7 @@ class Entity {
     }
 
     animate(deltaTime){
-        console.log(this.currentFrame)
+
         this.frameCount += deltaTime;
         if(this.frameCount > this.frameLimit){
             this.currentFrame += 1;
