@@ -22,17 +22,18 @@ myGame.setup(
         size: {h: 240, w: 608},
         useController: true
     });
-// load user defined sounds into game
+
+//use custom mapping for controller
 myGame.useCustomControllerMap({
-    0: 39
+    //0: 39
 })
 
 
-
+// load user defined sounds into game
 myGame.addSounds(sounds);
-
+// load user defined images into game
 myGame.addImages(images);
-
+// set default data across screens
 myGame.addData({
     
 })
