@@ -12,9 +12,8 @@ class GameScreen extends Screen {
     constructor(gameProps: any){
         super(gameProps);
         this.xScroll = 0;  
-        this.player = new Player(80,gameProps.canvas.height - 32,16,16,0,'player');
+        this.player = new Player(10,(gameProps.canvas.height - 64)/this.scale,16,16,0,'player');
         this.tiles = [];
-
         this.loadMap();
     }
 
@@ -59,7 +58,7 @@ class GameScreen extends Screen {
         }
 
         if(event.code == 'Space' && this.player.isJumping() == false){
-        
+            this.player.xVel += 15;
             this.player.jump();
         }
     }
@@ -78,6 +77,7 @@ class GameScreen extends Screen {
             }
 
         }
+        console.log(collided)
         return collided
     }
 }

@@ -17,7 +17,7 @@ const myGame = new GameManager();
 myGame.setup(
     {
         target: 'game',
-        scale: 1,
+        scale: 5,
         startingScreen: 'GameScreen',
         size: {h: 240, w: 608}
     });

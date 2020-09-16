@@ -16,12 +16,28 @@ class soundManager {
         }
         audio.play();
     }
-    playBG(name: string, volume: number): void{
+    playBG(name: string, volume?: number): void{
+        
         this.currentBG = new Audio(this.sounds[name]);
+        if(volume){
+            this.currentBG.volume = volume;
+        }
         this.currentBG.play();
     }
     stopBG(){
         this.currentBG.pause();
+    }
+    setBGVolume(volume: number){
+        this.currentBG.volume = volume;
+    }
+
+    getAudioTools(){
+        return {
+            playEffect: this.playEffect.bind(this),
+            playBG: this.playBG.bind(this),
+            stopBG: this.stopBG.bind(this),
+            setBGVolume: this.setBGVolume.bind(this)
+        }
     }
 }
 

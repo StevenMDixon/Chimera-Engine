@@ -63,8 +63,18 @@ class ImageManager {
         }
         return Promise.all(p).then(v => {return true})
     }
+
+    getRenderer(): object{
+        return {
+            drawTile: this.drawTile.bind(this),
+            drawSprite: this.drawSprite.bind(this),
+            drawBackGround: this.drawBG.bind(this),
+            drawText: this.drawText.bind(this)
+        }
+    }
+
+
     drawTile(object) {
-        
         let tile = object.getSpriteInfo();
         if(this.imageData[tile.spriteSheet] && tile.type > 0){
             let target = {x: 0, y: 0}
@@ -73,11 +83,10 @@ class ImageManager {
             let image = this.images[tile.spriteSheet];
             target.x = (tile.type - 1 ) * width;
             target.y = 0;
-            this.ctx.drawImage(image, target.x, target.y, width, height, tile.x, tile.y, width, height);
+            this.ctx.drawImage(image, target.x, target.y, width, height, tile.x/this.scale, tile.y/this.scale, width/this.scale, height/this.scale);
         }
     }
     drawSprite(object, x: number, y: number){
-        
         let sprite = object.getSpriteInfo();
         let target = {x: 0, y: 0};
         let width = sprite.w;
@@ -88,34 +97,29 @@ class ImageManager {
 
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
-            this.ctx.drawImage(image, target.x, target.y, width, height, x, y, width, height);
+            this.ctx.drawImage(image, target.x, target.y, width, height, x/this.scale, y/this.scale, width/this.scale, height/this.scale);
         }else {
             // move to center of image
             this.ctx.translate(x + width/2, y + height/2);
-
             // rotate by specific degree
-            this.ctx.rotate(sprite.r * Math.PI / 180 );
+            this.ctx.rotate(sprite.r * Math.PI / 180);
             // this.ctx.strokeStyle = "red";
             // this.ctx.beginPath();
             // this.ctx.rect(0, 0, 100, 100);
             // this.ctx.stroke();
-        
-            this.ctx.drawImage(image, target.x, target.y, width, height, 0 - width/2, 0 - height/2, width, height);
-
+            this.ctx.drawImage(image, target.x, target.y, width, height, 0 - width/2, 0 - height/2, width/this.scale, height/this.scale);
             // rotate back
             this.ctx.rotate(-sprite.r * Math.PI / 180);
             // move back to regular offst
             this.ctx.translate(-x - width/2 , -y -  height/2);
-           
         }
     };
-    drawBG(bg: string, x: number, y: number, rotation: number){
-    
-        let image = this.images[bg];
-        
-        this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.canvas.width, this.canvas.height);
 
+    drawBG(bg: string, x: number, y: number, rotation: number){
+        let image = this.images[bg];
+        this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.canvas.width/this.scale, this.canvas.height/this.scale);
     };
+    // todo: work on this to change fonts and colors and styles
     drawText(text: string, x: number, y: number){
         this.ctx.fillText(text, x, y);
     }

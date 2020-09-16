@@ -65,26 +65,26 @@ class Game {
         return
     }
     update(time: number = 0): void{
-        const dt = time - this.lastTime;
+        const deltaTime = time - this.lastTime;
         this.lastTime = time;
         this.screens[this.currentScreen].updateGameData(this.dataManager.store);
-        this.screens[this.currentScreen].update(dt, this.dataManager.update.bind(this.dataManager), this.soundManager.playEffect.bind(this.soundManager));
-        this.draw(dt);   
+        this.screens[this.currentScreen].update(
+            deltaTime, 
+            this.dataManager.getDataTools, 
+            this.soundManager.getAudioTools);
+        this.draw(deltaTime);   
         requestAnimationFrame((time) => this.update(time));
     }
     draw(dt): void{
         //draw background
-        this.ctx.clearRect(0,0,this.canvas.clientWidth, this.canvas.height)
-        this.ctx.fillStyle = '#000';
-        this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
+        //this.ctx.clearRect(0,0,this.canvas.clientWidth, this.canvas.height)
+        //this.ctx.fillStyle = '#000';
+        //this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
          // draw current scene
         this.screens[this.currentScreen].draw(
-                dt, 
-                 {
-                    drawTile: this.imageManager.drawTile.bind(this.imageManager),
-                    drawSprite: this.imageManager.drawSprite.bind(this.imageManager),
-                    drawBackGround: this.imageManager.drawBG.bind(this.imageManager),
-                });
+            dt, 
+            this.imageManager.getRenderer() 
+        );
         
     }
     handleInput(): void{
