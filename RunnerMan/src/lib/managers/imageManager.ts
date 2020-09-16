@@ -21,32 +21,26 @@ interface imageData {
 
 
 class ImageManager {
-    ready: boolean;
     images: object;
-    imageCollection: object;
     imageSrc: object;
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     scale: number;
-    imageData: imageData;
 
     constructor(){
-        this.ready = false;
         this.images = {};
         this.imageSrc = {};
         this.ctx = null;
         this.canvas = null;
         this.scale = 1;
-        this.imageData = {}
     }
     setup(ctx, canvas, scale: number) {
         this.ctx = ctx;
         this.canvas = canvas;
         this.scale = scale;
     }
-    addImages(images: object, imageData: object){
+    addImages(images: object){
         this.imageSrc = images;
-        this.imageData = imageData;
     }
     async loadImages() :Promise<boolean>{
         let p = [];
@@ -73,10 +67,9 @@ class ImageManager {
         }
     }
 
-
     drawTile(object) {
         let tile = object.getSpriteInfo();
-        if(this.imageData[tile.spriteSheet] && tile.type > 0){
+        if(object.spriteSheet && tile.type > 0){
             let target = {x: 0, y: 0}
             let width = tile.w;
             let height = tile.h;
@@ -86,6 +79,7 @@ class ImageManager {
             this.ctx.drawImage(image, target.x, target.y, width, height, tile.x/this.scale, tile.y/this.scale, width/this.scale, height/this.scale);
         }
     }
+
     drawSprite(object, x: number, y: number){
         let sprite = object.getSpriteInfo();
         let target = {x: 0, y: 0};

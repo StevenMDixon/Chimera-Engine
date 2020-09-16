@@ -22,9 +22,11 @@ class Player extends Entity {
         this.xFriction = 0.5;
         this.yFriction = 0.6;
         this.float = .5;
+        this.rotation = 0;
     }
 
     move(){
+
         this.x += this.xVel;
         this.y += this.yVel * (this.state == 'jump' && this.yVel < 0 ? this.float : 1 );
         this.yVel += 1.0;
@@ -34,13 +36,15 @@ class Player extends Entity {
 
         if(this.x <= 30){
             this.x = 30;
+           
         }
     }
 
     jump(){
         this.y -= 30;
-        this.changeState('jump')
+        this.changeState('jump');
     }
+
     isJumping(){
         if(this.state === 'jump'){
             return true;
@@ -50,7 +54,6 @@ class Player extends Entity {
     collide(){  
         this.yVel = 0;
         if(this.state !== 'idle'){
-            console.log('test')
             this.changeState('idle')
         }
     }

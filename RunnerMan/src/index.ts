@@ -9,7 +9,7 @@ import GameScreen from './scenes/game/gamescreen';
 // import user defined sounds
 import sounds from './sounds';
 // import user defined images
-import {images, imageData} from './image'
+import {images} from './image'
 //create a new game object
 const myGame = new GameManager();
 
@@ -17,19 +17,24 @@ const myGame = new GameManager();
 myGame.setup(
     {
         target: 'game',
-        scale: 5,
+        scale: 1,
         startingScreen: 'GameScreen',
-        size: {h: 240, w: 608}
+        size: {h: 240, w: 608},
+        useController: true
     });
 // load user defined sounds into game
+myGame.useCustomControllerMap({
+    0: 39
+})
+
+
+
 myGame.addSounds(sounds);
 
-myGame.addImages(images, imageData);
+myGame.addImages(images);
 
 myGame.addData({
-    playerScore: 0,
-    aiScore: 0,
-    playerWin: false
+    
 })
 // load user defined screens into game
 myGame.addScreens(

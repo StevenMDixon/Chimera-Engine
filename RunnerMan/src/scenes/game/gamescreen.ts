@@ -57,7 +57,7 @@ class GameScreen extends Screen {
             this.player.xVel += 3;
         }
 
-        if(event.code == 'Space' && this.player.isJumping() == false){
+        if((event.code == 'Space' || event.keyCode === 32) && this.player.isJumping() == false){
             this.player.xVel += 15;
             this.player.jump();
         }
@@ -77,7 +77,7 @@ class GameScreen extends Screen {
             }
 
         }
-        console.log(collided)
+
         return collided
     }
 }

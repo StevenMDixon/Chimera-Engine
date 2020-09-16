@@ -1,6 +1,7 @@
 import DataManager from './dataManager';
 import SoundManager from './soundManager';
 import ImageManager from './imageManager';
+import Controller from '../classes/controller';
 
 import Screen from '../classes/screen';
 
@@ -18,7 +19,10 @@ class Game {
         dataManager: DataManager;
         soundManager: SoundManager;
         imageManager: ImageManager;
-         
+        controller: Controller;
+        controllerEnabled: boolean;
+        controllerMap: object;
+
     constructor() {
         this.scale = 1;
         this.ctx = null;
@@ -29,9 +33,11 @@ class Game {
         this.dataManager = new DataManager({});
         this.soundManager = new SoundManager();
         this.imageManager = new ImageManager();
-
+        this.controller = new Controller();
+        this.controllerMap = {0: 24};
+        this.controllerEnabled = false;
     }
-    setup({target, scale, startingScreen, size}): void {
+    setup({target, scale, startingScreen, size, useController}): void {
 
         this.canvas = document.getElementById(target) as any;
 
@@ -47,7 +53,7 @@ class Game {
         this.scale = scale;
         this.ctx.scale(scale, scale);
         this.currentScreen = startingScreen;
-        console.log(this.ctx)
+        this.controllerEnabled = useController;
         // give image manager the context and canvas for use in drawing sprites
         this.imageManager.setup(this.ctx, this.canvas, this.scale);
         
@@ -89,7 +95,10 @@ class Game {
     }
     handleInput(): void{
        // this.InputHandler.startListening().then(e => console.log(e))
-        document.addEventListener('keydown', event => {this.screens[this.currentScreen].handleInput(event)})
+        document.addEventListener('keydown', event => {this.screens[this.currentScreen].handleInput(event)});
+        if(this.controllerEnabled){
+            this.controller.listenForGamePad(event => this.screens[this.currentScreen].handleInput(event));
+        }
     }
     addScreens(screens): void{
         this.setupScreens(screens);
@@ -115,8 +124,12 @@ class Game {
     addData(data: object) {
         this.dataManager.update(data);
     }
-    addImages(images: object, imageData){
-        this.imageManager.addImages(images, imageData)
+    addImages(images: object){
+        this.imageManager.addImages(images);
+    }
+    useCustomControllerMap(map){
+        
+        this.controller.overrideControllerMapping(map)
     }
 
 }
