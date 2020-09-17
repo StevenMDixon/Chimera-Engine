@@ -22,12 +22,23 @@ class Entity {
         [key: string]: number[]
     };
 
-    constructor(x: number, y: number, w: number, h: number, rotation: number, spriteSheet: string, shape: string){
+    hitBox: object;
+
+    constructor(x: number, y: number, w: number, h: number, rotation: number, spriteSheet: string, shape: string, radius?: number){
         this.x = x;
         this.y = y;
         this.w = w;
         this.h = h;
         this.shape = shape;
+
+        this.hitBox = {
+            type: shape,
+            x,
+            y,
+            radius,
+            w,
+            h
+        }
 
         this.spriteWidth = w;
         this.spriteHeight = h;
@@ -57,8 +68,17 @@ class Entity {
         }
     }
 
-    animate(deltaTime){
+    updateHitBox() {
+        this.hitBox = {
+           ...this.hitBox,
+            x: this.x,
+            y: this.y,
+        }
+    }
 
+
+
+    animate(deltaTime){
         this.frameCount += deltaTime;
         if(this.frameCount > this.frameLimit){
             this.currentFrame += 1;

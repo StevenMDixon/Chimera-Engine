@@ -26,8 +26,10 @@ class ImageManager {
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     scale: number;
+    debugger: boolean;
 
     constructor(){
+        this.debugger = false;
         this.images = {};
         this.imageSrc = {};
         this.ctx = null;
@@ -76,11 +78,29 @@ class ImageManager {
             let image = this.images[tile.spriteSheet];
             target.x = (tile.type - 1 ) * width;
             target.y = 0;
+
             this.ctx.drawImage(image, target.x, target.y, width, height, tile.x/this.scale, tile.y/this.scale, width/this.scale, height/this.scale);
+
+
+            if(this.debugger){
+                const hitbox = object.hitBox;
+                const pStrokeStyle = this.ctx.strokeStyle;
+                this.ctx.strokeStyle = "red";
+                this.ctx.beginPath();
+                if(hitbox.type == 'square'){
+                    
+                    this.ctx.rect(hitbox.x, hitbox.y, hitbox.w, hitbox.h)
+                    
+                } else if (hitbox.type == 'circle'){
+                    this.ctx.arc(hitbox.x, hitbox.y, hitbox.radius, 0, 2 * Math.PI);
+                }
+                this.ctx.stroke();
+                this.ctx.strokeStyle = pStrokeStyle;
+            }
         }
     }
 
-    drawSprite(object, x: number, y: number){
+    drawSprite(object, x: number, y: number, debug?: boolean){
         let sprite = object.getSpriteInfo();
         let target = {x: 0, y: 0};
         let width = sprite.w;
@@ -91,6 +111,7 @@ class ImageManager {
 
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
+          
             this.ctx.drawImage(image, target.x, target.y, width, height, x/this.scale, y/this.scale, width/this.scale, height/this.scale);
         }else {
             // move to center of image
@@ -107,6 +128,21 @@ class ImageManager {
             // move back to regular offst
             this.ctx.translate(-x - width/2 , -y -  height/2);
         }
+        if(this.debugger){
+            const hitbox = object.hitBox;
+            const pStrokeStyle = this.ctx.strokeStyle;
+            this.ctx.strokeStyle = "red";
+            this.ctx.beginPath();
+            if(hitbox.type == 'square'){
+                
+                this.ctx.rect(hitbox.x, hitbox.y, hitbox.w, hitbox.h)
+                
+            } else if (hitbox.type == 'circle'){
+                this.ctx.arc(hitbox.x, hitbox.y, hitbox.radius, 0, 2 * Math.PI);
+            }
+            this.ctx.stroke();
+            this.ctx.strokeStyle = pStrokeStyle;
+        }
     };
 
     drawBG(bg: string, x: number, y: number, rotation: number){
@@ -116,6 +152,10 @@ class ImageManager {
     // todo: work on this to change fonts and colors and styles
     drawText(text: string, x: number, y: number){
         this.ctx.fillText(text, x, y);
+    }
+
+    debug(option: boolean){
+        this.debugger = option;
     }
 }
 

@@ -52,7 +52,6 @@ class GameScreen extends Screen {
         renderer.drawSprite(this.player, this.player.x, this.player.y);
     }
     handleInput(event: KeyboardEvent){
-        console.log(event)
         if(event.keyCode == 39){
             this.player.xVel += 3;
         }

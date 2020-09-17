@@ -20,7 +20,8 @@ myGame.setup(
         scale: 1,
         startingScreen: 'GameScreen',
         size: {h: 240, w: 608},
-        useController: true
+        useController: true,
+        debug: true
     });
 
 //use custom mapping for controller

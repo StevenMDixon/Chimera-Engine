@@ -22,12 +22,12 @@ class Game {
         controller: Controller;
         controllerEnabled: boolean;
         controllerMap: object;
+        enableDebug: boolean;
 
     constructor() {
         this.scale = 1;
         this.ctx = null;
         this.canvas = null;
-        this.lastTime = 0;
         this.screens = {};
         this.currentScreen = '';
         this.dataManager = new DataManager({});
@@ -36,8 +36,9 @@ class Game {
         this.controller = new Controller();
         this.controllerMap = {0: 24};
         this.controllerEnabled = false;
+        this.enableDebug = false;
     }
-    setup({target, scale, startingScreen, size, useController}): void {
+    setup({target, scale, startingScreen, size, useController, debug}): void {
 
         this.canvas = document.getElementById(target) as any;
 
@@ -56,6 +57,13 @@ class Game {
         this.controllerEnabled = useController;
         // give image manager the context and canvas for use in drawing sprites
         this.imageManager.setup(this.ctx, this.canvas, this.scale);
+
+        //debug options
+        if(debug){
+            this.enableDebug = debug;
+            this.imageManager.debug(this.enableDebug);
+        }
+        
         
     }
     async start(): Promise<object>{
@@ -71,26 +79,41 @@ class Game {
         return
     }
     update(time: number = 0): void{
-        const deltaTime = time - this.lastTime;
-        this.lastTime = time;
+        const now = performance.now();
+        const deltaTime =  now - time;
+
+        
         this.screens[this.currentScreen].updateGameData(this.dataManager.store);
         this.screens[this.currentScreen].update(
             deltaTime, 
             this.dataManager.getDataTools, 
             this.soundManager.getAudioTools);
         this.draw(deltaTime);   
-        requestAnimationFrame((time) => this.update(time));
+        
+        
+        
+        requestAnimationFrame(() => this.update(now));
     }
     draw(dt): void{
-        //draw background
-        //this.ctx.clearRect(0,0,this.canvas.clientWidth, this.canvas.height)
-        //this.ctx.fillStyle = '#000';
-        //this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
-         // draw current scene
+       // draw background
+        this.ctx.clearRect(0,0,this.canvas.clientWidth, this.canvas.height)
+        this.ctx.fillStyle = '#000';
+        this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
+        //draw current scene
         this.screens[this.currentScreen].draw(
             dt, 
             this.imageManager.getRenderer() 
         );
+
+
+        // draw debug info
+        if (this.enableDebug){
+           /// console.log('fps', 1/(dt/1000));
+            this.ctx.font = '10px Arial';
+            this.ctx.fillStyle = 'red';
+            this.ctx.fillText(`FPS: ${Math.floor(1/(dt/1000))}`, this.canvas.width - 40, 10);
+        }
+        
         
     }
     handleInput(): void{

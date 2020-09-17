@@ -7,6 +7,7 @@ class Player extends Entity {
     float: number;
     xFriction: number;
     yFriction: number; 
+
     constructor(x, y, w, h, r, sprite){
         super(x, y, w, h, r, sprite, 'square');
         this.state = 'idle';
@@ -26,7 +27,6 @@ class Player extends Entity {
     }
 
     move(){
-
         this.x += this.xVel;
         this.y += this.yVel * (this.state == 'jump' && this.yVel < 0 ? this.float : 1 );
         this.yVel += 1.0;
@@ -38,6 +38,8 @@ class Player extends Entity {
             this.x = 30;
            
         }
+        this.updateHitBox();
+    
     }
 
     jump(){
