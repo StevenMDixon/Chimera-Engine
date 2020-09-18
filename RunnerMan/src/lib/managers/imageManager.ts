@@ -65,7 +65,8 @@ class ImageManager {
             drawTile: this.drawTile.bind(this),
             drawSprite: this.drawSprite.bind(this),
             drawBackGround: this.drawBG.bind(this),
-            drawText: this.drawText.bind(this)
+            drawText: this.drawText.bind(this),
+            drawParticle: this.drawParticle.bind(this),
         }
     }
 
@@ -100,9 +101,12 @@ class ImageManager {
         }
     }
 
-    drawSprite(object, x: number, y: number, debug?: boolean){
+    drawSprite(object, x?: number, y?: number){
+    
         let sprite = object.getSpriteInfo();
         let target = {x: 0, y: 0};
+        let sx = x? x: object.x;
+        let sy = y? y: object.y;
         let width = sprite.w;
         let height = sprite.h;
         let image = this.images[sprite.spriteSheet];
@@ -112,7 +116,7 @@ class ImageManager {
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
           
-            this.ctx.drawImage(image, target.x, target.y, width, height, x/this.scale, y/this.scale, width/this.scale, height/this.scale);
+            this.ctx.drawImage(image, target.x, target.y, width, height, sx/this.scale, sy/this.scale, width/this.scale, height/this.scale);
         }else {
             // move to center of image
             this.ctx.translate(x + width/2, y + height/2);
@@ -145,17 +149,44 @@ class ImageManager {
         }
     };
 
-    drawBG(bg: string, x: number, y: number, rotation: number){
+    drawBG(bg: string, x: number, y: number){
         let image = this.images[bg];
         this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.canvas.width/this.scale, this.canvas.height/this.scale);
     };
     // todo: work on this to change fonts and colors and styles
-    drawText(text: string, x: number, y: number){
+    drawText(text: string, x: number, y: number, options?){
+
+        this.ctx.textAlign= 'left';
+
         this.ctx.fillText(text, x, y);
     }
 
     debug(option: boolean){
         this.debugger = option;
+    }
+
+    drawParticle(object){
+        let particle = object.getSpriteInfo();
+        if(!particle.spriteSheet ){
+            this.ctx.fillStyle = particle.color;
+            this.ctx.fillRect(particle.x, particle.y, particle.w, particle.h);
+        }else {
+        let target = {x: 0, y: 0};
+        let width = particle.w;
+        let height = particle.h;
+        let image = this.images[particle.spriteSheet];
+        target.x = particle.state[0] * particle.w + object.currentFrame *  particle.w;
+        target.y = particle.state[1] * particle.h;
+        if(particle.opacity != 1){
+            this.ctx.globalAlpha = particle.opacity;
+        }
+        
+        this.ctx.drawImage(image, target.x, target.y, width, height, particle.x/this.scale, particle.y/this.scale, width/this.scale, height/this.scale);
+
+        if(this.ctx.globalAlpha != 1){
+            this.ctx.globalAlpha =1;
+        }
+        }
     }
 }
 

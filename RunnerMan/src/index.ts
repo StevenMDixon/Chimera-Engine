@@ -5,6 +5,7 @@ import {GameManager} from './lib/index';
 //import user defined scenes
 import StartScreen from './scenes/start/startScreen';
 import GameScreen from './scenes/game/gamescreen';
+import EndScreen from './scenes/end/endScreen';
 
 // import user defined sounds
 import sounds from './sounds';
@@ -18,10 +19,10 @@ myGame.setup(
     {
         target: 'game',
         scale: 1,
-        startingScreen: 'GameScreen',
+        startingScreen: 'StartScreen',
         size: {h: 240, w: 608},
         useController: true,
-        debug: true
+        debug: false
     });
 
 //use custom mapping for controller
@@ -36,13 +37,14 @@ myGame.addSounds(sounds);
 myGame.addImages(images);
 // set default data across screens
 myGame.addData({
-    
+    distance: 0
 })
 // load user defined screens into game
 myGame.addScreens(
     {
         StartScreen,
-        GameScreen
+        GameScreen,
+        EndScreen
     }
 );
 

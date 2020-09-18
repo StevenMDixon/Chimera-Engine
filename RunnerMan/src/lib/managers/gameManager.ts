@@ -86,12 +86,10 @@ class Game {
         this.screens[this.currentScreen].updateGameData(this.dataManager.store);
         this.screens[this.currentScreen].update(
             deltaTime, 
-            this.dataManager.getDataTools, 
-            this.soundManager.getAudioTools);
+            this.dataManager.getDataTools(), 
+            this.soundManager.getAudioTools());
+
         this.draw(deltaTime);   
-        
-        
-        
         requestAnimationFrame(() => this.update(now));
     }
     draw(dt): void{
@@ -136,7 +134,9 @@ class Game {
                     gotoScreen: this.gotoScreen.bind(this),
                     data: this.dataManager.store
                 })
+            this.screens[screen].setup();
         }
+       
     }
     gotoScreen(target: string): void{
         this.currentScreen = target;
@@ -151,7 +151,6 @@ class Game {
         this.imageManager.addImages(images);
     }
     useCustomControllerMap(map){
-        
         this.controller.overrideControllerMapping(map)
     }
 

@@ -11,7 +11,7 @@ class Player extends Entity {
     constructor(x, y, w, h, r, sprite){
         super(x, y, w, h, r, sprite, 'square');
         this.state = 'idle';
-        this.frameLimit = 80;
+        this.frameLimit = 60;
         this.spriteLength = 4;
         this.stateMap = {
             //   , ,Frame length
@@ -20,30 +20,30 @@ class Player extends Entity {
         }
         this.xVel = 0,
         this.yVel = 0
-        this.xFriction = 0.5;
-        this.yFriction = 0.6;
-        this.float = .5;
+        this.xFriction = 0.4;
+        this.yFriction = .4  ;
+        this.float = 1.5;
         this.rotation = 0;
     }
 
     move(){
         this.x += this.xVel;
-        this.y += this.yVel * (this.state == 'jump' && this.yVel < 0 ? this.float : 1 );
-        this.yVel += 1.0;
-        this.xVel -= 1.0;
+        this.y += this.yVel //* (this.state == 'jump' && this.yVel > 0 ? this.float : 1 );
+        this.yVel += 1;
+        //this.xVel -= 1.0;
         this.yVel *= this.yFriction;
         this.xVel *= this.xFriction;
 
-        if(this.x <= 30){
-            this.x = 30;
-           
+        if(this.x <= 64){
+            this.x = 64;
         }
+
         this.updateHitBox();
-    
     }
 
     jump(){
-        this.y -= 30;
+        this.y -= 1;
+        this.yVel -= 40;
         this.changeState('jump');
     }
 

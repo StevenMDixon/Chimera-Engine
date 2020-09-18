@@ -23,6 +23,7 @@ class Screen {
         //this._updateGameStore = updateGameStore;
         this._data = data;
     }
+
     get scale(): number {
         return this._scale;
     }
@@ -34,6 +35,9 @@ class Screen {
     }
     get data(): any {
         return this._data;
+    }
+    setup(){
+
     }
     updateGameData(data: object): void{
         this._data = {...this._data, ...data};

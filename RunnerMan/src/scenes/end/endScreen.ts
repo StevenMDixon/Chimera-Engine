@@ -23,6 +23,7 @@ class StartScreen extends Screen {
                  font: 'Orbitron'
                 }
             )]
+        
             this.displayMenu = true;
             this.currentMenu = 0;
     }
@@ -30,25 +31,13 @@ class StartScreen extends Screen {
         this.ctx.fillStyle = "White";
         this.ctx.textAlign = "center";
         this.ctx.font = "20px Orbitron";
-        this.ctx.fillText("Runner Man", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
+        this.ctx.fillText("Game Over", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
+        this.ctx.fillText("Score", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2 + 20);
+        this.ctx.fillText(`${this.data.distance}`, this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2 + 40);
 
-        if (this.displayMenu){
-            this.ctx.fillStyle = "White";
-            this.menus[this.currentMenu].draw(this.ctx);
-        }
     }
     handleInput(event: KeyboardEvent){
-        if (this.displayMenu){
-           let o =  this.menus[this.currentMenu].handleInput(event.keyCode);
-           console.log(o)
-
-           if(o === 'Start Game'){
-               this.gotoNextScreen('GameScreen')
-           }
-        }
-        if(event.keyCode > 0){
-            //this.gotoNextScreen('GameScreen');
-        }
+        
     }
 }
 
