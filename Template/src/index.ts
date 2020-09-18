@@ -5,22 +5,38 @@ import {GameManager} from './lib/index';
 //import user defined scenes
 import StartScreen from './scenes/start/startScreen';
 
-// import user defined sounds
-import sounds from './sounds';
-// import user defined images
 
+// import user defined sounds
+//import sounds from './sounds';
+// import user defined images
+//import {images} from './image'
 //create a new game object
 const myGame = new GameManager();
 
 //tell the game to use the canvas object with and id of game and a scale of 1 and tell it which screen to start on
-myGame.setup('game', 1, 'StartScreen');
+myGame.setup(
+    {
+        target: 'game',
+        scale: 1,
+        startingScreen: 'StartScreen',
+        size: {h: 240, w: 608},
+        useController: true,
+        debug: false
+    });
+
+//use custom mapping for controller
+myGame.useCustomControllerMap({
+    //0: 39
+})
+
+
 // load user defined sounds into game
-myGame.loadSounds(sounds);
-// todo: load user defined images into game
-myGame.loadData({
-    playerScore: 0,
-    aiScore: 0,
-    playerWin: false
+//myGame.addSounds(sounds);
+// load user defined images into game
+//myGame.addImages(images);
+// set default data across screens
+myGame.addData({
+    
 })
 // load user defined screens into game
 myGame.addScreens(
