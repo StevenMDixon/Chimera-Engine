@@ -5,7 +5,7 @@ import {GameManager} from 'GameLib';
 
 //import user defined scenes
 import StartScreen from './scenes/start/startScreen';
-
+import GameScreen from './scenes/game/game';
 
 // import user defined sounds
 //import sounds from './sounds';
@@ -19,7 +19,7 @@ myGame.setup(
     {
         target: 'game',
         scale: 1,
-        startingScreen: 'StartScreen',
+        startingScreen: 'GameScreen',
         size: {h: 240, w: 608},
         useController: true,
         debug: false
@@ -42,7 +42,8 @@ myGame.addData({
 // load user defined screens into game
 myGame.addScreens(
     {
-        StartScreen
+        StartScreen,
+        GameScreen
     }
 );
 

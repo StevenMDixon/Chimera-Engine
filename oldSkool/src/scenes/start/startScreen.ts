@@ -1,7 +1,5 @@
 import {Screen, Menu}  from 'GameLib';
 
-
-
 class StartScreen extends Screen {
     menus: Menu[];
     displayMenu: Boolean;
