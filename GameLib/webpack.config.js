@@ -43,7 +43,8 @@ module.exports = {
     publicPath: '/dist/',
     filename: 'index.js',
     library: 'GameLib',
-    libraryTarget: 'umd'
+    libraryTarget: 'umd',
+    umdNamedDefine: true
   },
   devServer: {
     contentBase: path.join(__dirname, "public/"),

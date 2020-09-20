@@ -7,39 +7,39 @@ interface ScreenData {
 }
 
 class Screen {
-    private _scale : number;
-    private _ctx: any;
-    private _canvas: any;
-    private _data: object;
-    private _gotoScreen: (target: string) => void;
-    private _updateGameStore: (data: any) => void;
+    scale : number;
+    ctx: any;
+    canvas: any;
+    data: object;
+    gotoScreen: (target: string) => void;
+    updateGameStore: (data: any) => void;
     
     constructor({ctx, canvas, scale, gotoScreen, data}: ScreenData){
-        this._ctx = ctx;
-        this._canvas = canvas;
-        this._scale = scale;
-        this._gotoScreen = gotoScreen;
+        this.ctx = ctx;
+        this.canvas = canvas;
+        this.scale = scale;
+        this.gotoScreen = gotoScreen;
         //this._updateGameStore = updateGameStore;
-        this._data = data;
+        this.data = data;
     }
 
-    get scale(): number {
-        return this._scale;
-    }
-    get ctx(): any {
-        return this._ctx;
-    }
-    get canvas(): any {
-        return this._canvas;
-    }
-    get data(): any {
-        return this._data;
-    }
+    // get scale(): number {
+    //     return this._scale;
+    // }
+    // get ctx(): any {
+    //     return this._ctx;
+    // }
+    // get canvas(): any {
+    //     return this._canvas;
+    // }
+    // get data(): any {
+    //     return this._data;
+    // }
     setup(){
 
     }
     updateGameData(data: object): void{
-        this._data = {...this._data, ...data};
+        this.data = {...this.data, ...data};
     }
     update(deltaTime: number, updateStore: object, soundController: object): void{
 
@@ -49,7 +49,7 @@ class Screen {
     handleInput(event: object): void{
     }
     gotoNextScreen(target: string): void {
-        this._gotoScreen(target);
+        this.gotoScreen(target);
     }
 }
 

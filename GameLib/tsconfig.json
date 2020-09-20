@@ -2,7 +2,8 @@
     "compilerOptions": {
     "target": "es6",
     "module": "commonjs",
-    "lib": ["dom", "es6", "dom.iterable", "scripthost"],
+    "lib": ["es2015", "dom"],
+    "outDir": "./dist",
     "moduleResolution": "node",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
@@ -13,6 +14,6 @@
     },
     "baseUrl": "src",
     "exclude": [
-    "node_modules"
+        "node_modules"
     ]
 }

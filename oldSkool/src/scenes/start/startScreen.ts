@@ -1,15 +1,11 @@
-import {Screen, Menu} from 'GameLib';
+import {Screen, Menu}  from 'GameLib';
+
+
 
 class StartScreen extends Screen {
     menus: Menu[];
     displayMenu: Boolean;
     currentMenu = 0;
-    
-    ctx: any;
-    canvas: any;
-    scale: number;
-    gotoNextScreen: (screen) => void;
-    data: any
 
     constructor(gameProps: any){
         super(gameProps);
