@@ -1,28 +1,8 @@
-interface imageData {
-    tiles?: {
-        width: number,
-        height: number,
-        sheet: string,
-        mapAlias: {
-            [key: number]: number[]
-        }
-    },
-    sprites?: {
-        width: number,
-        height: number,
-        sheet: string,
-        animationKeys: {
-            row: number,
-            column: number,
-            alength: number
-        }
-    }
-}
-
+import SpriteSheet from '../classes/spriteSheet';
 
 class ImageManager {
     images: object;
-    imageSrc: object;
+   // imageSrc: object;
     ctx: CanvasRenderingContext2D;
     canvas: HTMLCanvasElement;
     scale: number;
@@ -31,7 +11,7 @@ class ImageManager {
     constructor(){
         this.debugger = false;
         this.images = {};
-        this.imageSrc = {};
+        //this.imageSrc = {};
         this.ctx = null;
         this.canvas = null;
         this.scale = 1;
@@ -41,21 +21,16 @@ class ImageManager {
         this.canvas = canvas;
         this.scale = scale;
     }
-    addImages(images: object){
-        this.imageSrc = images;
+    addImages(name:  string, imageSrc, imageSpec: object){
+        //this.images[name] = new SpriteSheet(imageSrc, imageSpec);
+    }
+    addSprites(imageSpec: any){
+        this.images[imageSpec.name] = new SpriteSheet(imageSpec);
     }
     async loadImages() :Promise<boolean>{
         let p = [];
-        for(const ikey in this.imageSrc){
-            this.images[ikey] = new Image();
-
-            let promise = new Promise((resolve, reject) => {
-                this.images[ikey].addEventListener('load', () => {
-                    resolve({ikey: this.images[ikey]});
-                })
-            })
-            p.push(promise);
-            this.images[ikey].src = this.imageSrc[ikey];
+        for(const ikey in this.images){
+           p.push(this.images[ikey].loadImage())
         }
         return Promise.all(p).then(v => {return true})
     }
@@ -104,19 +79,26 @@ class ImageManager {
     drawSprite(object, x?: number, y?: number){
     
         let sprite = object.getSpriteInfo();
-        let target = {x: 0, y: 0};
+
+        
+        
+        
+
+        let sheet = this.images[sprite.spriteSheet];
+        let image = this.images[sprite.spriteSheet].image;
+
         let sx = x? x: object.x;
         let sy = y? y: object.y;
         let width = sprite.w;
         let height = sprite.h;
-        let image = this.images[sprite.spriteSheet];
-        target.x = sprite.state[0] * sprite.w + object.currentFrame *  sprite.w;
-        target.y = sprite.state[1] * sprite.h;
+
+        let target = sheet.tiles.get(sprite.state);
+        console.log(target)
 
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
           
-            this.ctx.drawImage(image, target.x, target.y, width, height, sx/this.scale, sy/this.scale, width/this.scale, height/this.scale);
+            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx/this.scale, sy/this.scale, width/this.scale, height/this.scale);
         }else {
             // move to center of image
             this.ctx.translate(x + width/2, y + height/2);

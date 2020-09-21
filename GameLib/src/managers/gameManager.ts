@@ -147,13 +147,15 @@ class Game {
     addData(data: object) {
         this.dataManager.update(data);
     }
-    addImages(images: object){
-        this.imageManager.addImages(images);
+    addImages(name, imageSrc, imageInfo: object){
+        this.imageManager.addImages(name, imageSrc, imageInfo);
+    }
+    addSprites(spriteData){
+        this.imageManager.addSprites(spriteData);
     }
     useCustomControllerMap(map){
         this.controller.overrideControllerMapping(map)
     }
-
 }
 
 export default Game;

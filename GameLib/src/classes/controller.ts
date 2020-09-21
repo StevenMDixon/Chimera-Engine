@@ -73,15 +73,12 @@ class Controller {
             return 0;
         } else {
             let buttons = {...Mapping[controllerID].buttons, ...this.controllerOverride}
-            console.log(this.controllerOverride)
-            console.log(buttons)
            // console.log(buttons[pressed[0]])
             fx({ keyCode: buttons[pressed[0]] , type: 'controller'});
         }
     }
 
     overrideControllerMapping(mapping: object){
-        console.log(mapping)
         this.controllerOverride = mapping;
     }
 }

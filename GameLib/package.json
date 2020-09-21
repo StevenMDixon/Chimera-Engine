@@ -26,5 +26,7 @@
     "typescript": "^4.0.2"
   },
   "dependencies": {},
-  "files": ["./lib"]
+  "files": [
+    "./lib"
+  ]
 }

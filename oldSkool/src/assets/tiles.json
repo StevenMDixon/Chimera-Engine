@@ -1,0 +1,15 @@
+{
+    "name": "all",
+    "src": "./images/colored_tilemap.png",
+    "spec":{
+        "offset": 1
+    },
+    "tiles": [
+        {
+        "name": "man1",
+        "index": [5,0],
+        "size": [8,8]
+        }
+    ],
+   "animations": []
+}

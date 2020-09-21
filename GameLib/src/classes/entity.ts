@@ -18,10 +18,6 @@ class Entity {
     frameLimit: number;
     spriteLength: number;
 
-    stateMap: {
-        [key: string]: number[]
-    };
-
     hitBox: object;
 
     constructor(x: number, y: number, w: number, h: number, rotation: number, spriteSheet: string, shape: string, radius?: number){
@@ -52,7 +48,6 @@ class Entity {
         this.frameLimit = 1000;
 
         this.state = '';
-        this.stateMap = {};
     }
 
     getSpriteInfo() : object{
@@ -64,7 +59,7 @@ class Entity {
             h: this.spriteHeight,
             r: this.rotation,
             frame: this.currentFrame,
-            state: this.stateMap[this.state]
+            state: this.state
         }
     }
 
