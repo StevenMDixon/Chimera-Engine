@@ -6,16 +6,15 @@ class Particle extends Entity {
     lifeState: number
     color: string;
     opacity: number;
-    currentState: number[];
+    currentState: string;
 
-    constructor(x: number, y: number, w: number, h: number, life: number, rotation: number, color, opactity: number, spriteSheet? : string, frame?: number, state?: number[]){
+    constructor(x: number, y: number, w: number, h: number, life: number, rotation: number, color, opactity: number, spriteSheet? : string, state?: string){
         super(x, y, w, h, rotation, spriteSheet, 'circle');
         this.life = life;
         this.current = 0;
         this.lifeState = 1;
         this.color = color;
         this.opacity = opactity;
-        this.currentFrame = frame;
         this.currentState = state;
     }  
     update(x, y){
@@ -28,12 +27,11 @@ class Particle extends Entity {
         }
     }
 
-    reset(x, y, frame?){
+    reset(x, y){
         this.current = 0
         this.lifeState = 1;
         this.x = x;
         this.y = y;
-        this.currentFrame = frame;
     }
 
     getSpriteInfo() : object{

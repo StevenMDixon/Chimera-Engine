@@ -70,8 +70,7 @@ class Emitter {
             if(this.particles[p].lifeState == 0 || this.kill(this.particles[p])){
                 this.particles[p].reset(
                     Math.floor((Math.random() * this.w) + this.x),
-                   Math.floor((Math.random() * this.h)+ this.y),
-                   this.attachment ? this.attachment.currentFrame : 0
+                   Math.floor((Math.random() * this.h)+ this.y)
                 )
             }
 
@@ -90,8 +89,7 @@ class Emitter {
                        this.options.color,
                        this.options.opacity,
                        this.options.spriteSheet,
-                       this.attachment.currentFrame,
-                       this.attachment.stateMap[this.attachment.state]
+                       this.attachment.state
                     ));
             }else {
                 this.particles.push(
