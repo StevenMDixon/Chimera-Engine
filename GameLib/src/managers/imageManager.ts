@@ -42,6 +42,7 @@ class ImageManager {
             drawBackGround: this.drawBG.bind(this),
             drawText: this.drawText.bind(this),
             drawParticle: this.drawParticle.bind(this),
+            drawTileMap: this.drawTileMap.bind(this)
         }
     }
 
@@ -79,11 +80,6 @@ class ImageManager {
     drawSprite(object, x?: number, y?: number){
     
         let sprite = object.getSpriteInfo();
-
-        
-        
-        
-
         let sheet = this.images[sprite.spriteSheet];
         let image = this.images[sprite.spriteSheet].image;
 
@@ -93,12 +89,11 @@ class ImageManager {
         let height = sprite.h;
 
         let target = sheet.tiles.get(sprite.state);
-        console.log(target)
 
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
           
-            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx/this.scale, sy/this.scale, width/this.scale, height/this.scale);
+            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx, sy, width, height);
         }else {
             // move to center of image
             this.ctx.translate(x + width/2, y + height/2);
@@ -108,7 +103,7 @@ class ImageManager {
             // this.ctx.beginPath();
             // this.ctx.rect(0, 0, 100, 100);
             // this.ctx.stroke();
-            this.ctx.drawImage(image, target.x, target.y, width, height, 0 - width/2, 0 - height/2, width/this.scale, height/this.scale);
+            this.ctx.drawImage(image, target.x, target.y, width, height, 0 - width/2, 0 - height/2, width, height);
             // rotate back
             this.ctx.rotate(-sprite.r * Math.PI / 180);
             // move back to regular offst
@@ -133,7 +128,7 @@ class ImageManager {
 
     drawBG(bg: string, x: number, y: number){
         let image = this.images[bg];
-        this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.canvas.width/this.scale, this.canvas.height/this.scale);
+        this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.canvas.width, this.canvas.height);
     };
     // todo: work on this to change fonts and colors and styles
     drawText(text: string, x: number, y: number, options?){
@@ -170,6 +165,12 @@ class ImageManager {
             this.ctx.globalAlpha =1;
         }
         }
+    }
+
+    drawTileMap(map, spriteSheet){
+        map.forEach((tile, i) => {
+
+        })
     }
 }
 

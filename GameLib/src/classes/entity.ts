@@ -5,11 +5,18 @@ class Entity {
     y: number;
     w: number;
     h: number;
+    xVelocity: number;
+    yVelocity: number;
+    xFriction: number;
+    yFriction: number;
+    gravity: number;
+
     rotation: number;
     spriteSheet: string;
     spriteWidth: number;
     spriteHeight: number;
     shape: string;
+
 
     state: string;
 
@@ -48,6 +55,12 @@ class Entity {
         this.frameLimit = 1000;
 
         this.state = '';
+
+        this.xVelocity = 0;
+        this.yVelocity = 0;
+        this.xFriction = 0;
+        this.yFriction = 0;
+        this.gravity = 0;
     }
 
     getSpriteInfo() : object{
@@ -71,6 +84,8 @@ class Entity {
         }
     }
 
+    update(deltaTime){}
+
 
 
     animate(deltaTime){
@@ -84,7 +99,9 @@ class Entity {
         }
     }
 
+    handleCollision(type){
 
+    }
     
 }
 

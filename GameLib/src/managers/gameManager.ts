@@ -92,14 +92,14 @@ class Game {
         this.draw(deltaTime);   
         requestAnimationFrame(() => this.update(now));
     }
-    draw(dt): void{
+    draw(deltaTime): void{
        // draw background
         this.ctx.clearRect(0,0,this.canvas.clientWidth, this.canvas.height)
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
         //draw current scene
         this.screens[this.currentScreen].draw(
-            dt, 
+            deltaTime, 
             this.imageManager.getRenderer() 
         );
 
@@ -109,7 +109,7 @@ class Game {
            /// console.log('fps', 1/(dt/1000));
             this.ctx.font = '10px Arial';
             this.ctx.fillStyle = 'red';
-            this.ctx.fillText(`FPS: ${Math.floor(1/(dt/1000))}`, this.canvas.width - 40, 10);
+            this.ctx.fillText(`FPS: ${Math.floor(1/( deltaTime/1000))}`, this.canvas.width - 40, 10);
         }
         
         

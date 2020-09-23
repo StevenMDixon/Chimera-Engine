@@ -7,12 +7,14 @@ class SpriteSheet {
     tiles: any;
     animations: any;
     offset: number;
+    map: any;
 
     constructor(data){
         this.image = null;
         this.data = data;
         this.tiles = new Map();
         this.animations = new Map();
+        this.map = new Map();
         this.offset = 0;
     }
     async loadImage() :Promise<unknown>{
@@ -31,7 +33,6 @@ class SpriteSheet {
                 this.offset = this.data.spec.offset;
             }
         }
-        console.log(this.offset)
         if(this.data.tiles){
             this.data.tiles.forEach(tile => {
                 this.tiles.set(tile.name, 
@@ -53,7 +54,9 @@ class SpriteSheet {
     resolveImageData(Name){
         return this.data[Name];
     }
+    resolveTileData(index){
 
+    }
 }
 
 export default SpriteSheet;

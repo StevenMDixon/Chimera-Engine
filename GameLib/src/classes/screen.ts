@@ -1,3 +1,6 @@
+import Tile from './tile';
+import Level from './level';
+
 interface ScreenData {
     ctx: any,
     canvas: any,
@@ -13,28 +16,22 @@ class Screen {
     data: object;
     gotoScreen: (target: string) => void;
     updateGameStore: (data: any) => void;
+
+    levels: Level[];
+    currentLevel: number;
+
+    tiles: Tile[];
     
     constructor({ctx, canvas, scale, gotoScreen, data}: ScreenData){
         this.ctx = ctx;
         this.canvas = canvas;
         this.scale = scale;
         this.gotoScreen = gotoScreen;
-        //this._updateGameStore = updateGameStore;
         this.data = data;
+        this.levels = [];
+        this.currentLevel = 0;
     }
 
-    // get scale(): number {
-    //     return this._scale;
-    // }
-    // get ctx(): any {
-    //     return this._ctx;
-    // }
-    // get canvas(): any {
-    //     return this._canvas;
-    // }
-    // get data(): any {
-    //     return this._data;
-    // }
     setup(){
 
     }
@@ -45,12 +42,19 @@ class Screen {
 
     }
     draw(deltaTime: number, images: object): void{
+        
     }
     handleInput(event: object): void{
+
     }
     gotoNextScreen(target: string): void {
         this.gotoScreen(target);
     }
+
+    createLevel(map){
+        this.levels.push(new Level(map));
+    }
+    
 }
 
 export default Screen;
