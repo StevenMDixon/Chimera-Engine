@@ -1,5 +1,6 @@
  import { Screen } from 'GameLib';
 import Player from './player';
+import MapData from '../../assets/map.json';
 
 
  class GameScreen extends Screen {
@@ -9,16 +10,31 @@ import Player from './player';
      constructor(gameProps){
         super(gameProps);
         this.player = new Player(1, 1, 8, 8);
+
+        this.setup();
+     }
+
+     steup(){
+        this.createLevel(MapData.map);
+        console.log(this.levels)
+     }
+
+     update(){
+        this.player.move();
      }
 
 
      draw(delta, renderer){
-        this.ctx.fillStyle = "White";
-        this.ctx.textAlign = "center";
-        this.ctx.font = "20px Orbitron";
-        this.ctx.fillText("This is the template", this.canvas.clientWidth/this.scale/2, this.canvas.height/this.scale/2);
          renderer.drawSprite(this.player);
+         //renderer.drawTileMap(MapData, 'all');
      }
+
+     handleInput(event: KeyboardEvent){
+      
+      if(event.keyCode > 38){
+          this.player.xVelocity = 5;
+      }
+  }
  }
 
  export default GameScreen

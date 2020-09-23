@@ -14,13 +14,11 @@ import TileData from './assets/tiles.json';
 //create a new game object
 const myGame = new GameManager();
 
-console.log(TileData)
-
 //tell the game to use the canvas object with and id of game and a scale of 1 and tell it which screen to start on
 myGame.setup(
     {
         target: 'game',
-        scale: 1,
+        scale: 2,
         startingScreen: 'GameScreen',
         size: {h: 400, w: 400},
         useController: true,
