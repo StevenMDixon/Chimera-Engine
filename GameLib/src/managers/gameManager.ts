@@ -2,6 +2,7 @@ import DataManager from './dataManager';
 import SoundManager from './soundManager';
 import ImageManager from './imageManager';
 import Controller from '../classes/controller';
+import Camera from '../classes/camera';
 
 import Screen from '../classes/screen';
 
@@ -23,6 +24,7 @@ class Game {
         controllerEnabled: boolean;
         controllerMap: object;
         enableDebug: boolean;
+        camera: Camera;
 
     constructor() {
         this.scale = 1;
@@ -37,6 +39,7 @@ class Game {
         this.controllerMap = {0: 24};
         this.controllerEnabled = false;
         this.enableDebug = false;
+        this.camera = null;
     }
     setup({target, scale, startingScreen, size, useController, debug}): void {
 
@@ -49,6 +52,8 @@ class Game {
             this.canvas.width  = window.innerWidth;
             this.canvas.height = window.innerHeight;
         }
+
+        this.camera = new Camera(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx = this.canvas.getContext('2d');
         this.scale = scale;
@@ -82,9 +87,13 @@ class Game {
         this.screens[this.currentScreen].update(
             deltaTime, 
             this.dataManager.getDataTools(), 
-            this.soundManager.getAudioTools());
+            this.soundManager.getAudioTools(),
+            this.camera.getCameraTools();
+        );
 
+        this.camera.updateCamera();
         this.draw(deltaTime);   
+
         requestAnimationFrame(() => this.update(now));
     }
     draw(deltaTime): void{

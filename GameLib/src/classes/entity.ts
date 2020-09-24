@@ -104,6 +104,10 @@ class Entity {
     handleCollision(type){
 
     }
+
+    getCameraData(){
+        return {x: this.x, y: this.y}
+    }
     
 }
 

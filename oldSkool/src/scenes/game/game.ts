@@ -9,7 +9,7 @@ import MapData from '../../assets/map.json';
 
      constructor(gameProps){
         super(gameProps);
-        this.player = new Player(1, 1, 8, 8);
+        this.player = new Player(0, 0, 8, 8);
      }
 
 
@@ -17,8 +17,8 @@ import MapData from '../../assets/map.json';
         this.createLevel(MapData);
      }
 
-     update(){
-       this.player.move();
+     update(deltaTime, updateStore, soundController, camera){
+       this.player.move(deltaTime);
      }
 
 
@@ -28,8 +28,19 @@ import MapData from '../../assets/map.json';
 
      handleInput(event: KeyboardEvent){
       console.log(event)
-      if(event.keyCode > 38){
-          this.player.xVelocity = 5;
+      if(event.keyCode == 37){
+        this.player.xVelocity -= 5;
+        }
+
+      if(event.keyCode == 39){
+          this.player.xVelocity += 5;
+      }
+      if(event.keyCode == 38){
+        this.player.yVelocity -= 5;
+        }
+
+      if(event.keyCode == 40){
+          this.player.yVelocity += 5;
       }
   }
  }

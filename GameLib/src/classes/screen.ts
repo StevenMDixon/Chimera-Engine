@@ -38,7 +38,7 @@ class Screen {
     updateGameData(data: object): void{
         this.data = {...this.data, ...data};
     }
-    update(deltaTime: number, updateStore: object, soundController: object): void{
+    update(deltaTime: number, updateStore: object, soundController: object, camera: object): void{
 
     }
     draw(deltaTime: number, images: object): void{
