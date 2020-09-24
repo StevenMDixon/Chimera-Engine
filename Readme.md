@@ -20,6 +20,12 @@ I really haven't decided, I really want to code most of this from scratch.
 
 I expect that by the end of this I will have a good concept of how games work theoritically, and have a basis that if I ever want to create a game that I will have a toolkit at my disposal.
 
+## Tools
+
+ Music - boscaceoil https://boscaceoil.net/
+ Sound effects - SFXR / BFXR https://www.drpetter.se/project_sfxr.html https://www.bfxr.net/
+ Sprites - https://opengameart.org/
+ Sprite Editor - Pyxel
 
 
 
