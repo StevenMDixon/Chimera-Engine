@@ -84,7 +84,9 @@ class Entity {
         }
     }
 
-    update(deltaTime){}
+    update(deltaTime){
+        
+    }
 
 
 

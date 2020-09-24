@@ -55,6 +55,9 @@ class Screen {
         this.levels.push(new Level(map));
     }
     
+    getLevel(){
+        return this.levels[this.currentLevel];
+    }
 }
 
 export default Screen;

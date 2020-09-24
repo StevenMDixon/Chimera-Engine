@@ -1,22 +1,42 @@
-import Entity from './entity';
 
-class Particle extends Entity {
+
+class Particle {
     life: number;
     current: number;
     lifeState: number
     color: string;
     opacity: number;
     currentState: string;
+    rotation: number;
+    spriteSheet: string;
+    spriteWidth: number;
+    spriteHeight: number;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    currentFrame: number;
+    frameLimit: number;
 
     constructor(x: number, y: number, w: number, h: number, life: number, rotation: number, color, opactity: number, spriteSheet? : string, state?: string){
-        super(x, y, w, h, rotation, spriteSheet, 'circle');
         this.life = life;
         this.current = 0;
         this.lifeState = 1;
         this.color = color;
         this.opacity = opactity;
         this.currentState = state;
+        this.x = x;
+        this.y = y;
+        this.w = w;
+        this.h = h;
+        this.spriteWidth = w;
+        this.spriteHeight = h;
+        this.rotation = rotation;
+        this.spriteSheet = spriteSheet;
+        this.currentFrame = 0;
+        this.frameLimit = 1000;
     }  
+
     update(x, y){
         this.current += 1;
         this.x = x;

@@ -10,13 +10,11 @@ import MapData from '../../assets/map.json';
      constructor(gameProps){
         super(gameProps);
         this.player = new Player(1, 1, 8, 8);
-
-        this.setup();
      }
 
-     steup(){
-        this.createLevel(MapData.map);
-        console.log(this.levels)
+     
+     setup(){
+        this.createLevel(MapData);
      }
 
      update(){

@@ -63,13 +63,9 @@ class Game {
             this.enableDebug = debug;
             this.imageManager.debug(this.enableDebug);
         }
-        
-        
     }
     async start(): Promise<object>{
-
         let ready = await this.imageManager.loadImages();
-        
         if(ready){
             this.handleInput();
             this.update();
@@ -82,7 +78,6 @@ class Game {
         const now = performance.now();
         const deltaTime =  now - time;
 
-        
         this.screens[this.currentScreen].updateGameData(this.dataManager.store);
         this.screens[this.currentScreen].update(
             deltaTime, 
@@ -98,6 +93,13 @@ class Game {
         this.ctx.fillStyle = '#000';
         this.ctx.fillRect(0,0, this.canvas.clientWidth, this.canvas.height);
         //draw current scene
+
+        let LeveltoDraw = this.screens[this.currentScreen].getLevel()
+        if(LeveltoDraw){
+            LeveltoDraw.draw(deltaTime, this.imageManager.getLevelRenderer());
+        }
+
+
         this.screens[this.currentScreen].draw(
             deltaTime, 
             this.imageManager.getRenderer() 
@@ -124,6 +126,7 @@ class Game {
     addScreens(screens): void{
         this.setupScreens(screens);
     }
+
     setupScreens(screens): void{
         for(let screen in screens){
             this.screens[screen] = new screens[screen](
@@ -136,6 +139,7 @@ class Game {
                 })
             this.screens[screen].setup();
         }
+
        
     }
     gotoScreen(target: string): void{

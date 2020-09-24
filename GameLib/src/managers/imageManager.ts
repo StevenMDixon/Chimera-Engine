@@ -46,6 +46,20 @@ class ImageManager {
         }
     }
 
+    getLevelRenderer() {
+        return {
+            drawTile: this.drawLevelTile.bind(this)
+        }
+    }
+
+    resolveSpriteSheet(){
+
+    }
+
+    drawLevelTile(object){
+
+    }
+
     drawTile(object) {
         let tile = object.getSpriteInfo();
         if(object.spriteSheet && tile.type > 0){
@@ -65,9 +79,9 @@ class ImageManager {
                 this.ctx.strokeStyle = "red";
                 this.ctx.beginPath();
                 if(hitbox.type == 'square'){
-                    
+
                     this.ctx.rect(hitbox.x, hitbox.y, hitbox.w, hitbox.h)
-                    
+
                 } else if (hitbox.type == 'circle'){
                     this.ctx.arc(hitbox.x, hitbox.y, hitbox.radius, 0, 2 * Math.PI);
                 }
@@ -78,7 +92,7 @@ class ImageManager {
     }
 
     drawSprite(object, x?: number, y?: number){
-    
+
         let sprite = object.getSpriteInfo();
         let sheet = this.images[sprite.spriteSheet];
         let image = this.images[sprite.spriteSheet].image;
@@ -92,7 +106,7 @@ class ImageManager {
 
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
-          
+
             this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx, sy, width, height);
         }else {
             // move to center of image
@@ -115,9 +129,9 @@ class ImageManager {
             this.ctx.strokeStyle = "red";
             this.ctx.beginPath();
             if(hitbox.type == 'square'){
-                
+
                 this.ctx.rect(hitbox.x, hitbox.y, hitbox.w, hitbox.h)
-                
+
             } else if (hitbox.type == 'circle'){
                 this.ctx.arc(hitbox.x, hitbox.y, hitbox.radius, 0, 2 * Math.PI);
             }
