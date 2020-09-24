@@ -20,8 +20,8 @@ class Level {
     }
 
     loadMap(map){
-       map.forEach((row, x) => {
-        row.forEach((tile, y) => {
+       map.forEach((row, y) => {
+        row.forEach((tile, x) => {
             this.map.push(new Tile(x*this.mapData.size[0], y*this.mapData.size[1], this.mapData.size[0], this.mapData.size[1], tile))
         })
        })
@@ -34,7 +34,7 @@ class Level {
     }
 
     draw(deltaTime, renderer) {
-       this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}))     
+       this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, deltaTime))     
     }
 
     addEntity(entity){

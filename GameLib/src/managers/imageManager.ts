@@ -52,12 +52,14 @@ class ImageManager {
         }
     }
 
-    resolveSpriteSheet(){
-
+    resolveSpriteSheet(name){
+        return this.images[name]
     }
 
-    drawLevelTile(object){
-
+    drawLevelTile(object, dt){
+        const spriteSheet = this.resolveSpriteSheet(object.spriteSheet)
+        const {tile, img} = (spriteSheet.resolveTileData(object.type));
+        this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, object.x, object.y, object.w, object.h);
     }
 
     drawTile(object) {

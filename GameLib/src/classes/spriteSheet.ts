@@ -55,7 +55,8 @@ class SpriteSheet {
         return this.data[Name];
     }
     resolveTileData(index){
-
+        let imageName = this.data.map[index];
+        return {tile: this.tiles.get(imageName), img: this.image};
     }
 }
 
