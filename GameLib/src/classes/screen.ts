@@ -58,6 +58,10 @@ class Screen {
     getLevel(){
         return this.levels[this.currentLevel];
     }
+
+    addEntitytoCurrentLevel(object){
+        this.levels[this.currentLevel].addEntity(object);
+    }
 }
 
 export default Screen;

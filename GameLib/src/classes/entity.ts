@@ -106,7 +106,7 @@ class Entity {
     }
 
     getCameraData(){
-        return {x: this.x, y: this.y}
+        return {x: this.x, y: this.y, w: this.w, h: this.h}
     }
     
 }

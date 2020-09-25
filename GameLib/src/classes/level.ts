@@ -4,7 +4,7 @@ import map from './controllerMapping';
 
 
 class Level {
-    enitities: Entity[];
+    entities: Entity[];
     map: Tile[];
     mapData: {
         size: number[],
@@ -13,7 +13,7 @@ class Level {
     }
 
     constructor(mapData){
-        this.enitities = [];
+        this.entities = [];
         this.map= [];
         this.mapData = mapData;
         this.loadMap(mapData.map);
@@ -28,17 +28,18 @@ class Level {
     }
 
     update(deltaTime) {
-        this.enitities.forEach(entity =>{
+        this.entities.forEach(entity =>{
             entity.update(deltaTime);
         })
     }
 
-    draw(deltaTime, renderer) {
-       this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, deltaTime))     
+    draw(deltaTime, renderer, camera) {
+       this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, deltaTime, camera)) ;
+       this.entities.forEach(entity => renderer.drawSprite(entity, deltaTime, camera))   
     }
 
     addEntity(entity){
-        this.enitities.push(entity);
+        this.entities.push(entity);
     }
 }
 

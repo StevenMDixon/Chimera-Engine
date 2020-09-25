@@ -1,5 +1,6 @@
 import SpriteSheet from '../classes/spriteSheet';
 
+
 class ImageManager {
     images: object;
    // imageSrc: object;
@@ -48,7 +49,8 @@ class ImageManager {
 
     getLevelRenderer() {
         return {
-            drawTile: this.drawLevelTile.bind(this)
+            drawTile: this.drawLevelTile.bind(this),
+            drawSprite: this.drawLevelSprite.bind(this)
         }
     }
 
@@ -56,10 +58,25 @@ class ImageManager {
         return this.images[name]
     }
 
-    drawLevelTile(object, dt){
-        const spriteSheet = this.resolveSpriteSheet(object.spriteSheet)
+    drawLevelTile(object, dt, camera){
+        let offset = {  x:0 , y: 0 }
+        if(camera){
+            offset.x = camera.xOffset;
+            offset.y = camera.yOffset;
+        }
+
+        const spriteSheet = this.resolveSpriteSheet(object.spriteSheet);
         const {tile, img} = (spriteSheet.resolveTileData(object.type));
-        this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, object.x, object.y, object.w, object.h);
+   
+       if(camera.checkifViewable(object)){
+            this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, object.x - offset.x, object.y - offset.y, object.w, object.h);
+       }
+    }
+
+    drawLevelSprite(object, dt, camera){
+        if(camera.checkifViewable(object)){
+            this.drawSprite(object, camera);
+        }
     }
 
     drawTile(object) {
@@ -93,14 +110,20 @@ class ImageManager {
         }
     }
 
-    drawSprite(object, x?: number, y?: number){
+    drawSprite(object, camera?){
+
+        let offset = {x:0 , y: 0}
+        if(camera){
+            offset.x = camera.xOffset;
+            offset.y = camera.yOffset;
+        }
 
         let sprite = object.getSpriteInfo();
         let sheet = this.images[sprite.spriteSheet];
         let image = this.images[sprite.spriteSheet].image;
 
-        let sx = x? x: object.x;
-        let sy = y? y: object.y;
+        let sx = object.x;
+        let sy = object.y;
         let width = sprite.w;
         let height = sprite.h;
 
@@ -108,22 +131,22 @@ class ImageManager {
 
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
-
-            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx, sy, width, height);
+            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx - offset.x, sy - offset.y, width, height);
+    
         }else {
             // move to center of image
-            this.ctx.translate(x + width/2, y + height/2);
+            this.ctx.translate(sx + width/2, sy + height/2);
             // rotate by specific degree
             this.ctx.rotate(sprite.r * Math.PI / 180);
             // this.ctx.strokeStyle = "red";
             // this.ctx.beginPath();
             // this.ctx.rect(0, 0, 100, 100);
             // this.ctx.stroke();
-            this.ctx.drawImage(image, target.x, target.y, width, height, 0 - width/2, 0 - height/2, width, height);
+            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx - offset.x, sy - offset.y, width, height);
             // rotate back
             this.ctx.rotate(-sprite.r * Math.PI / 180);
             // move back to regular offst
-            this.ctx.translate(-x - width/2 , -y -  height/2);
+            this.ctx.translate(-sx - width/2 , -sy -  height/2);
         }
         if(this.debugger){
             const hitbox = object.hitBox;
@@ -148,9 +171,7 @@ class ImageManager {
     };
     // todo: work on this to change fonts and colors and styles
     drawText(text: string, x: number, y: number, options?){
-
         this.ctx.textAlign= 'left';
-
         this.ctx.fillText(text, x, y);
     }
 

@@ -15,32 +15,34 @@ import MapData from '../../assets/map.json';
 
      setup(){
         this.createLevel(MapData);
+        this.addEntitytoCurrentLevel(this.player);
      }
 
      update(deltaTime, updateStore, soundController, camera){
        this.player.move(deltaTime);
+       //camera.attach(this.levels[this.currentLevel].entities[1])
      }
 
 
      draw(delta, renderer){
-         renderer.drawSprite(this.player);
+         //renderer.drawSprite(this.player);
      }
 
      handleInput(event: KeyboardEvent){
-      console.log(event)
+
       if(event.keyCode == 37){
-        this.player.xVelocity -= 5;
+        this.player.xVelocity -= 10;
         }
 
       if(event.keyCode == 39){
-          this.player.xVelocity += 5;
+          this.player.xVelocity += 10;
       }
       if(event.keyCode == 38){
-        this.player.yVelocity -= 5;
+        this.player.yVelocity -= 10;
         }
 
       if(event.keyCode == 40){
-          this.player.yVelocity += 5;
+          this.player.yVelocity += 10;
       }
   }
  }

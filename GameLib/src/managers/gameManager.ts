@@ -53,8 +53,6 @@ class Game {
             this.canvas.height = window.innerHeight;
         }
 
-        this.camera = new Camera(0, 0, this.canvas.width, this.canvas.height);
-
         this.ctx = this.canvas.getContext('2d');
         this.scale = scale;
         this.ctx.scale(scale, scale);
@@ -63,6 +61,7 @@ class Game {
         // give image manager the context and canvas for use in drawing sprites
         this.imageManager.setup(this.ctx, this.canvas, this.scale);
 
+        this.camera = new Camera(0, 0, this.canvas.width / this.scale, this.canvas.height/ this.scale);
         //debug options
         if(debug){
             this.enableDebug = debug;
@@ -80,6 +79,8 @@ class Game {
         return
     }
     update(time: number = 0): void{
+       
+
         const now = performance.now();
         const deltaTime =  now - time;
 
@@ -88,15 +89,16 @@ class Game {
             deltaTime, 
             this.dataManager.getDataTools(), 
             this.soundManager.getAudioTools(),
-            this.camera.getCameraTools();
+            this.camera.getCameraTools()
         );
 
-        this.camera.updateCamera();
+        this.camera.updateCamera(this.canvas, this.scale);
         this.draw(deltaTime);   
 
         requestAnimationFrame(() => this.update(now));
     }
     draw(deltaTime): void{
+       
        // draw background
         this.ctx.clearRect(0,0,this.canvas.clientWidth, this.canvas.height)
         this.ctx.fillStyle = '#000';
@@ -105,7 +107,7 @@ class Game {
 
         let LeveltoDraw = this.screens[this.currentScreen].getLevel()
         if(LeveltoDraw){
-            LeveltoDraw.draw(deltaTime, this.imageManager.getLevelRenderer());
+            LeveltoDraw.draw(deltaTime, this.imageManager.getLevelRenderer(), this.camera);
         }
 
 
@@ -113,11 +115,11 @@ class Game {
             deltaTime, 
             this.imageManager.getRenderer() 
         );
-
+        
+     
 
         // draw debug info
         if (this.enableDebug){
-           /// console.log('fps', 1/(dt/1000));
             this.ctx.font = '10px Arial';
             this.ctx.fillStyle = 'red';
             this.ctx.fillText(`FPS: ${Math.floor(1/( deltaTime/1000))}`, this.canvas.width - 40, 10);
@@ -126,7 +128,7 @@ class Game {
         
     }
     handleInput(): void{
-       // this.InputHandler.startListening().then(e => console.log(e))
+       
         document.addEventListener('keydown', event => {this.screens[this.currentScreen].handleInput(event)});
         if(this.controllerEnabled){
             this.controller.listenForGamePad(event => this.screens[this.currentScreen].handleInput(event));
@@ -147,9 +149,11 @@ class Game {
                     data: this.dataManager.store
                 })
             this.screens[screen].setup();
-        }
 
-       
+            if(this.screens[screen]['player']){
+               this.camera.attach(this.screens[screen]['player']);
+            }
+        }
     }
     gotoScreen(target: string): void{
         this.currentScreen = target;
@@ -169,6 +173,8 @@ class Game {
     useCustomControllerMap(map){
         this.controller.overrideControllerMapping(map)
     }
+
+
 }
 
 export default Game;

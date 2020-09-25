@@ -18,12 +18,12 @@ const myGame = new GameManager();
 myGame.setup(
     {
         target: 'game',
-        scale: 2,
+        scale: 1,
         startingScreen: 'GameScreen',
         size: {h: 400, w: 400},
         useController: true,
         debug: false
-    });
+});
 
 //use custom mapping for controller
 myGame.useCustomControllerMap({
