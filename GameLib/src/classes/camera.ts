@@ -41,7 +41,7 @@ class Camera {
     }
 
     checkifViewable(object){
-        return simpleCollision({...this}, object);
+        return simpleCollision({x: this.xOffset + this.x, y:this.yOffset +this.y, h: this.h, w: this.w}, object);
     }
 }
 
