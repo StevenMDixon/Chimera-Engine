@@ -19,7 +19,24 @@ import MapData from '../../assets/map.json';
      }
 
      update(deltaTime, updateStore, soundController, camera){
+
+      if(this.inputs[37]){
+        this.player.xVelocity = - 10;
+      }
+      if(this.inputs[38]){
+        this.player.yVelocity =  -10;
+      }
+      if(this.inputs[39]){
+        this.player.xVelocity = 10;
+      }
+      if(this.inputs[40]){
+        this.player.yVelocity = 10;
+      }
+
+
        this.player.move(deltaTime);
+
+
        //camera.attach(this.levels[this.currentLevel].entities[1])
      }
 
@@ -28,23 +45,6 @@ import MapData from '../../assets/map.json';
          //renderer.drawSprite(this.player);
      }
 
-     handleInput(event: KeyboardEvent){
-
-      if(event.keyCode == 37){
-        this.player.xVelocity -= 10;
-        }
-
-      if(event.keyCode == 39){
-          this.player.xVelocity += 10;
-      }
-      if(event.keyCode == 38){
-        this.player.yVelocity -= 10;
-        }
-
-      if(event.keyCode == 40){
-          this.player.yVelocity += 10;
-      }
-  }
  }
 
  export default GameScreen

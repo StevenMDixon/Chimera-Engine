@@ -1,13 +1,16 @@
 import Mapping from './controllerMapping';
 
-
 class Controller {
     interval: any;
     controllerOverride: object;
+    previousKeys: number[];
+    recentPress: number;
 
     constructor() {
         this.interval = null;
-        this.controllerOverride = {}
+        this.controllerOverride = {};
+        this.previousKeys = [];
+        this.recentPress = 0
     }
 
     listenForGamePad(fx) {
@@ -48,39 +51,51 @@ class Controller {
         });
        
         const gp = oneGamepad;
+
         if (!!gp) {
             controllerID = gp.id;
             for (let f = 0; f <= 1; f++) {
                 if (gp.axes[f] > .75) {
-                    fx({ keyCode: f % 2 === 0 ? 39 : 40 });
+                    pressed.push(f % 2 === 0 ? 39 : 40);
                 } else if (gp.axes[f] < -0.75) {
-                    fx({ keyCode: f % 2 === 0 ? 37 : 38 });
+                    pressed.push( f % 2 === 0 ? 37 : 38);
                 }
             }
 
-
             for (let i = 0; i < gp.buttons.length; i++) {
                 if (gp.buttons[i].pressed) {
-                    const id = i;
-                    pressed.push(id);
+                    pressed.push(i);
                 }
             }
         }
 
         
         if (pressed.length === 0 || controllerID === '') {
-            //console.log('No button pressed at the moment...');
+            //console.log('No button pressed at the moment...');\
+            if(this.recentPress == 1){
+                fx({}, this.previousKeys, false);
+                this.recentPress = 0;
+            }
+            
             return 0;
         } else {
-            let buttons = {...Mapping[controllerID].buttons, ...this.controllerOverride}
-           // console.log(buttons[pressed[0]])
-            fx({ keyCode: buttons[pressed[0]] , type: 'controller'});
+            let buttonMap = {...Mapping[controllerID].buttons, ...this.controllerOverride};
+
+            let current = pressed.map(key => (buttonMap[key]));
+            console.log(current)
+            fx({}, this.previousKeys, false);
+
+            this.previousKeys = current;
+            this.recentPress = 1;
+            fx({}, current, true);
         }
     }
 
     overrideControllerMapping(mapping: object){
         this.controllerOverride = mapping;
     }
+
+
 }
 
 export default Controller;

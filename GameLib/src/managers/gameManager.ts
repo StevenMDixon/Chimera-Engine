@@ -1,10 +1,11 @@
 import DataManager from './dataManager';
 import SoundManager from './soundManager';
 import ImageManager from './imageManager';
-import Controller from '../classes/controller';
+import Controller from '../modules/inputController';
+
 import Camera from '../classes/camera';
 
-import Screen from '../classes/screen';
+import Screen from '../modules/screen';
 
 interface isScreens {
    [key: string]: Screen
@@ -67,6 +68,11 @@ class Game {
             this.enableDebug = debug;
             this.imageManager.debug(this.enableDebug);
         }
+
+        
+
+        window.addEventListener('resize', (e) => this.resize(e));
+        this.resize();
     }
     async start(): Promise<object>{
         let ready = await this.imageManager.loadImages();
@@ -116,8 +122,6 @@ class Game {
             this.imageManager.getRenderer() 
         );
         
-     
-
         // draw debug info
         if (this.enableDebug){
             this.ctx.font = '10px Arial';
@@ -128,11 +132,10 @@ class Game {
         
     }
     handleInput(): void{
-       
-        document.addEventListener('keydown', event => {this.screens[this.currentScreen].handleInput(event)});
-        if(this.controllerEnabled){
-            this.controller.listenForGamePad(event => this.screens[this.currentScreen].handleInput(event));
-        }
+        // document.addEventListener('keydown', event => {this.screens[this.currentScreen].handleInput(event)});
+        // if(this.controllerEnabled){
+        //     this.controller.listenForGamePad(event => this.screens[this.currentScreen].handleInput(event));
+        // }
     }
     addScreens(screens): void{
         this.setupScreens(screens);
@@ -150,13 +153,17 @@ class Game {
                 })
             this.screens[screen].setup();
 
+           
+
             if(this.screens[screen]['player']){
                this.camera.attach(this.screens[screen]['player']);
             }
         }
+        this.controller.setup(this.screens[this.currentScreen].handleInput.bind(this.screens[this.currentScreen]), this.controllerEnabled);
     }
     gotoScreen(target: string): void{
         this.currentScreen = target;
+        this.controller.changeFn(this.screens[this.currentScreen].handleInput.bind(this.screens[this.currentScreen]));
     }
     addSounds(sounds: object): void{
         this.soundManager.addSounds(sounds);
@@ -172,6 +179,27 @@ class Game {
     }
     useCustomControllerMap(map){
         this.controller.overrideControllerMapping(map)
+    }
+
+    resize(event?) {
+
+        // Get the height and width of the window
+        var height = document.documentElement.clientHeight;
+        var width  = document.documentElement.clientWidth;
+    
+        // This makes sure the DISPLAY canvas is resized in a way that maintains the MAP's width / height ratio.
+        if (width / height < 1){
+            height = Math.floor(width  / 1);
+        }   
+        else  {
+            width  = Math.floor(height * 1);
+        }
+       
+    
+        // This sets the CSS of the DISPLAY canvas to resize it to the scaled height and width.
+        this.canvas.style.height = height + 'px';
+        this.canvas.style.width  = width  + 'px';
+    
     }
 
 

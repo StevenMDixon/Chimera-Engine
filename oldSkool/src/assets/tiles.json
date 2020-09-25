@@ -32,13 +32,13 @@
          {
             "name": "leftwall",
             "type": "wall",
-            "index": [3,0],
+            "index": [0,1],
             "size": [8,8]
          },
          {
             "name": "rightwall",
             "type": "wall",
-            "index": [0,1],
+            "index": [3,1],
             "size": [8,8]
          },
          {
@@ -52,6 +52,30 @@
             "type": "entity",
             "index": [5,0],
             "size": [8,8]
+         },
+         {
+            "name": "frontleftwall",
+            "type": "wall",
+            "index": [0,2],
+            "size": [8,8]
+         },
+         {
+            "name": "frontwall",
+            "type": "wall",
+            "index": [2,4],
+            "size": [8,8]
+         },
+         {
+            "name": "frontwallwithdoor",
+            "type": "wall",
+            "index": [2,2],
+            "size": [8,8]
+         },
+         {
+            "name": "frontrightwall",
+            "type": "wall",
+            "index": [3,2],
+            "size": [8,8]
          }
     ], 
    "animations": [],
@@ -62,6 +86,10 @@
     "3": "topwithdoor",
     "4": "topright",
     "5": "leftwall",
-    "6": "rightwall"
+    "6": "rightwall",
+    "7": "frontleftwall",
+    "8": "frontwall",
+    "9": "frontwallwithdoor",
+    "10": "frontrightwall"
    } 
 }

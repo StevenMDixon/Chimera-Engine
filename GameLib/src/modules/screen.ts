@@ -1,5 +1,4 @@
-import Tile from './tile';
-import Level from './level';
+import Level from '../classes/level';
 
 interface ScreenData {
     ctx: any,
@@ -7,6 +6,7 @@ interface ScreenData {
     scale: number,
     gotoScreen: () => void,
     data: any
+    
 }
 
 class Screen {
@@ -19,9 +19,8 @@ class Screen {
 
     levels: Level[];
     currentLevel: number;
+    inputs: object;
 
-    tiles: Tile[];
-    
     constructor({ctx, canvas, scale, gotoScreen, data}: ScreenData){
         this.ctx = ctx;
         this.canvas = canvas;
@@ -30,6 +29,7 @@ class Screen {
         this.data = data;
         this.levels = [];
         this.currentLevel = 0;
+        this.inputs = {};
     }
 
     setup(){
@@ -44,8 +44,8 @@ class Screen {
     draw(deltaTime: number, images: object): void{
         
     }
-    handleInput(event: object): void{
-
+    handleInput(inputs): void{
+        this.inputs = inputs
     }
     gotoNextScreen(target: string): void {
         this.gotoScreen(target);

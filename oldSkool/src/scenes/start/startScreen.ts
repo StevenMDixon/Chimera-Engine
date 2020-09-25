@@ -39,17 +39,20 @@ class StartScreen extends Screen {
         }
     }
     handleInput(event: KeyboardEvent){
-        if (this.displayMenu){
-           let o =  this.menus[this.currentMenu].handleInput(event.keyCode);
-           console.log(o)
+        console.log(event)
+        this.gotoNextScreen('GameScreen')
+        // console.log(event)
+        // if (this.displayMenu){
+        //    let o =  this.menus[this.currentMenu].handleInput(event.keyCode);
+        //    //console.log(o)
 
-           if(o === 'Start Game'){
-               this.gotoNextScreen('StartScreen')
-           }
-        }
-        if(event.keyCode > 0){
-            //this.gotoNextScreen('GameScreen');
-        }
+        //    if(o === 'Start Game'){
+               
+        //    }
+        // }
+        // if(event.keyCode > 0){
+        //     //this.gotoNextScreen('GameScreen');
+        // }
     }
 }
 

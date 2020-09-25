@@ -69,7 +69,7 @@ class ImageManager {
         const {tile, img} = (spriteSheet.resolveTileData(object.type));
    
        if(camera.checkifViewable(object)){
-            this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, object.x - offset.x, object.y - offset.y, object.w, object.h);
+            this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - Math.ceil(offset.x)), Math.floor(object.y - Math.ceil(offset.y)), object.w, object.h);
        }
     }
 
@@ -122,8 +122,6 @@ class ImageManager {
         let sheet = this.images[sprite.spriteSheet];
         let image = this.images[sprite.spriteSheet].image;
 
-        let sx = object.x;
-        let sy = object.y;
         let width = sprite.w;
         let height = sprite.h;
 
@@ -131,22 +129,22 @@ class ImageManager {
 
         //check if rotation is null
         if (sprite.r ! === 0 || sprite.r == null){
-            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx - offset.x, sy - offset.y, width, height);
+            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), width, height);
     
         }else {
             // move to center of image
-            this.ctx.translate(sx + width/2, sy + height/2);
+            this.ctx.translate(object.x + width/2, object.y + height/2);
             // rotate by specific degree
             this.ctx.rotate(sprite.r * Math.PI / 180);
             // this.ctx.strokeStyle = "red";
             // this.ctx.beginPath();
             // this.ctx.rect(0, 0, 100, 100);
             // this.ctx.stroke();
-            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, sx - offset.x, sy - offset.y, width, height);
+            this.ctx.drawImage(image, target.x, target.y, target.w, target.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), width, height);
             // rotate back
             this.ctx.rotate(-sprite.r * Math.PI / 180);
             // move back to regular offst
-            this.ctx.translate(-sx - width/2 , -sy -  height/2);
+            this.ctx.translate(-object.x - width/2 , -object.y -  height/2);
         }
         if(this.debugger){
             const hitbox = object.hitBox;
@@ -155,10 +153,10 @@ class ImageManager {
             this.ctx.beginPath();
             if(hitbox.type == 'square'){
 
-                this.ctx.rect(hitbox.x, hitbox.y, hitbox.w, hitbox.h)
+                this.ctx.rect(Math.floor(hitbox.x  - offset.x), Math.floor(hitbox.y -  offset.y), hitbox.w, hitbox.h)
 
             } else if (hitbox.type == 'circle'){
-                this.ctx.arc(hitbox.x, hitbox.y, hitbox.radius, 0, 2 * Math.PI);
+                this.ctx.arc(hitbox.x - offset.x, hitbox.y - offset.y, hitbox.radius, 0, 2 * Math.PI);
             }
             this.ctx.stroke();
             this.ctx.strokeStyle = pStrokeStyle;
@@ -196,7 +194,7 @@ class ImageManager {
         }
 
 
-        this.ctx.drawImage(image, target.x, target.y, width, height, particle.x/this.scale, particle.y/this.scale, width/this.scale, height/this.scale);
+        this.ctx.drawImage(image, target.x, target.y, width, height, particle.x, particle.y, width, height);
 
         if(this.ctx.globalAlpha != 1){
             this.ctx.globalAlpha =1;

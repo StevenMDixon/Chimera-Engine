@@ -1,6 +1,6 @@
 import Entity from './entity';
 import Tile from './tile';
-import map from './controllerMapping';
+import map from '../modules/controllerMapping';
 
 
 class Level {

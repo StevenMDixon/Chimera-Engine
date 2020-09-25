@@ -19,7 +19,7 @@ myGame.setup(
     {
         target: 'game',
         scale: 1,
-        startingScreen: 'GameScreen',
+        startingScreen: 'StartScreen',
         size: {h: 400, w: 400},
         useController: true,
         debug: false
