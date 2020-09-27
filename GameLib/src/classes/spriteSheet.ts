@@ -1,3 +1,10 @@
+function createAnimation(frames, length){
+    return function resolveFrame(d){
+        const index = Math.floor(d/ length) % frames.length;
+        return frames[index];
+    }
+}
+
 
 class SpriteSheet {
     src:  any;
@@ -19,44 +26,59 @@ class SpriteSheet {
     }
     async loadImage() :Promise<unknown>{
         this.image = new Image();
-
+        //load image from json file
         let t = new Promise((resolve, reject) => {
             this.image.addEventListener('load', () => {
                 resolve({ikey: this.image});
             })
         })
-
+        // set the source
         this.image.src = this.data.src;
-
+        // check for spec key
         if(this.data.spec){
             if(this.data.spec.offset){
                 this.offset = this.data.spec.offset;
             }
         }
-        if(this.data.tiles){
-            this.data.tiles.forEach(tile => {
+        // check for frames
+        if(this.data.frames){
+            this.data.frames.forEach(tile => {
                 this.tiles.set(tile.name, 
-                    {x: tile.index[0] * (tile.size[0] + this.offset ),
-                    y:tile.index[1] * (tile.size[1] + this.offset ),
-                    w: tile.size[0],
-                    h: tile.size[1]
+                    {x: tile.rect[0] + (tile.rect[0]/ tile.rect[2] * this.offset) ,
+                    y:tile.rect[1] + (tile.rect[1]/ tile.rect[3] * this.offset),
+                    w: tile.rect[2],
+                    h: tile.rect[3]
                 })
             })
         }
 
-        
+        //check for animations
+        if(this.data.animations){
+            this.data.animations.forEach(animation => {
+                this.animations.set(animation.name, createAnimation(animation.frames, animation.frameLen));
+            })
+        }
 
         return t; 
     }
-    resolveImage(){
-        return this.image
+
+    resolveSpriteData(name, time){
+        if(this.animations.get(name)){
+            let anim = this.animations.get(name);
+            return {tile: this.tiles.get(anim(time)), img: this.image};
+        }else {
+            return {tile: this.tiles.get(name), img: this.image};
+        }
     }
-    resolveImageData(Name){
-        return this.data[Name];
-    }
-    resolveTileData(index){
+    resolveTileData(index, time){
         let imageName = this.data.map[index];
-        return {tile: this.tiles.get(imageName), img: this.image};
+
+        if(this.animations.get(imageName)){
+            let anim = this.animations.get(imageName);
+            return {tile: this.tiles.get(anim(time)), img: this.image};
+        }else {
+            return {tile: this.tiles.get(imageName), img: this.image};
+        }
     }
 }
 

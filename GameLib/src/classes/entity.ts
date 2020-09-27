@@ -16,10 +16,7 @@ class Entity {
     spriteWidth: number;
     spriteHeight: number;
     shape: string;
-
-
     state: string;
-
     frameCount: number;
     currentFrame: number;
     frameLimit: number;

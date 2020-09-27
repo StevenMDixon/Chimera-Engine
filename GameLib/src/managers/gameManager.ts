@@ -15,7 +15,6 @@ class Game {
         scale: number;
         ctx: CanvasRenderingContext2D;
         canvas: HTMLCanvasElement;
-        lastTime: number;
         screens: isScreens;
         currentScreen: string;
         dataManager: DataManager;
@@ -26,6 +25,7 @@ class Game {
         controllerMap: object;
         enableDebug: boolean;
         camera: Camera;
+        totalTime: number;
 
     constructor() {
         this.scale = 1;
@@ -37,10 +37,11 @@ class Game {
         this.soundManager = new SoundManager();
         this.imageManager = new ImageManager();
         this.controller = new Controller();
-        this.controllerMap = {0: 24};
+        this.controllerMap = {};
         this.controllerEnabled = false;
         this.enableDebug = false;
         this.camera = null;
+        this.totalTime = 0;
     }
     setup({target, scale, startingScreen, size, useController, debug}): void {
 
@@ -89,6 +90,7 @@ class Game {
 
         const now = performance.now();
         const deltaTime =  now - time;
+        this.totalTime += deltaTime;
 
         this.screens[this.currentScreen].updateGameData(this.dataManager.store);
         this.screens[this.currentScreen].update(
@@ -113,7 +115,7 @@ class Game {
 
         let LeveltoDraw = this.screens[this.currentScreen].getLevel()
         if(LeveltoDraw){
-            LeveltoDraw.draw(deltaTime, this.imageManager.getLevelRenderer(), this.camera);
+            LeveltoDraw.draw(deltaTime, this.totalTime, this.imageManager.getLevelRenderer(), this.camera);
         }
 
 
@@ -174,9 +176,12 @@ class Game {
     addImages(name, imageSrc, imageInfo: object){
         this.imageManager.addImages(name, imageSrc, imageInfo);
     }
-    addSprites(spriteData){
-        this.imageManager.addSprites(spriteData);
+    
+    
+    addSprites(...data){
+        this.imageManager.addSprites(data);
     }
+
     useCustomControllerMap(map){
         this.controller.overrideControllerMapping(map)
     }
@@ -186,7 +191,6 @@ class Game {
         // Get the height and width of the window
         var height = document.documentElement.clientHeight;
         var width  = document.documentElement.clientWidth;
-    
         // This makes sure the DISPLAY canvas is resized in a way that maintains the MAP's width / height ratio.
         if (width / height < 1){
             height = Math.floor(width  / 1);
@@ -194,8 +198,6 @@ class Game {
         else  {
             width  = Math.floor(height * 1);
         }
-       
-    
         // This sets the CSS of the DISPLAY canvas to resize it to the scaled height and width.
         this.canvas.style.height = height + 'px';
         this.canvas.style.width  = width  + 'px';

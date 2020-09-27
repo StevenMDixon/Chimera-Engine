@@ -1,4 +1,3 @@
-
 // import game library to handle the game
 import {GameManager} from 'GameLib';
 
@@ -7,10 +6,11 @@ import StartScreen from './scenes/start/startScreen';
 import GameScreen from './scenes/game/game';
 
 // import user defined sounds
-//import sounds from './sounds';
-// import user defined images
-//import images from './assets/images'
+import maing from './main.wav';
+
+
 import TileData from './assets/tiles.json';
+import PlayerData from './assets/player.json';
 //create a new game object
 const myGame = new GameManager();
 
@@ -19,7 +19,7 @@ myGame.setup(
     {
         target: 'game',
         scale: 1,
-        startingScreen: 'StartScreen',
+        startingScreen: 'GameScreen',
         size: {h: 400, w: 400},
         useController: true,
         debug: false
@@ -31,9 +31,13 @@ myGame.useCustomControllerMap({
 })
 
 // load user defined sounds into game
-//myGame.addSounds(sounds);
+myGame.addSounds(
+    {
+        main: maing
+    }
+);
 // load user defined images into game
-myGame.addSprites(TileData);
+myGame.addSprites(TileData, PlayerData);
 
 // set default data across screens
 myGame.addData({

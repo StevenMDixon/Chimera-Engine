@@ -33,9 +33,9 @@ class Level {
         })
     }
 
-    draw(deltaTime, renderer, camera) {
-       this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, deltaTime, camera)) ;
-       this.entities.forEach(entity => renderer.drawSprite(entity, deltaTime, camera))   
+    draw(deltaTime, totalTime, renderer, camera) {
+       this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, totalTime, camera)) ;
+       this.entities.forEach(entity => renderer.drawSprite(entity, totalTime, camera))   
     }
 
     addEntity(entity){

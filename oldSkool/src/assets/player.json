@@ -1,0 +1,47 @@
+{
+    "src": "./images/player.png",
+    "name": "sprites",
+    "frames": [
+        {
+            "name": "idle-1",
+            "rect": [0,0,8,8]
+        },
+        {
+            "name": "idle-2",
+            "rect": [8,0,8,8]
+        },
+        {
+            "name": "walk-1",
+            "rect": [40,0,8,8]
+        },
+        {
+            "name": "walk-2",
+            "rect": [48,0,8,8]
+        }, 
+        {
+            "name": "walk-up-1",
+            "rect": [16,0,8,8]
+        },
+        {
+            "name": "walk-up-2",
+            "rect": [24,0,8,8]
+        }
+    ],
+    "animations": [
+        {
+            "name": "idle",
+            "frameLen": 100,
+            "frames": ["idle-1", "idle-1", "idle-2",  "idle-2"]
+        },
+        {
+            "name": "walk",
+            "frameLen": 100,
+            "frames": ["walk-1", "walk-2"]
+        },
+        {
+            "name": "walk-up",
+            "frameLen": 100,
+            "frames": ["walk-up-1", "walk-up-2"]
+        }
+    ]
+}

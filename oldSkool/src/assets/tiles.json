@@ -1,84 +1,83 @@
 {
-    "name": "all",
+    "name": "tiles",
     "src": "./images/colored_tilemap.png",
     "spec":{
         "offset": 1
     },
-    "tiles": [
+    "frames": [
         {
             "name": "topleft",
             "type": "wall",
-            "index": [0,0],
-            "size": [8,8]
+            "rect": [0,0, 8, 8]
          },
          {
             "name": "toptwall",
             "type": "wall",
-            "index": [1,0],
-            "size": [8,8]
+            "rect": [8,0, 8,8]
          },
          {
             "name": "topwithdoor",
             "type": "wall",
-            "index": [2,0],
-            "size": [8,8]
+            "rect": [16,0,8,8]
          },
          {
             "name": "topright",
             "type": "wall",
-            "index": [3,0],
-            "size": [8,8]
+            "rect": [24,0,8,8]
          },
          {
             "name": "leftwall",
             "type": "wall",
-            "index": [0,1],
-            "size": [8,8]
+            "rect": [0,8,8,8]
          },
          {
             "name": "rightwall",
             "type": "wall",
-            "index": [3,1],
-            "size": [8,8]
+            "rect": [24,8,8,8]
          },
          {
             "name": "emptyfloor",
             "type": "ground",
-            "index": [1,1],
-            "size": [8,8]
-         },
-         {
-            "name": "man1",
-            "type": "entity",
-            "index": [5,0],
-            "size": [8,8]
+            "rect": [8,8,8,8]
          },
          {
             "name": "frontleftwall",
             "type": "wall",
-            "index": [0,2],
-            "size": [8,8]
+            "rect": [0,16,8,8]
          },
          {
             "name": "frontwall",
             "type": "wall",
-            "index": [2,4],
-            "size": [8,8]
+            "rect": [16,32,8,8]
          },
          {
             "name": "frontwallwithdoor",
             "type": "wall",
-            "index": [2,2],
-            "size": [8,8]
+            "rect": [16,16,8,8]
          },
          {
             "name": "frontrightwall",
             "type": "wall",
-            "index": [3,2],
-            "size": [8,8]
+            "rect": [24,16,8,8]
+         },
+         {
+            "name": "door",
+            "type": "wall",
+            "rect": [32,16,8,8]
+         },
+         {
+            "name": "xdoor",
+            "type": "wall",
+            "rect": [48,16,8,8]
          }
     ], 
-   "animations": [],
+   "animations": [
+      {
+         "name": "animated_door",
+         "frameLen": 500,
+         "frames": ["door", "xdoor"]
+      }
+   ],
    "map": {
     "0": "emptyfloor",
     "1": "topleft",
@@ -90,6 +89,9 @@
     "7": "frontleftwall",
     "8": "frontwall",
     "9": "frontwallwithdoor",
-    "10": "frontrightwall"
+    "10": "frontrightwall",
+    "11": "door",
+    "12": "x-door",
+    "13": "animated_door"
    } 
 }

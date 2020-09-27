@@ -17,15 +17,23 @@ class soundManager {
         audio.play();
     }
     playBG(name: string, volume?: number): void{
-        
-        this.currentBG = new Audio(this.sounds[name]);
-        if(volume){
-            this.currentBG.volume = volume;
+        if(!this.currentBG){
+            this.currentBG = new Audio(this.sounds[name]);
+            if(volume){
+                this.currentBG.volume = volume;
+            }
+            this.currentBG.play();
+
+            this.currentBG.addEventListener('ended', function() {
+                this.currentTime = 0;
+                this.play();
+            }, false);
         }
-        this.currentBG.play();
+        
     }
     stopBG(){
         this.currentBG.pause();
+        this.currentBG.currentTime = 0;
     }
     setBGVolume(volume: number){
         this.currentBG.volume = volume;

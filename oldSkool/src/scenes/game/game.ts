@@ -9,7 +9,7 @@ import MapData from '../../assets/map.json';
 
      constructor(gameProps){
         super(gameProps);
-        this.player = new Player(0, 0, 8, 8);
+        this.player = new Player(16, 16, 8, 8);
      }
 
 
@@ -20,17 +20,19 @@ import MapData from '../../assets/map.json';
 
      update(deltaTime, updateStore, soundController, camera){
 
+      //soundController.playBG("main", .5)
+
       if(this.inputs[37]){
-        this.player.xVelocity = - 10;
+        this.player.xVelocity = - 5;
       }
       if(this.inputs[38]){
-        this.player.yVelocity =  -10;
+        this.player.yVelocity =  -5;
       }
       if(this.inputs[39]){
-        this.player.xVelocity = 10;
+        this.player.xVelocity = 5;
       }
       if(this.inputs[40]){
-        this.player.yVelocity = 10;
+        this.player.yVelocity = 5;
       }
 
 
