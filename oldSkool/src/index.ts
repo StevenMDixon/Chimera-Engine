@@ -11,6 +11,7 @@ import maing from './main.wav';
 
 import TileData from './assets/tiles.json';
 import PlayerData from './assets/player.json';
+import ParticleData from './assets/particles.json';
 //create a new game object
 const myGame = new GameManager();
 
@@ -37,7 +38,7 @@ myGame.addSounds(
     }
 );
 // load user defined images into game
-myGame.addSprites(TileData, PlayerData);
+myGame.addSprites(TileData, PlayerData, ParticleData);
 
 // set default data across screens
 myGame.addData({

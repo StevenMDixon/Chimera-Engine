@@ -32,7 +32,7 @@ class Screen {
         this.inputs = {};
     }
 
-    setup(){
+    setup(soundController){
 
     }
     updateGameData(data: object): void{
@@ -41,7 +41,7 @@ class Screen {
     update(deltaTime: number, updateStore: object, soundController: object, camera: object): void{
 
     }
-    draw(deltaTime: number, images: object): void{
+    draw(deltaTime: number, images: object , camera: object): void{
         
     }
     handleInput(inputs): void{

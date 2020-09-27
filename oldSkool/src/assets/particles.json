@@ -1,0 +1,11 @@
+{
+    "src": "./images/colored_tilemap.png",
+    "name": "particles",
+    "frames": [
+        {
+            "name": "flies",
+            "rect": [64,32,8,8]
+        }
+    ],
+    "animations": []
+}

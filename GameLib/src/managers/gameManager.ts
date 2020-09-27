@@ -56,6 +56,8 @@ class Game {
         }
 
         this.ctx = this.canvas.getContext('2d');
+
+        this.ctx.imageSmoothingEnabled = false;
         this.scale = scale;
         this.ctx.scale(scale, scale);
         this.currentScreen = startingScreen;
@@ -121,7 +123,8 @@ class Game {
 
         this.screens[this.currentScreen].draw(
             deltaTime, 
-            this.imageManager.getRenderer() 
+            this.imageManager.getRenderer(),
+            this.camera.getCameraTools()
         );
         
         // draw debug info
@@ -153,7 +156,7 @@ class Game {
                     gotoScreen: this.gotoScreen.bind(this),
                     data: this.dataManager.store
                 })
-            this.screens[screen].setup();
+            this.screens[screen].setup(this.soundManager.getAudioTools());
 
            
 

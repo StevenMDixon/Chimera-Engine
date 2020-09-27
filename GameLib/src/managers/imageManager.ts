@@ -8,6 +8,8 @@ class ImageManager {
     canvas: HTMLCanvasElement;
     scale: number;
     debugger: boolean;
+    buffer: HTMLCanvasElement
+    bufferContext: CanvasRenderingContext2D;
 
     constructor(){
         this.debugger = false;
@@ -16,11 +18,16 @@ class ImageManager {
         this.ctx = null;
         this.canvas = null;
         this.scale = 1;
+        this.buffer = document.createElement('canvas');
+        this.buffer.width = 100;
+        this.buffer.height = 100;
+        this.bufferContext = this.buffer.getContext('2d');
     }
     setup(ctx, canvas, scale: number) {
         this.ctx = ctx;
         this.canvas = canvas;
         this.scale = scale;
+        this.bufferContext.imageSmoothingEnabled = false;
     }
 
     addImages(name:  string, imageSrc, imageSpec: object){
@@ -97,23 +104,27 @@ class ImageManager {
         const spriteSheet = this.resolveSpriteSheet(object.spriteSheet);
         const {tile, img} = (spriteSheet.resolveSpriteData(object.state, time));
 
-        if (object.r ! === 0 || object.r == null){
+        if (object.rotation ! === 0 || object.rotation == null){
             this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), object.w, object.h);
-        }else {
-            // move to center of image
-            this.ctx.translate(object.x + object.w/2, object.y + object.h/2);
+       }else {
+            // move to center of ima
+            this.bufferContext.translate(Math.floor(object.w/2), Math.floor(object.h/2));
             // rotate by specific degree
-            this.ctx.rotate(object.r * Math.PI / 180);
-            // this.ctx.strokeStyle = "red";
-            // this.ctx.beginPath();
-            // this.ctx.rect(0, 0, 100, 100);
-            // this.ctx.stroke();
-            this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), object.w, object.h);
+            this.bufferContext.rotate((2 * Math.PI - object.rotation * Math.PI / 180 ));
+    
+            this.bufferContext.drawImage(img, tile.x, tile.y, tile.w, tile.h, -Math.floor(object.w/2), -Math.floor(object.h/2), object.w, object.h);
+            
+            
             // rotate back
-            this.ctx.rotate(-object.r * Math.PI / 180);
+            this.bufferContext.rotate(-(2 * Math.PI - object.rotation * Math.PI / 180 ));
             // move back to regular offset
-            this.ctx.translate(-object.x - object.w/2 , -object.y -  object.h/2);
-        }
+            this.bufferContext.translate(-Math.floor(object.w/2), -Math.floor(object.h/2));
+
+            this.ctx.drawImage(this.bufferContext.canvas, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y))
+
+            this.bufferContext.clearRect(0,0, tile.w*2, tile.h*2)
+       }
+        
     };
 
     drawBG(bg: string, x: number, y: number){
@@ -130,25 +141,31 @@ class ImageManager {
         this.debugger = option;
     }
 
-    drawParticle(object){
+    drawParticle(object, camera, time){
         // todo: fix to work with levels
         let particle = object.getSpriteInfo();
         if(!particle.spriteSheet ){
             this.ctx.fillStyle = particle.color;
             this.ctx.fillRect(particle.x, particle.y, particle.w, particle.h);
         }else {
-        let target = {x: 0, y: 0};
-        let width = particle.w;
-        let height = particle.h;
-        let image = this.images[particle.spriteSheet];
-        target.x = particle.state[0] * particle.w + object.currentFrame *  particle.w;
-        target.y = particle.state[1] * particle.h;
+            let offset = {x:0 , y: 0}
+            if(camera){
+                if(!camera.checkifViewable(object)){
+                    return
+                }
+                offset.x = camera.xOffset;
+                offset.y = camera.yOffset;
+            }
+    
+            const spriteSheet = this.resolveSpriteSheet(object.spriteSheet);
+            const {tile, img} = (spriteSheet.resolveSpriteData(object.state, time));
+    
         if(particle.opacity != 1){
             this.ctx.globalAlpha = particle.opacity;
         }
 
 
-        this.ctx.drawImage(image, target.x, target.y, width, height, particle.x, particle.y, width, height);
+            this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), object.w, object.h);
 
         if(this.ctx.globalAlpha != 1){
             this.ctx.globalAlpha =1;

@@ -36,7 +36,15 @@ class Camera {
 
     getCameraTools(){
         return {
-            attach: this.attach.bind(this)
+            attach: this.attach.bind(this),
+            getOffsets: this.getOffsets.bind(this)
+        }
+    }
+
+    getOffsets(){
+        return {
+            xOffset: this.xOffset,
+            yOffset: this.yOffset
         }
     }
 

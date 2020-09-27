@@ -9,18 +9,20 @@ import MapData from '../../assets/map.json';
 
      constructor(gameProps){
         super(gameProps);
-        this.player = new Player(16, 16, 8, 8);
+        this.player = new Player(0, 0, 8, 8);
      }
 
 
-     setup(){
+     setup(soundController){
         this.createLevel(MapData);
         this.addEntitytoCurrentLevel(this.player);
+       // soundController.playBG("main", .5)
+        //this.addEntitytoCurrentLevel(new Player(30, 30, 8, 8, -15));
      }
 
      update(deltaTime, updateStore, soundController, camera){
 
-      //soundController.playBG("main", .5)
+      
 
       if(this.inputs[37]){
         this.player.xVelocity = - 5;
@@ -43,8 +45,9 @@ import MapData from '../../assets/map.json';
      }
 
 
-     draw(delta, renderer){
+     draw(delta, renderer, camera){
          //renderer.drawSprite(this.player);
+        // console.log(camera.getOffsets())
      }
 
  }
