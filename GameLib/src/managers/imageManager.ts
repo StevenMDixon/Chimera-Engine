@@ -85,6 +85,7 @@ class ImageManager {
 
     drawTile(object, time, camera?){
         let offset = {  x:0 , y: 0 }
+        if(object.type < 0) return
         if(camera){
             if(!camera.checkifViewable(object)){
                 return
@@ -94,8 +95,8 @@ class ImageManager {
         }
 
         const spriteSheet = this.resolveSpriteSheet(object.spriteSheet);
+        
         const {tile, img} = (spriteSheet.resolveTileData(object.type, time));
-
         this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - Math.ceil(offset.x)), Math.floor(object.y - Math.ceil(offset.y)), object.w, object.h);
 
     }

@@ -14,7 +14,7 @@ import MapData from '../../assets/newMap.json';
 
 
      setup(soundController){
-        this.createLevel(MapData);
+        this.createLevel(MapData, 'colored_tilemap');
         this.addEntitytoCurrentLevel(this.player);
        // soundController.playBG("main", .5)
         //this.addEntitytoCurrentLevel(new Player(30, 30, 8, 8, -15));

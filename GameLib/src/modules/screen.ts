@@ -51,8 +51,8 @@ class Screen {
         this.gotoScreen(target);
     }
 
-    createLevel(map){
-        this.levels.push(new Level(map));
+    createLevel(map, spriteSheet?){
+        this.levels.push(new Level(map, spriteSheet));
     }
     
     getLevel(){

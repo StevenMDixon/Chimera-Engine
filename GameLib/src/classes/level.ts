@@ -11,26 +11,28 @@ class Level {
         map: number[],
         sheet: string,
     }
-    particlEmitters:  Emitter[];
+    tileLayers: {
+        [key: string]: Tile[];
+    }
+    spriteSheet: string;
 
-    constructor(mapData){
+    constructor(mapData, spriteSheet?){
         this.entities = [];
         this.map = [];
         this.mapData = mapData;
-        this.particlEmitters = [];
-
+        this.tileLayers = {};
+        this.spriteSheet = spriteSheet;
 
         this.loadMap(mapData);
     }
 
     loadMap(map){
         if(map.tiledversion){
-            console.log(map)
-            let h = map.tilehieght;
+            let h = map.tileheight;
             let w = map.tilewidth;
-            let mapWidth = map.width;
+            
+            map.layers.forEach(layer => this.loadLayer(layer, w, h))
         } else {
-            console.log(map)
             map.forEach((row, y) => {
              row.forEach((tile, x) => {
                  this.map.push(new Tile(x*this.mapData.size[0], y*this.mapData.size[1], this.mapData.size[0], this.mapData.size[1], tile, 'custom'))
@@ -39,43 +41,66 @@ class Level {
         }
     }
 
+    // loads different layer types from tiled
+    loadLayer(layer, w, h){
+        if(layer.type == 'tilelayer'){
+            this.tileLayers[layer.name] = layer.chunks.reduce((tiles, chunk)=> {
+                return [...tiles, ...this.loadChunk(chunk, w, h)]
+            }, [] )
+
+        }else if (layer.type == 'objectgroup'){
+
+        }
+        
+    }
+
+    // loads chunked data from tiled
+    loadChunk(chunk, tilew, tileh){
+        let {x, y, data, width} = chunk;
+        console.log(chunk)
+        let tiles = [];
+        let iy = 0;
+        for (let i = 0; i <= data.length; i++){
+            iy = Math.floor(i/width)
+            if(data[i] -1 >= 0){
+                tiles.push(new Tile(
+                    i%width*tilew + (x*tilew),
+                    iy*tileh + (y*tileh), 
+                    tilew, 
+                    tileh, data[i] -1, 'tiled'))
+            }
+            
+            if(i == 240){
+                console.log(iy, i, y, tileh)
+            }
+            
+        }
+
+        return tiles
+    }
+
     update(deltaTime) {
         this.entities.forEach(entity =>{
             entity.update(deltaTime);
-        })
-        this.particlEmitters.forEach(emitter => emitter.update(deltaTime));
+        });
     }
 
     draw(deltaTime, totalTime, renderer, camera) {
-       this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, totalTime, camera)) ;
+       if(Object.keys(this.tileLayers).length > 0){
+            if(this.tileLayers.Ground){
+                this.tileLayers.Ground.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.spriteSheet}, totalTime, camera));
+            }
+       } else {
+        this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, totalTime, camera));
+        
+       }
+
        this.entities.forEach(entity => renderer.drawSprite(entity, totalTime, camera));
-       this.particlEmitters.forEach( e => e.getParticles().forEach(particle => renderer.drawParticle(particle, camera, totalTime)))
+       
     }
 
     addEntity(entity){
         this.entities.push(entity);
-    }
-
-    addParticleEmitter(sheet, x, y){
-        this.particlEmitters.push(
-            new Emitter(x, y, 1, 1, 5,
-            {
-                w: 16,
-                h: 16,
-                maxLife: 4,
-                xVel:  -5,
-                movement: {
-                    x: (x, v) => x + v,
-                    y: (y, v) => y 
-                },
-                color: 'blue',
-                opacity: 1,
-                spriteSheet: sheet,
-                map: {
-                    x: (x, w) => x + w/2,
-                    y: y => y
-                }
-            }))
     }
 }
 

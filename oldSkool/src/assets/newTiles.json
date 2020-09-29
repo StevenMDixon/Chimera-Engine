@@ -1,4 +1,12 @@
 { "columns":14,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"newTiles.json"
+        }
+    },
  "image":"..\/..\/public\/images\/colored_tilemap.png",
  "imageheight":89,
  "imagewidth":125,

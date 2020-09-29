@@ -49,13 +49,13 @@ class SpriteSheet {
         // set the source
         this.image.src = imageSource;
         // check for spec key
-        if(this.data.spec){
+        if(this.data.spec && this.type == 'custom'){
             if(this.data.spec.offset){
                 this.offset = this.data.spec.offset;
             }
         }
         // check for frames
-        if(this.data.frames){
+        if(this.data.frames && this.type == 'custom'){
             this.data.frames.forEach(tile => {
                 this.tiles.set(tile.name, 
                     {x: tile.rect[0] + (tile.rect[0]/ tile.rect[2] * this.offset) ,
@@ -67,12 +67,29 @@ class SpriteSheet {
         }
 
         //check for animations
-        if(this.data.animations){
+        if(this.data.animations && this.type == 'custom'){
             this.data.animations.forEach(animation => {
                 this.animations.set(animation.name, createAnimation(animation.frames, animation.frameLen));
             })
         }
 
+        if(this.type == 'tiled'){
+            const {tileheight, tilewidth, margin, spacing, tilecount, columns} = this.data;
+
+            let iy = 0;
+            for(let i = 0; i < tilecount; i++){
+                
+                this.tiles.set(i, {
+                    x: margin + ((i%columns) *tilewidth) + ((i%columns) * spacing),
+                    y: margin + (iy*tileheight) + (iy * spacing),
+                    w: tilewidth,
+                    h: tileheight
+                })
+                iy = Math.floor(i/(columns-1))
+            }
+
+            console.log(this.tiles)
+        }
         return t; 
     }
 
@@ -85,13 +102,14 @@ class SpriteSheet {
         }
     }
     resolveTileData(index, time){
-
-        let imageName = this.data.map[index];
+        
+        let imageName = index//this.data.map[index];
 
         if(this.animations.get(imageName)){
             let anim = this.animations.get(imageName);
             return {tile: this.tiles.get(anim(time)), img: this.image};
         }else {
+            
             return {tile: this.tiles.get(imageName), img: this.image};
         }
     }
