@@ -57,7 +57,6 @@ class Level {
     // loads chunked data from tiled
     loadChunk(chunk, tilew, tileh){
         let {x, y, data, width} = chunk;
-        console.log(chunk)
         let tiles = [];
         let iy = 0;
         for (let i = 0; i <= data.length; i++){
@@ -69,11 +68,6 @@ class Level {
                     tilew, 
                     tileh, data[i] -1, 'tiled'))
             }
-            
-            if(i == 240){
-                console.log(iy, i, y, tileh)
-            }
-            
         }
 
         return tiles

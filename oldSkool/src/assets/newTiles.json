@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":"newTiles.json"
+         "target":""
         }
     },
  "image":"..\/..\/public\/images\/colored_tilemap.png",
@@ -24,12 +24,8 @@
                  "tileid":13
                 }, 
                 {
-                 "duration":100,
+                 "duration":500,
                  "tileid":12
-                }, 
-                {
-                 "duration":100,
-                 "tileid":13
                 }],
          "id":13
         }],

@@ -5,6 +5,20 @@ function createAnimation(frames, length){
     }
 }
 
+function createTiledAnimation(frames){
+    const totalFrameTime = frames.reduce((acc, cur)=>{return acc + cur.duration}, 0);
+    
+    return function resolveFrame(d){
+        let clampedT = (d % totalFrameTime);
+        let i = 0;
+        frames.forEach(frame => {
+            clampedT -= frame.duration;
+            if(clampedT >= 0){ i += 1}
+        })
+        return frames[i].tileid;
+    }
+}
+
 
 class SpriteSheet {
     src:  any;
@@ -88,7 +102,16 @@ class SpriteSheet {
                 iy = Math.floor(i/(columns-1))
             }
 
-            console.log(this.tiles)
+           
+            //tiled stores animations under the tiles section
+            if(this.data.tiles){
+                this.data.tiles.forEach(anim => {
+                    this.animations.set(
+                        anim.id,
+                        createTiledAnimation(anim.animation)
+                    )
+                })
+            }
         }
         return t; 
     }
@@ -102,10 +125,15 @@ class SpriteSheet {
         }
     }
     resolveTileData(index, time){
-        
-        let imageName = index//this.data.map[index];
+        let imageName = '';
+        if(this.type == 'tiled'){
+            imageName = index;
+        }else {
+            imageName = this.data.map[index];
+        }
 
         if(this.animations.get(imageName)){
+            
             let anim = this.animations.get(imageName);
             return {tile: this.tiles.get(anim(time)), img: this.image};
         }else {
