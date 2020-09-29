@@ -26,6 +26,7 @@ I expect that by the end of this I will have a good concept of how games work th
  Sound effects - SFXR / BFXR https://www.drpetter.se/project_sfxr.html https://www.bfxr.net/
  Sprites - https://opengameart.org/
  Sprite Editor - Pyxel
+ Tiled - for tile maps and tile map generation
 
 
 

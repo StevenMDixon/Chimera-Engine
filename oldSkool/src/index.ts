@@ -6,10 +6,10 @@ import StartScreen from './scenes/start/startScreen';
 import GameScreen from './scenes/game/game';
 
 // import user defined sounds
-import maing from './main.wav';
+import maing from './assets/main.wav';
 
 
-import TileData from './assets/tiles.json';
+import TileData from './assets/newTiles.json';
 import PlayerData from './assets/player.json';
 import ParticleData from './assets/particles.json';
 //create a new game object
@@ -38,12 +38,11 @@ myGame.addSounds(
     }
 );
 // load user defined images into game
+myGame.setImageRoot("/images");
 myGame.addSprites(TileData, PlayerData, ParticleData);
 
 // set default data across screens
-myGame.addData({
-    
-})
+myGame.addData({});
 // load user defined screens into game
 myGame.addScreens(
     {

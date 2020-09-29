@@ -1,7 +1,6 @@
 import Entity from './entity';
 import Emitter from './emitter';
 import Tile from './tile';
-import map from '../modules/controllerMapping';
 
 
 class Level {
@@ -18,17 +17,26 @@ class Level {
         this.entities = [];
         this.map = [];
         this.mapData = mapData;
-        this.loadMap(mapData.map);
-
         this.particlEmitters = [];
+
+
+        this.loadMap(mapData);
     }
 
     loadMap(map){
-       map.forEach((row, y) => {
-        row.forEach((tile, x) => {
-            this.map.push(new Tile(x*this.mapData.size[0], y*this.mapData.size[1], this.mapData.size[0], this.mapData.size[1], tile))
-        })
-       })
+        if(map.tiledversion){
+            console.log(map)
+            let h = map.tilehieght;
+            let w = map.tilewidth;
+            let mapWidth = map.width;
+        } else {
+            console.log(map)
+            map.forEach((row, y) => {
+             row.forEach((tile, x) => {
+                 this.map.push(new Tile(x*this.mapData.size[0], y*this.mapData.size[1], this.mapData.size[0], this.mapData.size[1], tile, 'custom'))
+             })
+            })
+        }
     }
 
     update(deltaTime) {

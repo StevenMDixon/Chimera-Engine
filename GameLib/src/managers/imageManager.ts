@@ -10,6 +10,7 @@ class ImageManager {
     debugger: boolean;
     buffer: HTMLCanvasElement
     bufferContext: CanvasRenderingContext2D;
+    imageRoot: string;
 
     constructor(){
         this.debugger = false;
@@ -22,6 +23,7 @@ class ImageManager {
         this.buffer.width = 100;
         this.buffer.height = 100;
         this.bufferContext = this.buffer.getContext('2d');
+        this.imageRoot = './images';
     }
     setup(ctx, canvas, scale: number) {
         this.ctx = ctx;
@@ -34,9 +36,19 @@ class ImageManager {
         //this.images[name] = new SpriteSheet(imageSrc, imageSpec);
     }
 
+    setImageRoot(path: string){
+        this.imageRoot = path;
+    }
+
+
     addSprites(imageSpec: any[]){
         imageSpec.forEach(spec => {
-            this.images[spec.name] = new SpriteSheet(spec);
+            if(spec.tiledversion){
+                // this is a tile sheet from tiled
+                this.images[spec.name] = new SpriteSheet(spec, 'tiled', this.imageRoot);
+            }else {
+                this.images[spec.name] = new SpriteSheet(spec, 'custom', this.imageRoot);
+            }
         })
     }
 

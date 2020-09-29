@@ -207,6 +207,10 @@ class Game {
     
     }
 
+    setImageRoot(path: string){
+        this.imageManager.setImageRoot(path);
+    }
+
 
 }
 

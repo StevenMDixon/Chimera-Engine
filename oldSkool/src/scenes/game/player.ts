@@ -17,15 +17,12 @@ class Player extends Entity{
             this.state = 'walk-up';
         } else if (this.xVelocity !== 0) {
             this.state = 'walk';
-            if(this.xVelocity > 0){
-                this.rotation = -30
+            if(this.xVelocity > 0){  
             }
             if(this.xVelocity < 0){
-                this.rotation = 30
             }
         } else {
             this.state = 'idle'
-            this.rotation = 0
         }
 
         this.y += this.yVelocity * deltatime/100;

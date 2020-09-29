@@ -15,14 +15,18 @@ class SpriteSheet {
     animations: any;
     offset: number;
     map: any;
+    type: string;
+    root: string;
 
-    constructor(data){
+    constructor(data, type, root){
         this.image = null;
         this.data = data;
         this.tiles = new Map();
         this.animations = new Map();
         this.map = new Map();
         this.offset = 0;
+        this.type = type;
+        this.root = root;
     }
     async loadImage() :Promise<unknown>{
         this.image = new Image();
@@ -32,8 +36,18 @@ class SpriteSheet {
                 resolve({ikey: this.image});
             })
         })
+        
+
+        let imageSource = '';
+        // if this sprite sheet is from tiled use a different sourceHey 
+        if(this.type == 'tiled'){
+            imageSource = this.root + this.data.image.slice(this.data.image.lastIndexOf('/') )
+        }else {
+            imageSource = this.root + this.data.src
+        }
+
         // set the source
-        this.image.src = this.data.src;
+        this.image.src = imageSource;
         // check for spec key
         if(this.data.spec){
             if(this.data.spec.offset){
@@ -71,6 +85,7 @@ class SpriteSheet {
         }
     }
     resolveTileData(index, time){
+
         let imageName = this.data.map[index];
 
         if(this.animations.get(imageName)){

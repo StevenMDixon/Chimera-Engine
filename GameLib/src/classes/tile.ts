@@ -4,13 +4,15 @@ class Tile {
     w: number;
     h: number;
     type: number;
+    sheetType: string;
 
-    constructor(x, y, w, h, type){
+    constructor(x, y, w, h, type, sheetType){
         this.x = x,
         this.y = y,
         this.h = h, 
         this.w = w, 
         this.type = type
+        this.sheetType = sheetType;
     }
 
     getSpriteInfo() : object{

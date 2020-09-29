@@ -1,6 +1,6 @@
  import { Screen } from 'GameLib';
 import Player from './player';
-import MapData from '../../assets/map.json';
+import MapData from '../../assets/newMap.json';
 
 
  class GameScreen extends Screen {

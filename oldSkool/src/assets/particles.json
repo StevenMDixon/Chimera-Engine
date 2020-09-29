@@ -1,5 +1,5 @@
 {
-    "src": "./images/colored_tilemap.png",
+    "src": "/colored_tilemap.png",
     "name": "particles",
     "frames": [
         {
