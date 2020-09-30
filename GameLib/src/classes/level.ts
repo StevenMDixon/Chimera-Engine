@@ -43,12 +43,11 @@ class Level {
 
     // loads different layer types from tiled
     loadLayer(layer, w, h){
-        console.log(layer.name)
         if(layer.type == 'tilelayer' && layer.name !== 'Entity'){
             this.tileLayers[layer.name] = layer.chunks.reduce((tiles, chunk)=> {
                 return [...tiles, ...this.loadChunk(chunk, w, h)]
             }, [] )
-        } else if (layer.type == 'tilelayer' && layer.name !== 'Entity'){
+        } else if (layer.type == 'tilelayer' && layer.name == 'Entity'){
 
         } else if (layer.type == 'objectgroup'){
 

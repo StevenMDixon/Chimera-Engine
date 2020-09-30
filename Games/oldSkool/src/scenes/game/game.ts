@@ -10,6 +10,8 @@ import MapData from '../../assets/newMap.json';
      constructor(gameProps){
         super(gameProps);
         this.player = new Player(0, 0, 8, 8);
+        
+       
      }
 
 
@@ -20,9 +22,7 @@ import MapData from '../../assets/newMap.json';
         //this.addEntitytoCurrentLevel(new Player(30, 30, 8, 8, -15));
      }
 
-     update(deltaTime, updateStore, soundController, camera){
-
-      
+     update(deltaTime, store, soundController, camera){
 
       if(this.inputs[37]){
         this.player.xVelocity = - 5;

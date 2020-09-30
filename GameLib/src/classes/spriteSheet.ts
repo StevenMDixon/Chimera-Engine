@@ -115,7 +115,6 @@ class SpriteSheet {
 
         if(this.type == 'tiled'){
             const {tileheight, tilewidth, margin, spacing, tilecount, columns} = this.data;
-            console.log(this.data)
             let iy = 0;
             for(let i = 0; i < tilecount; i++){
                 

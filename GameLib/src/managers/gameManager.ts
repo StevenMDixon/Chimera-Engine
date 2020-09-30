@@ -1,6 +1,7 @@
-import DataManager from './dataManager';
+//import DataManager from './dataManager';
 import SoundManager from './soundManager';
 import ImageManager from './imageManager';
+import DataManager from '../modules/store'
 
 
 import Controller from '../modules/inputController';
@@ -12,13 +13,13 @@ import Screen from '../modules/screen';
 interface isScreens {
    [key: string]: Screen
 }
-
+ 
 class Game {
         scale: number;
         ctx: CanvasRenderingContext2D;
         screens: isScreens;
         currentScreen: string;
-        dataManager: DataManager;
+        dataManager: Object;
         soundManager: SoundManager;
         imageManager: ImageManager;
         controller: Controller;
@@ -33,7 +34,7 @@ class Game {
         this.ctx = null;
         this.screens = {};
         this.currentScreen = '';
-        this.dataManager = new DataManager({});
+        this.dataManager = DataManager({});
         this.soundManager = new SoundManager();
         this.imageManager = new ImageManager();
         this.controller = new Controller();
@@ -79,7 +80,7 @@ class Game {
         window.addEventListener('resize', (e) => this.resize(e));
         this.resize();
     }
-    
+
     async start(): Promise<object>{
         let ready = await this.imageManager.loadImages();
         if(ready){
@@ -92,8 +93,6 @@ class Game {
     }
 
     update(time: number = 0): void{
-       
-
         const now = performance.now();
         const deltaTime =  now - time;
         this.totalTime += deltaTime;

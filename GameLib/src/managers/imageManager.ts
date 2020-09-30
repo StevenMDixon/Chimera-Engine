@@ -3,13 +3,14 @@ import SpriteSheet from '../classes/spriteSheet';
 
 class ImageManager {
     images: object;
-   // imageSrc: object;
-    ctx: CanvasRenderingContext2D;
     scale: number;
     debugger: boolean;
+    imageRoot: string;
+   // imageSrc: object;
+    ctx: CanvasRenderingContext2D;
     buffer: HTMLCanvasElement
     bufferContext: CanvasRenderingContext2D;
-    imageRoot: string;
+
 
     constructor(){
         this.debugger = false;
