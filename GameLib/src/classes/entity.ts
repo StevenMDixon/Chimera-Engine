@@ -23,6 +23,7 @@ class Entity {
     spriteLength: number;
 
     hitBox: object;
+    stateMap: {[key: string]: number};
 
     constructor(x: number, y: number, w: number, h: number, rotation: number, spriteSheet: string, shape: string, radius?: number){
         this.x = x;
@@ -31,14 +32,7 @@ class Entity {
         this.h = h;
         this.shape = shape;
 
-        this.hitBox = {
-            type: shape,
-            x,
-            y,
-            radius,
-            w,
-            h
-        }
+        
 
         this.spriteWidth = w;
         this.spriteHeight = h;
@@ -46,10 +40,7 @@ class Entity {
         this.rotation = rotation;
         this.spriteSheet = spriteSheet;
         
-        this.frameCount = 0;
-        this.spriteLength = 0
-        this.currentFrame = 0;
-        this.frameLimit = 1000;
+        
 
         this.state = '';
 
@@ -58,6 +49,18 @@ class Entity {
         this.xFriction = 0;
         this.yFriction = 0;
         this.gravity = 0;
+        this.stateMap = {}
+
+
+        // todo fix this to vectors
+        this.hitBox = {
+            type: shape,
+            x,
+            y,
+            radius,
+            w,
+            h
+        }
     }
 
     getSpriteInfo() : object{
@@ -85,23 +88,16 @@ class Entity {
         
     }
 
-
-
-    animate(deltaTime){
-        this.frameCount += deltaTime;
-        if(this.frameCount > this.frameLimit){
-            this.currentFrame += 1;
-            if(this.currentFrame > this.spriteLength){
-                this.currentFrame = 0;
-            }
-            this.frameCount = 0;
-        }
+    getMappedState(){
+        return this.stateMap[this.state]
     }
+
 
     handleCollision(type){
 
     }
 
+    // sends data from the entity to the camera
     getCameraData(){
         return {x: this.x, y: this.y, w: this.w, h: this.h}
     }

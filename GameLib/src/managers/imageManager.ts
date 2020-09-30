@@ -5,7 +5,6 @@ class ImageManager {
     images: object;
    // imageSrc: object;
     ctx: CanvasRenderingContext2D;
-    canvas: HTMLCanvasElement;
     scale: number;
     debugger: boolean;
     buffer: HTMLCanvasElement
@@ -17,7 +16,6 @@ class ImageManager {
         this.images = {};
         //this.imageSrc = {};
         this.ctx = null;
-        this.canvas = null;
         this.scale = 1;
         this.buffer = document.createElement('canvas');
         this.buffer.width = 100;
@@ -25,9 +23,8 @@ class ImageManager {
         this.bufferContext = this.buffer.getContext('2d');
         this.imageRoot = './images';
     }
-    setup(ctx, canvas, scale: number) {
+    setup(ctx, scale: number) {
         this.ctx = ctx;
-        this.canvas = canvas;
         this.scale = scale;
         this.bufferContext.imageSmoothingEnabled = false;
     }
@@ -36,10 +33,10 @@ class ImageManager {
         //this.images[name] = new SpriteSheet(imageSrc, imageSpec);
     }
 
+    // sets the root for spritesheets default is /images
     setImageRoot(path: string){
         this.imageRoot = path;
     }
-
 
     addSprites(imageSpec: any[]){
         imageSpec.forEach(spec => {
@@ -115,7 +112,8 @@ class ImageManager {
         }
 
         const spriteSheet = this.resolveSpriteSheet(object.spriteSheet);
-        const {tile, img} = (spriteSheet.resolveSpriteData(object.state, time));
+        
+        const {tile, img} = (spriteSheet.resolveSpriteData(object.getMappedState(), time));
 
         if (object.rotation ! === 0 || object.rotation == null){
             this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), object.w, object.h);
@@ -126,8 +124,6 @@ class ImageManager {
             this.bufferContext.rotate((2 * Math.PI - object.rotation * Math.PI / 180 ));
     
             this.bufferContext.drawImage(img, tile.x, tile.y, tile.w, tile.h, -Math.floor(object.w/2), -Math.floor(object.h/2), object.w, object.h);
-            
-            
             // rotate back
             this.bufferContext.rotate(-(2 * Math.PI - object.rotation * Math.PI / 180 ));
             // move back to regular offset
@@ -137,14 +133,15 @@ class ImageManager {
 
             this.bufferContext.clearRect(0,0, tile.w*2, tile.h*2)
        }
-        
     };
 
     drawBG(bg: string, x: number, y: number){
         let image = this.images[bg];
-        this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.canvas.width, this.canvas.height);
+        this.ctx.drawImage(image, x, y, image.width, image.height, 0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     };
-    // todo: work on this to change fonts and colors and styles
+
+
+    //@todo: work on this to change fonts and colors and styles
     drawText(text: string, x: number, y: number, options?){
         this.ctx.textAlign= 'left';
         this.ctx.fillText(text, x, y);
@@ -154,36 +151,37 @@ class ImageManager {
         this.debugger = option;
     }
 
+    //@Todo revamp particle system
     drawParticle(object, camera, time){
-        // todo: fix to work with levels
-        let particle = object.getSpriteInfo();
-        if(!particle.spriteSheet ){
-            this.ctx.fillStyle = particle.color;
-            this.ctx.fillRect(particle.x, particle.y, particle.w, particle.h);
-        }else {
-            let offset = {x:0 , y: 0}
-            if(camera){
-                if(!camera.checkifViewable(object)){
-                    return
-                }
-                offset.x = camera.xOffset;
-                offset.y = camera.yOffset;
-            }
+        // // todo: fix to work with levels
+        // let particle = object.getSpriteInfo();
+        // if(!particle.spriteSheet ){
+        //     this.ctx.fillStyle = particle.color;
+        //     this.ctx.fillRect(particle.x, particle.y, particle.w, particle.h);
+        // }else {
+        //     let offset = {x:0 , y: 0}
+        //     if(camera){
+        //         if(!camera.checkifViewable(object)){
+        //             return
+        //         }
+        //         offset.x = camera.xOffset;
+        //         offset.y = camera.yOffset;
+        //     }
     
-            const spriteSheet = this.resolveSpriteSheet(object.spriteSheet);
-            const {tile, img} = (spriteSheet.resolveSpriteData(object.state, time));
+        //     const spriteSheet = this.resolveSpriteSheet(object.spriteSheet);
+        //     const {tile, img} = (spriteSheet.resolveSpriteData(object.state, time));
     
-        if(particle.opacity != 1){
-            this.ctx.globalAlpha = particle.opacity;
-        }
+        // if(particle.opacity != 1){
+        //     this.ctx.globalAlpha = particle.opacity;
+        // }
 
 
-            this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), object.w, object.h);
+        //     this.ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), object.w, object.h);
 
-        if(this.ctx.globalAlpha != 1){
-            this.ctx.globalAlpha =1;
-        }
-        }
+        // if(this.ctx.globalAlpha != 1){
+        //     this.ctx.globalAlpha =1;
+        // }
+        // }
     }
 }
 

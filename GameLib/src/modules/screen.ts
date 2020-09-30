@@ -2,7 +2,6 @@ import Level from '../classes/level';
 
 interface ScreenData {
     ctx: any,
-    canvas: any,
     scale: number,
     gotoScreen: () => void,
     data: any
@@ -21,9 +20,8 @@ class Screen {
     currentLevel: number;
     inputs: object;
 
-    constructor({ctx, canvas, scale, gotoScreen, data}: ScreenData){
+    constructor({ctx,  scale, gotoScreen, data}: ScreenData){
         this.ctx = ctx;
-        this.canvas = canvas;
         this.scale = scale;
         this.gotoScreen = gotoScreen;
         this.data = data;

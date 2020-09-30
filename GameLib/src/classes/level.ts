@@ -43,12 +43,14 @@ class Level {
 
     // loads different layer types from tiled
     loadLayer(layer, w, h){
-        if(layer.type == 'tilelayer'){
+        console.log(layer.name)
+        if(layer.type == 'tilelayer' && layer.name !== 'Entity'){
             this.tileLayers[layer.name] = layer.chunks.reduce((tiles, chunk)=> {
                 return [...tiles, ...this.loadChunk(chunk, w, h)]
             }, [] )
+        } else if (layer.type == 'tilelayer' && layer.name !== 'Entity'){
 
-        }else if (layer.type == 'objectgroup'){
+        } else if (layer.type == 'objectgroup'){
 
         }
         
@@ -84,12 +86,20 @@ class Level {
             if(this.tileLayers.Ground){
                 this.tileLayers.Ground.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.spriteSheet}, totalTime, camera));
             }
+            //draw all entities
+            this.entities.forEach(entity => renderer.drawSprite(entity, totalTime, camera));
+        
+            Object.keys(this.tileLayers).forEach(layer => {
+                if(layer !== 'Entity' && layer !== 'Ground'){
+                    this.tileLayers[layer].forEach(tile => renderer.drawTile({...tile, spriteSheet: this.spriteSheet}, totalTime, camera));
+                }
+            })
        } else {
         this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, totalTime, camera));
-        
+        this.entities.forEach(entity => renderer.drawSprite(entity, totalTime, camera));
        }
 
-       this.entities.forEach(entity => renderer.drawSprite(entity, totalTime, camera));
+       
        
     }
 

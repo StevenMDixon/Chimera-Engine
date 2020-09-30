@@ -5,16 +5,42 @@ function createAnimation(frames, length){
     }
 }
 
-function createTiledAnimation(frames){
+function createTiledAnimation(frames, options){
+    
+    let direction = 'loop';
+   
+    if(options){
+        options.forEach(op => op.name == 'direction'? direction = op.value: '');
+    }
+    
+    let ended = false
+    
     const totalFrameTime = frames.reduce((acc, cur)=>{return acc + cur.duration}, 0);
     
-    return function resolveFrame(d){
+    return function resolveFrame(d, e){
         let clampedT = (d % totalFrameTime);
         let i = 0;
-        frames.forEach(frame => {
-            clampedT -= frame.duration;
-            if(clampedT >= 0){ i += 1}
-        })
+
+        if(direction == 'loop'){
+            frames.forEach(frame => {
+                clampedT -= frame.duration;
+                if(clampedT >= 0){ i += 1}
+            })
+
+            return frames[i].tileid;
+        }
+
+        if(direction == 'forward' && !ended){
+            frames.forEach(frame => {
+                clampedT -= frame.duration;
+                if(clampedT >= 0){ i += 1}
+                if(i == frames.length -1) {ended = true}
+            })
+        } else if (direction == 'forward' && ended) {
+            i = frames.length - 1
+        }
+
+       
         return frames[i].tileid;
     }
 }
@@ -89,7 +115,7 @@ class SpriteSheet {
 
         if(this.type == 'tiled'){
             const {tileheight, tilewidth, margin, spacing, tilecount, columns} = this.data;
-
+            console.log(this.data)
             let iy = 0;
             for(let i = 0; i < tilecount; i++){
                 
@@ -108,7 +134,7 @@ class SpriteSheet {
                 this.data.tiles.forEach(anim => {
                     this.animations.set(
                         anim.id,
-                        createTiledAnimation(anim.animation)
+                        createTiledAnimation(anim.animation, anim.properties)
                     )
                 })
             }

@@ -28,6 +28,36 @@
                  "tileid":12
                 }],
          "id":13
+        }, 
+        {
+         "animation":[
+                {
+                 "duration":500,
+                 "tileid":18
+                }, 
+                {
+                 "duration":500,
+                 "tileid":22
+                }],
+         "id":18
+        }, 
+        {
+         "animation":[
+                {
+                 "duration":10000,
+                 "tileid":32
+                }, 
+                {
+                 "duration":100,
+                 "tileid":33
+                }],
+         "id":32,
+         "properties":[
+                {
+                 "name":"direction",
+                 "type":"string",
+                 "value":"forward"
+                }]
         }],
  "tilewidth":8,
  "type":"tileset",

@@ -8,12 +8,13 @@ import GameScreen from './scenes/game/game';
 // import user defined sounds
 import maing from './assets/main.wav';
 
-
+// import tile info and specific files to load
 import TileData from './assets/newTiles.json';
-import PlayerData from './assets/player.json';
+import PlayerData from './assets/newPlayer.json';
 import ParticleData from './assets/particles.json';
+import Game from 'gamelib/dist/managers/gameManager';
 //create a new game object
-const myGame = new GameManager();
+const myGame = GameManager;
 
 //tell the game to use the canvas object with and id of game and a scale of 1 and tell it which screen to start on
 myGame.setup(

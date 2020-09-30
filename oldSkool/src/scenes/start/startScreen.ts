@@ -10,8 +10,8 @@ class StartScreen extends Screen {
 
         this.menus = [new Menu(
                 {
-                 x: gameProps.canvas.clientWidth/ 2, 
-                 y: gameProps.canvas.height/ 2 + 30,
+                 x: gameProps.ctx.canvas.clientWidth/ 2, 
+                 y: gameProps.ctx.canvas.height/ 2 + 30,
                  optionsList: [ 'Start Game'],
                  buttons: {
                     32: 'accept',
@@ -39,7 +39,6 @@ class StartScreen extends Screen {
         }
     }
     handleInput(event: KeyboardEvent){
-        console.log(event)
         this.gotoNextScreen('GameScreen')
         // console.log(event)
         // if (this.displayMenu){
