@@ -1,24 +1,25 @@
-class soundManager {
-    sounds: any;
+import system_base from './system_base';
+
+class soundHandler extends system_base {
     currentBG: any;
 
-    constructor(sounds?: object){
-        this.sounds = sounds;
+    constructor(store){
+        super(store)
         this.currentBG = null;
     }
-    addSounds(soundFiles: object): void{
-        this.sounds = {...this.sounds, ...soundFiles};
-    }
     playEffect(name: string, volume?: number): void{
-        let audio = new Audio(this.sounds[name])
+        const sounds = this.store.access('sounds');
+        let audio = new Audio(sounds[name])
         if(volume){
             audio.volume = volume;
         }
         audio.play();
     }
     playBG(name: string, volume?: number): void{
+        const sounds = this.store.access('sounds');
+
         if(!this.currentBG){
-            this.currentBG = new Audio(this.sounds[name]);
+            this.currentBG = new Audio(sounds[name]);
             if(volume){
                 this.currentBG.volume = volume;
             }
@@ -49,4 +50,4 @@ class soundManager {
     }
 }
 
-export default soundManager;
+export default soundHandler;

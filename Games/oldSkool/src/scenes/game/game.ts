@@ -1,9 +1,9 @@
- import { Screen } from 'GameLib';
+ import { Scene } from 'GameLib';
 import Player from './player';
 import MapData from '../../assets/newMap.json';
 
 
- class GameScreen extends Screen {
+ class GameScreen extends Scene {
 
    player: Player;
 
@@ -11,11 +11,9 @@ import MapData from '../../assets/newMap.json';
         super(gameProps);
         this.player = new Player(0, 0, 8, 8);
         
-       
      }
 
-
-     setup(soundController){
+     setup(){
         this.createLevel(MapData, 'colored_tilemap');
         this.addEntitytoCurrentLevel(this.player);
        // soundController.playBG("main", .5)

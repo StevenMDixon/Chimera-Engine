@@ -1,6 +1,6 @@
-import {Screen, Menu}  from 'GameLib';
+import {Scene, Menu}  from 'GameLib';
 
-class StartScreen extends Screen {
+class StartScreen extends Scene {
     menus: Menu[];
     displayMenu: Boolean;
     currentMenu = 0;

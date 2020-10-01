@@ -20,8 +20,7 @@ class Camera {
         this.target = null;
     }
 
-
-    updateCamera(canvas, scale){
+    updateCamera(){
         if(this.target){
             const {x, y, w, h} = this.target.getCameraData();
             this.xOffset = -this.w/2 + x + w/2 

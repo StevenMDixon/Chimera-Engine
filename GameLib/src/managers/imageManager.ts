@@ -1,12 +1,10 @@
 import SpriteSheet from '../classes/spriteSheet';
-
-
 class ImageManager {
     images: object;
     scale: number;
     debugger: boolean;
     imageRoot: string;
-   // imageSrc: object;
+
     ctx: CanvasRenderingContext2D;
     buffer: HTMLCanvasElement
     bufferContext: CanvasRenderingContext2D;
@@ -15,7 +13,7 @@ class ImageManager {
     constructor(){
         this.debugger = false;
         this.images = {};
-        //this.imageSrc = {};
+
         this.ctx = null;
         this.scale = 1;
         this.buffer = document.createElement('canvas');

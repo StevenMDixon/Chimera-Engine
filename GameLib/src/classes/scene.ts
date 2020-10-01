@@ -1,4 +1,4 @@
-import Level from '../classes/level';
+import Level from './level';
 
 interface ScreenData {
     ctx: any,

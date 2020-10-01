@@ -4,10 +4,11 @@ export const config = {
         debug: false,
         ctx: null,
         imageRoot: '/images',
-        screens: null,
+        scenes: null,
         camera: null,
         totalTime: null,
         controllerEnabled: false,
         controllerMap: null,
-        currentScreen: ''
+        currentScene: 0,
+        sounds: null
 }

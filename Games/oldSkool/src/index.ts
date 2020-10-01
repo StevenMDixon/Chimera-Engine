@@ -6,13 +6,13 @@ import StartScreen from './scenes/start/startScreen';
 import GameScreen from './scenes/game/game';
 
 // import user defined sounds
-import maing from './assets/main.wav';
+import main from './assets/main.wav';
 
 // import tile info and specific files to load
 import TileData from './assets/newTiles.json';
 import PlayerData from './assets/newPlayer.json';
 import ParticleData from './assets/particles.json';
-import Game from 'gamelib/dist/managers/gameManager';
+import test from './assets/colored_tilemap.png'
 //create a new game object
 const myGame = GameManager;
 
@@ -21,36 +21,17 @@ myGame.setup(
     {
         target: 'game',
         scale: 1,
-        startingScreen: 'GameScreen',
         size: {h: 400, w: 400},
         useController: true,
-        debug: false
+        debug: false,
+        scenes: {
+           StartScreen,
+           GameScreen
+        },
+        controllerMap: {}
 });
 
-//use custom mapping for controller
-myGame.useCustomControllerMap({
-    //0: 39
-})
 
-// load user defined sounds into game
-myGame.addSounds(
-    {
-        main: maing
-    }
-);
-// load user defined images into game
-myGame.setImageRoot("/images");
-myGame.addSprites(TileData, PlayerData, ParticleData);
+myGame.loadAssets({TileData, PlayerData, ParticleData, test, main});
 
-// set default data across screens
-myGame.addData({});
-// load user defined screens into game
-myGame.addScreens(
-    {
-        StartScreen,
-        GameScreen
-    }
-);
-
-// tell the game manager to start the game with the defined resources
 myGame.start();
