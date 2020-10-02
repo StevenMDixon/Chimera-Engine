@@ -97,9 +97,6 @@ class Level {
         this.map.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.mapData.sheet}, totalTime, camera));
         this.entities.forEach(entity => renderer.drawSprite(entity, totalTime, camera));
        }
-
-       
-       
     }
 
     addEntity(entity){

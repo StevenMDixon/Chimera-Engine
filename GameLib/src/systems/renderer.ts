@@ -112,8 +112,11 @@ class Renderer extends System{
 
     //@todo: work on this to change fonts and colors and styles
     drawText(text: string, x: number, y: number, options?){
-        // this.ctx.textAlign= 'left';
-        // this.ctx.fillText(text, x, y);
+        console.log('it is called')
+        const {ctx} = this.store.access('ctx');
+        ctx.fillStyle = 'white'
+        ctx.textAlign= 'left';
+        ctx.fillText(text, x, y);
     }
 }
 

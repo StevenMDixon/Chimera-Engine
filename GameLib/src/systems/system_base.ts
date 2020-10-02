@@ -10,8 +10,8 @@ class System {
         this.store = store;
     }
 
-    getTools(){
-        // all systems will have a get tools method
+    apiConnect(){
+
     }
 }
 

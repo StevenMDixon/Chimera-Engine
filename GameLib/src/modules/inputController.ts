@@ -1,47 +1,38 @@
 import Controller from './controller';
 
 
-class InputController {
-    input: object;
-    gamePad: Controller;
-    fn: (arg)=>{}
+function InputController(){
+       let input = {};
+       let gamePad = new Controller();
+       let fn = null;
+    return {
 
-    constructor(){
-        this.input = {};
-        this.gamePad = new Controller();
-        this.fn = null;
-
-    }
-
-    setup(fn, enablePad){
-        this.fn = fn
+    setup(call, enablePad){
+        fn = call
         document.addEventListener('keydown', (ev) => { return this.onKey(ev, ev.keyCode, true, 'keyboard');  }, false);
         document.addEventListener('keyup',   (ev) => { return this.onKey(ev, ev.keyCode, false, 'keyboard'); }, false);
         if(enablePad){
             this.gamePad.listenForGamePad((ev, v, action) => { return this.onKey(ev, v, action, 'pad'); })
         }
-        
-    }
+    },
     
     onKey(event, key, pressed, type){
         if(type === 'keyboard'){
             event.preventDefault();
-            this.input[key] = pressed;
+            input[key] = pressed;
         }
         if(type === 'pad'){
            key.forEach(item => {
-               this.input[item] = pressed
+               input[item] = pressed
            })
         }
-        this.fn(this.input);
-    }
+        fn(input);
+    },
 
     overrideControllerMapping(map){
-        this.gamePad.overrideControllerMapping(map);
-    }
-    changeFn(fn){
-        this.fn = fn;
+        gamePad.overrideControllerMapping(map);
     }
 }
+}
 
-export default InputController 
+export default InputController()

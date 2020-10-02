@@ -36,8 +36,8 @@ function core(){
     // general shared stor for assets
     const assetStore = Store({imageRoot: ''});
     // create renderer pass in global store
-    const sceneHandler = new SceneHandler(engineStore);
-
+    const sceneHandler = new SceneHandler(engineStore, assetStore);
+    // loads images and other assets specified by the user
     const loader = Loader(assetStore);
 
     return {
@@ -54,7 +54,8 @@ function core(){
                 debug,
                 controllerMap,
                 sounds,
-                imageRoot: imageRoot || config.imageRoot
+                imageRoot: imageRoot || config.imageRoot,
+                scenes
             });
 
             assetStore.set({imageRoot: imageRoot || config.imageRoot})
@@ -70,36 +71,30 @@ function core(){
             }
 
             // set intial screen scale, this can be changed later
-            ctx.imageSmoothingEnabled = false;
-            ctx.scale(scale, scale);
+            //ctx.imageSmoothingEnabled = false;
+            ctx.scale(2, 2);
 
             // create camera, we only need one?
             engineStore.set({'camera': new Camera(0, 0, ctx.canvas.width/scale, ctx.canvas.height/scale)})
 
             // fix issues with resizing screens
+            window.addEventListener('resize', (e) => manageDPI(ctx));
             manageDPI(ctx);
+
+            sceneHandler.setup(engineStore, assetStore);
         },
         
-        async start() : Promise<object>{
+        async start(){
             const {imageP} = assetStore.access('imageP');
-            console.log('Engine Start')
             Promise.all(imageP)
             .catch((error) => console.log(error))
             .then(()=>{
                 this.update();
             })
-            // let ready = await this.renderer.loadImages();
-            // if(ready){
-            //     this.update();
-            // }else {
-            //     throw ne Error('Image loader failed to load images');
-            // }
-            return
         },
 
         update(time: number = 0): void{
-            console.log('Engine Running')
-            const {camera, totalTime} = engineStore.access();
+            const {totalTime} = engineStore.access();
 
             const now = performance.now();
             const deltaTime =  now - time;
@@ -107,7 +102,6 @@ function core(){
             engineStore.update('totalTime',  totalTime + deltaTime);
     
             sceneHandler.update();
-            camera.updateCamera();
     
             requestAnimationFrame(() => this.update(now));
         },
@@ -121,7 +115,6 @@ function core(){
          loadAssets(assets){
             Object.keys(assets).forEach(key => loader.load(key, assets[key]));
 
-            console.log(assetStore.access())
          }
     }
 

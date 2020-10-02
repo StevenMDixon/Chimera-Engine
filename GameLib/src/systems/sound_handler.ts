@@ -40,7 +40,7 @@ class soundHandler extends system_base {
         this.currentBG.volume = volume;
     }
 
-    getAudioTools(){
+    getTools(){
         return {
             playEffect: this.playEffect.bind(this),
             playBG: this.playBG.bind(this),

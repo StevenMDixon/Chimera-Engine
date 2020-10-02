@@ -10,7 +10,6 @@ import MapData from '../../assets/newMap.json';
      constructor(gameProps){
         super(gameProps);
         this.player = new Player(0, 0, 8, 8);
-        
      }
 
      setup(){
@@ -20,7 +19,7 @@ import MapData from '../../assets/newMap.json';
         //this.addEntitytoCurrentLevel(new Player(30, 30, 8, 8, -15));
      }
 
-     update(deltaTime, store, soundController, camera){
+     update(deltaTime){
 
       if(this.inputs[37]){
         this.player.xVelocity = - 5;
@@ -43,7 +42,9 @@ import MapData from '../../assets/newMap.json';
      }
 
 
-     draw(delta, renderer, camera){
+     draw(){
+
+      this.game.drawText("test", 0, 0)
          //renderer.drawSprite(this.player);
         // console.log(camera.getOffsets())
      }

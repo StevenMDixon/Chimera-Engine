@@ -1,52 +1,52 @@
 import Level from './level';
 
-interface ScreenData {
-    ctx: any,
-    scale: number,
-    gotoScreen: () => void,
-    data: any
-    
-}
+//api
+/*
+    render:
 
-class Screen {
-    scale : number;
-    ctx: any;
-    canvas: any;
-    data: object;
+    sound:
+
+
+*/
+
+class Scene {
     gotoScreen: (target: string) => void;
-    updateGameStore: (data: any) => void;
 
     levels: Level[];
     currentLevel: number;
     inputs: object;
+    store: object;
+    game: any;
 
-    constructor({ctx,  scale, gotoScreen, data}: ScreenData){
-        this.ctx = ctx;
-        this.scale = scale;
-        this.gotoScreen = gotoScreen;
-        this.data = data;
+    constructor({store, api}){
         this.levels = [];
         this.currentLevel = 0;
+
+        //this.gotoScreen = gotoScreen;
+        this.store = store;
         this.inputs = {};
+        this.game = api
     }
 
-    setup(soundController){
+    setup(){
+        // this runs one time and first
+    }
+    
+
+    update(deltaTime: number): void{
 
     }
-    updateGameData(data: object): void{
-        this.data = {...this.data, ...data};
-    }
-    update(deltaTime: number, updateStore: object, soundController: object, camera: object): void{
 
-    }
-    draw(deltaTime: number, images: object , camera: object): void{
+    draw(deltaTime: number): void{
         
     }
+
     handleInput(inputs): void{
         this.inputs = inputs
     }
+
     gotoNextScreen(target: string): void {
-        this.gotoScreen(target);
+       // this.gotoScreen(target);
     }
 
     createLevel(map, spriteSheet?){
@@ -62,4 +62,4 @@ class Screen {
     }
 }
 
-export default Screen;
+export default Scene;

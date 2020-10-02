@@ -23,7 +23,6 @@ function loader(store){
                 store.update('audio', audio);
             
             }else if (typeof asset == 'string' && asset.match(/.png/g)){
-                console.log(asset)
                 handleImages(store, asset, name, true);
             }
         }
@@ -43,14 +42,14 @@ function handleImages(store, imageSrc, name, isJustimg){
         let imageSource = '';
         if(!isJustimg) imageSource = imageRoot + imageSrc.slice(imageSrc.lastIndexOf('/') );
         else  imageSource = imageSrc;
-        
+
         image.src = imageSource;
 
         images[name] = image
 
         store.update('images', {...images});
 
-        store.update('imageP', [...imageP, t])
+        store.update('imageP', [...imageP, t]);
 }
 
 

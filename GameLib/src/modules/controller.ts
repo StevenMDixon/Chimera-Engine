@@ -94,8 +94,6 @@ class Controller {
     overrideControllerMapping(mapping: object){
         this.controllerOverride = mapping;
     }
-
-
 }
 
 export default Controller;

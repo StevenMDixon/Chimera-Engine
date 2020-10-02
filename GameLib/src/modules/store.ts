@@ -12,7 +12,7 @@ function store(intitialProps){
         },
         set: function (data: object) {
             Object.keys(data).map(key => {
-                if(data[key]){
+                if(data[key] !== undefined){
                     _store.set(key, data[key]);
                 }
             })   

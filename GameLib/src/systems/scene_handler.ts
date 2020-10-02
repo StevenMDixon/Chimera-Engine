@@ -1,23 +1,54 @@
 import Scene from '../classes/scene';
-import Base_System from './system_base'
-import Loader from '../modules/loader';
-import Renderer from '../systems/renderer';
-import Sound from '../systems/sound_handler';
+import controller from '../modules/inputController';
+import api from './system_api'; 
+import store from '../modules/store';
 
-class Scene_Handler extends Base_System{
+class Scene_Handler {
     scenes: Scene[];
-
-    constructor(store){
-        super(store)
-        this.scenes = [];
+    api: any
+    engineStore: {
+        [key: string]: any
+    };
+    assetStore: {
+        [key: string]: any
+    };
+    userStore: {
+        [key: string]: any
     }
+
+    constructor(engineStore, assetStore){
+        this.scenes = [];
+        this.engineStore = engineStore;
+        this.assetStore = assetStore;
+        this.api = api(engineStore);
+        this.userStore = store({})
+    }
+
+    setup(){
+        const {controllerEnabled, controllerMap, scenes} = this.engineStore.access();
+
+        //use code from 
+
+        controller.overrideControllerMapping(controllerMap);
+        controller.setup(this.handleInput.bind(this), controllerEnabled);
     
-    update(){
+        //create new scenes from scenes in engineStore
+        this.engineStore.update('currentScene', Object.keys(scenes)[0])
+        this.initScenes(scenes);
+
+        console.log(this.api)
+    }
+
+
     
+    update(deltaTime){
+        const {camera, totalTime} = this.engineStore.access();
+        camera.updateCamera();
+        this.draw(deltaTime);
     }
 
     draw(deltaTime): void{
-        const {ctx, enableDebug, camera} = this.store.access();
+        const {ctx, enableDebug, currentScene} = this.engineStore.access();
 
         // draw background
          ctx.clearRect(0,0,ctx.canvas.clientWidth, ctx.canvas.height)
@@ -31,10 +62,7 @@ class Scene_Handler extends Base_System{
         //  }
  
  
-        //  this.scenes[this.currentScreen].draw(
-        //      renderer.getTools(),
-        //      camera.getCameraTools()
-        //  );
+         this.scenes[currentScene].draw(deltaTime);
          
          // draw debug info
          if (enableDebug){
@@ -42,9 +70,33 @@ class Scene_Handler extends Base_System{
              ctx.fillStyle = 'red';
              ctx.fillText(`FPS: ${Math.floor(1/( deltaTime/1000))}`, ctx.canvas.width - 40, 10);
          }
-         
-         
      }
+
+
+    initScenes(scenes): void{
+        const {currentScene, camera} = this.engineStore.access('currentScene');
+        for(let scene in scenes){
+            this.scenes[scene] = new scenes[scene]({store: this.userStore, api: this.api})
+            this.scenes[scene].setup();
+        }
+        if(this.scenes[currentScene]['player']){
+            camera.attach(this.scenes[currentScene]['player']);
+        }
+    }
+
+    gotoScreen(target: string): void{
+        //this.currentScreen = target;
+        //this.controller.changeFn(this.screens[this.currentScreen].handleInput.bind(this.screens[this.currentScreen]));
+    }
+
+    handleInput(data){
+        const {currentScene} = this.engineStore.access('currentScene');
+        if(this.scenes[currentScene] && this.scenes[currentScene]){
+            //pass input data from keyboard/controller to the current scene
+            this.scenes[currentScene].handleInput(data);
+        }
+    }
+            
     }
 
 export default Scene_Handler;

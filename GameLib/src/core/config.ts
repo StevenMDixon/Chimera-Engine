@@ -9,6 +9,6 @@ export const config = {
         totalTime: null,
         controllerEnabled: false,
         controllerMap: null,
-        currentScene: 0,
+        currentScene: '',
         sounds: null
 }
