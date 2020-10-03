@@ -1,4 +1,24 @@
 
+function store_Factory(){
+    const _stores = {}
+    return {
+        createStore: function(name, data){
+            _stores[name] = store(data);
+            return _stores[name];
+        },
+        getStore: function(name){
+            return _stores[name];
+        },
+        getCurrent: function(){
+            return Object.keys(_stores);
+        }
+    }
+
+
+}
+
+
+
 function store(intitialProps){
 
     const  _store =  new Map();
@@ -18,7 +38,7 @@ function store(intitialProps){
             })   
         },
         get store(){
-            return _store.values();
+            return _store.entries();
         },
         access: function(...key){
              if (key.length > 0){
@@ -31,9 +51,7 @@ function store(intitialProps){
                 let store = {};
                 _store.forEach((value, key) => store[key] = value);
                 return store;
-            }
-
-            
+            } 
         },
         getDataTools: function (){
             return{
@@ -47,4 +65,4 @@ function store(intitialProps){
 }
 
 
-export default store;
+export default store_Factory();

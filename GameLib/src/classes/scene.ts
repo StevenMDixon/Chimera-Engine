@@ -1,64 +1,40 @@
-import Level from './level';
-
-//api
-/*
-    render:
-
-    sound:
-
-
-*/
-
 class Scene {
-    gotoScreen: (target: string) => void;
-
-    levels: Level[];
-    currentLevel: number;
-    inputs: object;
-    store: object;
-    game: any;
+    protected _inputs: object;
+    protected _store: object;
+    protected _game: any;
 
     constructor({store, api}){
-        this.levels = [];
-        this.currentLevel = 0;
-
-        //this.gotoScreen = gotoScreen;
-        this.store = store;
-        this.inputs = {};
-        this.game = api
+        this._store = store;
+        this._inputs = {};
+        this._game = api
     }
 
-    setup(){
+    get inputs() {
+        return this._inputs;
+    }
+
+    get store() {
+        return this._store;
+    }
+
+    get game() {
+        return this._game;
+    }
+
+    public setup(){
         // this runs one time and first
     }
     
-
-    update(deltaTime: number): void{
+    public update(deltaTime: number): void{
 
     }
 
-    draw(deltaTime: number): void{
+    public draw(deltaTime: number): void{
         
     }
 
-    handleInput(inputs): void{
-        this.inputs = inputs
-    }
-
-    gotoNextScreen(target: string): void {
-       // this.gotoScreen(target);
-    }
-
-    createLevel(map, spriteSheet?){
-        this.levels.push(new Level(map, spriteSheet));
-    }
-    
-    getLevel(){
-        return this.levels[this.currentLevel];
-    }
-
-    addEntitytoCurrentLevel(object){
-        this.levels[this.currentLevel].addEntity(object);
+    public _handleInput(inputs): void{
+        this._inputs = inputs
     }
 }
 

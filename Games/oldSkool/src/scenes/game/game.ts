@@ -2,20 +2,19 @@
 import Player from './player';
 import MapData from '../../assets/newMap.json';
 
-
  class GameScreen extends Scene {
 
    player: Player;
 
      constructor(gameProps){
         super(gameProps);
-        this.player = new Player(0, 0, 8, 8);
+        //this.player = new Player(0, 0, 8, 8);
      }
 
      setup(){
-        this.createLevel(MapData, 'colored_tilemap');
-        this.addEntitytoCurrentLevel(this.player);
-       // soundController.playBG("main", .5)
+        //this.createLevel(MapData, 'colored_tilemap');
+        //this.addEntitytoCurrentLevel(this.player);
+        //soundController.playBG("main", .5)
         //this.addEntitytoCurrentLevel(new Player(30, 30, 8, 8, -15));
      }
 
@@ -43,10 +42,10 @@ import MapData from '../../assets/newMap.json';
 
 
      draw(){
-
-      this.game.drawText("test", 0, 0)
+      this.game.drawText("test", 20, 20, 20);
          //renderer.drawSprite(this.player);
         // console.log(camera.getOffsets())
+      this.game.drawTile({spriteSheet: 'colored_tilemap', x: 20, y: 50, w: 8, h: 8, type: 2})
      }
 
  }

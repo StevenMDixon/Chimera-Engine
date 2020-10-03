@@ -23,7 +23,7 @@ class StartScreen extends Scene {
     }
 
     handleInput(event: KeyboardEvent){
-        this.gotoNextScreen('GameScreen');
+        this.game.nextScene('GameScreen');
     }
 }
 

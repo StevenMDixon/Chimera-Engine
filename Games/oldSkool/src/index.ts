@@ -20,12 +20,12 @@ const myGame = GameManager;
 myGame.setup(
     {
         target: 'game',
-        scale: 1,
-        size: {h: 400, w: 400},
+       // scale: 1,
+        size: 'full',
         useController: true,
-        debug: false,
+        debug: true,
         scenes: {
-           StartScreen,
+           //StartScreen,
            GameScreen
         },
         controllerMap: {}

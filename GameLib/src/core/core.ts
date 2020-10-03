@@ -31,25 +31,25 @@ interface gameData {
 
 
 function core(){
+    const store = Store;
     // general shared store for engine
-    const engineStore = Store(config);
+    const engineStore = store.createStore('engine', config);
     // general shared stor for assets
-    const assetStore = Store({imageRoot: ''});
+    const assetStore = store.createStore('asset', {});
     // create renderer pass in global store
-    const sceneHandler = new SceneHandler(engineStore, assetStore);
+    const sceneHandler = new SceneHandler(store);
     // loads images and other assets specified by the user
     const loader = Loader(assetStore);
 
     return {
 
         setup(gamedata: gameData){
-            const {target, scale, size, useController, debug, imageRoot, scenes, controllerMap, sounds} = gamedata;
+            const {target, size, useController, debug, imageRoot, scenes, controllerMap, sounds} = gamedata;
             
             const canvas = document.getElementById(target) as any;
 
-            engineStore.set({
+            store.getStore('engine').set({
                 ctx: canvas.getContext('2d'),
-                scale,
                 useController,
                 debug,
                 controllerMap,
@@ -61,6 +61,10 @@ function core(){
             assetStore.set({imageRoot: imageRoot || config.imageRoot})
  
             const {ctx} = engineStore.access('ctx');
+            
+            if(!ctx){
+                throw new Error('ctx cannot be bound or canvas is missing');
+            }
     
             if(typeof size == 'object')   {
                 ctx.canvas.width  = size.w;
@@ -71,17 +75,15 @@ function core(){
             }
 
             // set intial screen scale, this can be changed later
-            //ctx.imageSmoothingEnabled = false;
-            ctx.scale(2, 2);
+            ctx.imageSmoothingEnabled = false;
 
             // create camera, we only need one?
-            engineStore.set({'camera': new Camera(0, 0, ctx.canvas.width/scale, ctx.canvas.height/scale)})
+            engineStore.set({'camera': new Camera(0, 0, ctx.canvas.width, ctx.canvas.height)})
 
             // fix issues with resizing screens
-            window.addEventListener('resize', (e) => manageDPI(ctx));
+            //window.addEventListener('resize', (e) => manageDPI(ctx));
             manageDPI(ctx);
-
-            sceneHandler.setup(engineStore, assetStore);
+                        
         },
         
         async start(){
@@ -89,11 +91,12 @@ function core(){
             Promise.all(imageP)
             .catch((error) => console.log(error))
             .then(()=>{
-                this.update();
+                sceneHandler.setup();
+                this._update();
             })
         },
 
-        update(time: number = 0): void{
+        _update(time: number = 0): void{
             const {totalTime} = engineStore.access();
 
             const now = performance.now();
@@ -101,12 +104,10 @@ function core(){
 
             engineStore.update('totalTime',  totalTime + deltaTime);
     
-            sceneHandler.update();
+            sceneHandler._update(deltaTime);
     
-            requestAnimationFrame(() => this.update(now));
+            requestAnimationFrame(() => this._update(now));
         },
-
-        
 
          setOption(key, value){
             engineStore.update(key, value);
@@ -114,7 +115,6 @@ function core(){
 
          loadAssets(assets){
             Object.keys(assets).forEach(key => loader.load(key, assets[key]));
-
          }
     }
 

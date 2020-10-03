@@ -10,9 +10,7 @@ class System {
         this.store = store;
     }
 
-    apiConnect(){
-
-    }
+    getTools(){}
 }
 
 export default System;

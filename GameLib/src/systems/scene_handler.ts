@@ -1,7 +1,9 @@
 import Scene from '../classes/scene';
 import controller from '../modules/inputController';
 import api from './system_api'; 
+
 import store from '../modules/store';
+
 
 class Scene_Handler {
     scenes: Scene[];
@@ -16,65 +18,65 @@ class Scene_Handler {
         [key: string]: any
     }
 
-    constructor(engineStore, assetStore){
+    public constructor(){
         this.scenes = [];
-        this.engineStore = engineStore;
-        this.assetStore = assetStore;
-        this.api = api(engineStore);
-        this.userStore = store({})
+        this.api = null;
+        this.userStore = store.createStore('user', {});
+        this.engineStore = store.getStore('engine');
+        this.assetStore = store.getStore('asset');
+
     }
 
-    setup(){
+    public setup(){
         const {controllerEnabled, controllerMap, scenes} = this.engineStore.access();
 
-        //use code from 
-
         controller.overrideControllerMapping(controllerMap);
-        controller.setup(this.handleInput.bind(this), controllerEnabled);
+        controller.setup(this._handleInput.bind(this), controllerEnabled);
     
         //create new scenes from scenes in engineStore
-        this.engineStore.update('currentScene', Object.keys(scenes)[0])
-        this.initScenes(scenes);
-
-        console.log(this.api)
+        store.getStore('engine').update('currentScene', Object.keys(scenes)[0])
+        
+        this.api = api();
+        this._initScenes(scenes);
+        
     }
 
 
     
-    update(deltaTime){
+    public _update(deltaTime){
         const {camera, totalTime} = this.engineStore.access();
         camera.updateCamera();
-        this.draw(deltaTime);
+        this._draw(deltaTime);
     }
 
-    draw(deltaTime): void{
-        const {ctx, enableDebug, currentScene} = this.engineStore.access();
+    private _draw(deltaTime): void{
+        const {ctx, debug, currentScene} = this.engineStore.access();
 
         // draw background
-         ctx.clearRect(0,0,ctx.canvas.clientWidth, ctx.canvas.height)
+         ctx.clearRect(0,0,ctx.canvas.clientWidth, ctx.canvas.height);
          ctx.fillStyle = '#000';
          ctx.fillRect(0,0, ctx.canvas.clientWidth, ctx.canvas.height);
          //draw current scene
  
-        //  let LeveltoDraw = this.screens[this.currentScreen].getLevel()
+        //  let LeveltoDraw = this.scenes[currentScene].getLevel();
+
         //  if(LeveltoDraw){
-        //      LeveltoDraw.draw(deltaTime, this.totalTime, this.imageManager.getLevelRenderer(), camera);
+        //      LeveltoDraw.draw(deltaTime, this.totalTime);
         //  }
- 
- 
-         this.scenes[currentScene].draw(deltaTime);
+
+        this.scenes[currentScene].draw(deltaTime);
          
          // draw debug info
-         if (enableDebug){
-             ctx.font = '10px Arial';
+         if (debug){
+             ctx.font = '20px Arial';
              ctx.fillStyle = 'red';
-             ctx.fillText(`FPS: ${Math.floor(1/( deltaTime/1000))}`, ctx.canvas.width - 40, 10);
+             ctx.fillText(`FPS: ${Math.floor(1/( deltaTime/1000))}`, ctx.canvas.width - 50, 20);
          }
      }
 
 
-    initScenes(scenes): void{
-        const {currentScene, camera} = this.engineStore.access('currentScene');
+    private _initScenes(scenes): void{
+        const {currentScene, camera} = this.engineStore.access('currentScene', 'camera');
         for(let scene in scenes){
             this.scenes[scene] = new scenes[scene]({store: this.userStore, api: this.api})
             this.scenes[scene].setup();
@@ -84,16 +86,11 @@ class Scene_Handler {
         }
     }
 
-    gotoScreen(target: string): void{
-        //this.currentScreen = target;
-        //this.controller.changeFn(this.screens[this.currentScreen].handleInput.bind(this.screens[this.currentScreen]));
-    }
-
-    handleInput(data){
+    private _handleInput(data){
         const {currentScene} = this.engineStore.access('currentScene');
         if(this.scenes[currentScene] && this.scenes[currentScene]){
             //pass input data from keyboard/controller to the current scene
-            this.scenes[currentScene].handleInput(data);
+            this.scenes[currentScene]._handleInput(data);
         }
     }
             

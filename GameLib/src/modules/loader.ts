@@ -1,12 +1,11 @@
 
 
-function loader(store){
-
+function loader(_store){
     return {
         load (name, asset){
             if(typeof asset == 'object' && asset.image){
-                const {sheets = []} = store.access('sheets');
-                store.set({
+                const {sheets = []} = _store.access('sheets');
+                _store.set({
                     sheets: [...sheets, asset]
                 })
 
@@ -14,16 +13,16 @@ function loader(store){
 
                 name = [fileName.slice(0, fileName.lastIndexOf('.'))]
 
-                handleImages(store, asset.image, name, false);
+                handleImages(_store, asset.image, name, false);
             }else if (typeof asset == 'object'){
 
             } else if (typeof asset == 'string' && asset.match(/.wav/g)){
-                const {audio = {}} = store.access('audio');
+                const {audio = {}} = _store.access('audio');
                 audio[name] = asset; 
-                store.update('audio', audio);
+                _store.update('audio', audio);
             
             }else if (typeof asset == 'string' && asset.match(/.png/g)){
-                handleImages(store, asset, name, true);
+                handleImages(_store, asset, name, true);
             }
         }
     }

@@ -80,7 +80,7 @@ class Level {
         });
     }
 
-    draw(deltaTime, totalTime, renderer, camera) {
+    draw(deltaTime, totalTime) {
        if(Object.keys(this.tileLayers).length > 0){
             if(this.tileLayers.Ground){
                 this.tileLayers.Ground.forEach(tile => renderer.drawTile({...tile, spriteSheet: this.spriteSheet}, totalTime, camera));
