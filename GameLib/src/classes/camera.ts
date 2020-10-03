@@ -1,5 +1,5 @@
 import Entity from './entity';
-import {simpleCollision} from './collider';
+import {simpleCollision} from '../modules/collider';
 
 class Camera {
     x: number;
@@ -22,7 +22,7 @@ class Camera {
 
     updateCamera(){
         if(this.target){
-            const {x, y, w, h} = this.target.getCameraData();
+            const {x, y, w, h} = this.target;
             this.xOffset = -this.w/2 + x + w/2 
             this.yOffset = -this.h/2 + y + h/2 
         }
