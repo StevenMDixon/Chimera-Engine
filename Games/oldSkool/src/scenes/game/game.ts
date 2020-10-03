@@ -5,10 +5,14 @@ import MapData from '../../assets/newMap.json';
  class GameScreen extends Scene {
 
    player: Player;
+   test: {
+     [key: string]: any
+   }
 
      constructor(gameProps){
         super(gameProps);
         //this.player = new Player(0, 0, 8, 8);
+        this.test = {x: 100, y: 200, w: 20, h: 20, xVelocity: 1, yVelocity: 1}
      }
 
      setup(){
@@ -16,6 +20,7 @@ import MapData from '../../assets/newMap.json';
         //this.addEntitytoCurrentLevel(this.player);
         //soundController.playBG("main", .5)
         //this.addEntitytoCurrentLevel(new Player(30, 30, 8, 8, -15));
+        //this.game.getCamera().camera.attach(this.test)
      }
 
      update(deltaTime){
@@ -34,9 +39,9 @@ import MapData from '../../assets/newMap.json';
       }
 
 
-       this.player.move(deltaTime);
+       //this.player.move(deltaTime);
 
-
+      //this.test.x += this.test.xVelocity
        //camera.attach(this.levels[this.currentLevel].entities[1])
      }
 
@@ -46,6 +51,14 @@ import MapData from '../../assets/newMap.json';
          //renderer.drawSprite(this.player);
         // console.log(camera.getOffsets())
       this.game.drawTile({spriteSheet: 'colored_tilemap', x: 20, y: 50, w: 8, h: 8, type: 2})
+
+      this.game.drawRect(this.test.x, this.test.y, this.test.w, this.test.h, 'blue')
+
+      this.game.drawCircle(50, 20, 10, 'yellow')
+
+      this.game.drawLine(100,100, 100, 150, 'red')
+
+      this.game.drawTriangle(200, 200, 190, 220, 210, 210, 'green')
      }
 
  }

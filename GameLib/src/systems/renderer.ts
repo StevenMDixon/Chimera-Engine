@@ -23,7 +23,11 @@ class Renderer extends System{
             drawSprite: this.drawSprite.bind(this),
             drawBackGround: this.drawBG.bind(this),
             drawText: this.drawText.bind(this),
-            drawParticle: this.drawParticle.bind(this)
+            drawParticle: this.drawParticle.bind(this),
+            drawRect: this.drawRect.bind(this),
+            drawCircle: this.drawCircle.bind(this),
+            drawLine: this.drawLine.bind(this),
+            drawTriangle: this.drawTriangle.bind(this)
         }
     }
 
@@ -144,6 +148,56 @@ class Renderer extends System{
         drawLine
         drawTriangle
     */
+
+    public drawRect(x, y, w, h, color){
+        const {ctx} = this.store.getStore('engine').access('ctx');
+        let fs = ctx.fillStyle;
+        ctx.fillStyle = color;
+        ctx.fillRect(x, y, w, h)
+        ctx.fillStyle = fs;
+    }
+
+    public drawCircle(x, y, r, color){
+        const {ctx} = this.store.getStore('engine').access('ctx');
+        let fs = ctx.fillStyle;
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.arc(x, y, r, 0, 2 * Math.PI);
+        ctx.closePath();
+        //ctx.stroke();
+        ctx.fill();
+        ctx.fillStyle = fs;
+    }
+    
+    public drawLine(p1x, p1y, p2x, p2y, color){
+        const {ctx} = this.store.getStore('engine').access('ctx');
+        let fs = ctx.strokeStyle
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1x, p1y);
+        ctx.lineTo(p2x, p2y);
+        ctx.closePath();
+        ctx.stroke();
+        //ctx.fill();
+        ctx.strokeStyle = fs;
+    }
+
+    public drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, color){
+        const {ctx} = this.store.getStore('engine').access('ctx');
+        let fs = ctx.fillStyle
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(p1x, p1y);
+        ctx.lineTo(p2x, p2y);
+        ctx.lineTo(p3x, p3y);
+        ctx.closePath();
+        //ctx.stroke();
+        ctx.fill();
+        ctx.fillStyle = fs;
+    
+    }
+
+
 }
 
 export default Renderer;

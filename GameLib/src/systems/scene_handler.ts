@@ -44,7 +44,8 @@ class Scene_Handler {
 
     
     public _update(deltaTime){
-        const {camera, totalTime} = this.engineStore.access();
+        const {camera, totalTime, currentScene} = this.engineStore.access();
+        this.scenes[currentScene].update(deltaTime);
         camera.updateCamera();
         this._draw(deltaTime);
     }
@@ -52,20 +53,15 @@ class Scene_Handler {
     private _draw(deltaTime): void{
         const {ctx, debug, currentScene} = this.engineStore.access();
 
-        // draw background
+        // clear canvas
          ctx.clearRect(0,0,ctx.canvas.clientWidth, ctx.canvas.height);
-         ctx.fillStyle = '#000';
-         ctx.fillRect(0,0, ctx.canvas.clientWidth, ctx.canvas.height);
-         //draw current scene
  
         //  let LeveltoDraw = this.scenes[currentScene].getLevel();
 
         //  if(LeveltoDraw){
         //      LeveltoDraw.draw(deltaTime, this.totalTime);
         //  }
-
         this.scenes[currentScene].draw(deltaTime);
-         
          // draw debug info
          if (debug){
              ctx.font = '20px Arial';
