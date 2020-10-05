@@ -37,7 +37,7 @@ function core(){
     // general shared stor for assets
     const assetStore = store.createStore('asset', {});
     // create renderer pass in global store
-    const sceneHandler = new SceneHandler(store);
+    const sceneHandler = new SceneHandler();
     // loads images and other assets specified by the user
     const loader = Loader(assetStore);
 
@@ -81,9 +81,8 @@ function core(){
             engineStore.set({'camera': new Camera(0, 0, ctx.canvas.width, ctx.canvas.height)})
 
             // fix issues with resizing screens
-            //window.addEventListener('resize', (e) => manageDPI(ctx));
-            manageDPI(ctx);
-                        
+            window.addEventListener('resize', (e) => manageDPI(ctx));
+            manageDPI(ctx);       
         },
         
         async start(){

@@ -1,28 +1,13 @@
-class Tile {
-    x: number;
-    y: number;
-    w: number;
-    h: number;
+import { Entity } from './object';
+
+class Tile extends Entity{
     type: number;
     sheetType: string;
 
     constructor(x, y, w, h, type, sheetType){
-        this.x = x,
-        this.y = y,
-        this.h = h, 
-        this.w = w, 
-        this.type = type
+        super(x, y, w, h);
+        this.type = type;
         this.sheetType = sheetType;
-    }
-
-    getSpriteInfo() : object{
-        return {
-            x: this.x,
-            y: this.y,
-            w: this.w,
-            h: this.h,
-            type: this.type
-        }
     }
 }
 

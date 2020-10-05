@@ -1,7 +1,8 @@
-import Entity from './entity';
-import {simpleCollision} from '../modules/collider';
+import {Entity} from './object';
+import {AABB} from '../modules/collider';
+import Vector2D from '../modules/vector';
 
-class Camera {
+class Camera extends Entity{
     x: number;
     y: number;
     w: number;
@@ -11,20 +12,16 @@ class Camera {
     target: Entity
 
     constructor(x, y, w, h){
-        this.x = x;
-        this.y = y;
+        super(x,y, w, h);
         this.xOffset = x;
         this.yOffset = y;
-        this.w = w;
-        this.h = h;
         this.target = null;
     }
 
     updateCamera(){
         if(this.target){
-            const {x, y, w, h} = this.target;
-            this.xOffset = -this.w/2 + x + w/2 
-            this.yOffset = -this.h/2 + y + h/2 
+            this.xOffset = -this.size.x/2 + this.target.pos.x + this.target.size.x/2 
+            this.yOffset = -this.size.y/2 + this.target.pos.y + this.target.size.y/2 
         }
 
     }
@@ -48,7 +45,9 @@ class Camera {
     }
 
     checkifViewable(object){
-        return simpleCollision({x: this.xOffset + this.x, y:this.yOffset +this.y, h: this.h, w: this.w}, object);
+        return AABB(
+        new Entity(this.xOffset, this.yOffset, this.size.x, this.size.y)
+        , object);
     }
 }
 

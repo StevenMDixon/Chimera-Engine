@@ -1,5 +1,7 @@
 import System from './system_base';
 import SpriteSheet from '../modules/spriteSheet';
+import Tile from '../classes/Tile';
+import {Entity} from '../classes/object';
 
 class Renderer extends System{
     private spriteSheets: any;
@@ -36,46 +38,47 @@ class Renderer extends System{
         return images[name];
     }
 
-    public drawTile(object){
+    public drawTile(tileIn: Tile, sheet?){
         const offset = {  x:0 , y: 0 }
-        if(object.type < 0) return
+        if(tileIn.type < 0) return
         
         const {camera, totalTime, ctx} = this.store.getStore('engine').access();
-
         if(camera){
-            if(!camera.checkifViewable(object)){
+            if(!camera.checkifViewable(tileIn)){
                 return
             }
             offset.x = camera.xOffset;
             offset.y = camera.yOffset;
         }
 
-        const spriteSheet = this.spriteSheets.resolve(object.spriteSheet);
+        const spriteSheet = this.spriteSheets.resolve(tileIn.spriteSheet || sheet);
 
-        const {tile, imageName} = (spriteSheet.resolveTileData(object.type, totalTime));
+        const {tile, imageName} = (spriteSheet.resolveTileData(tileIn.type, totalTime));
         const img = this.resolveImage(imageName);
 
-        ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - Math.ceil(offset.x)), Math.floor(object.y - Math.ceil(offset.y)), object.w, object.h);
+        ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(tileIn.pos.x - Math.ceil(offset.x)), Math.floor(tileIn.pos.y - Math.ceil(offset.y)), tileIn.size.x, tileIn.size.y);
     }
 
-    public drawSprite(object){
+    public drawSprite(spriteIn){
         const offset = {x:0 , y: 0}
         const {camera, totalTime, ctx} = this.store.getStore('engine').access();
 
         if(camera){
-            if(!camera.checkifViewable(object)){
+            if(!camera.checkifViewable(spriteIn)){
                 return
             }
             offset.x = camera.xOffset;
             offset.y = camera.yOffset;
         }
 
-        const spriteSheet = null; //this.resolveSpriteSheet(object.spriteSheet);
+        const spriteSheet = this.spriteSheets.resolve(spriteIn.spriteSheet)
         
-        const {tile, img} = (spriteSheet.resolveSpriteData(object.getMappedState(), totalTime));
+        const {sprite, imageName} = (spriteSheet.resolveSpriteData(spriteIn._state, totalTime));
 
-        if (object.rotation ! === 0 || object.rotation == null){
-            ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, Math.floor(object.x - offset.x), Math.floor(object.y - offset.y), object.w, object.h);
+        const img = this.resolveImage(imageName);
+
+        if (spriteIn.rotation ! === 0 || spriteIn.rotation == null){
+         ctx.drawImage(img, sprite.x, sprite.y, sprite.w, sprite.h, Math.floor(spriteIn.pos.x - offset.x), Math.floor(spriteIn.pos.y - offset.y), spriteIn.size.x, spriteIn.size.y);
        }else {
             // // move to center of ima
             // this.bufferContext.translate(Math.floor(object.w/2), Math.floor(object.h/2));
@@ -133,9 +136,9 @@ class Renderer extends System{
 
 
     //@todo: work on this to change fonts and colors and styles
-    public drawText(text: string, x: number, y: number, options?){
+    public drawText(text: string, x: number, y: number, color?){
         const {ctx} = this.store.getStore('engine').access('ctx');
-        ctx.fillStyle = 'white'
+        ctx.fillStyle = color
         ctx.textAlign= 'center';
         ctx.textBaseLine = 'center';
         ctx.fillText(text, x, y);
@@ -194,10 +197,7 @@ class Renderer extends System{
         //ctx.stroke();
         ctx.fill();
         ctx.fillStyle = fs;
-    
     }
-
-
 }
 
 export default Renderer;

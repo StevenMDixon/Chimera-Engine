@@ -1,6 +1,5 @@
 
 export const config = {
-        scale: 1,
         debug: false,
         ctx: null,
         imageRoot: '/images',
@@ -9,6 +8,5 @@ export const config = {
         totalTime: null,
         controllerEnabled: false,
         controllerMap: null,
-        currentScene: '',
-        sounds: null
+        currentScene: ''
 }

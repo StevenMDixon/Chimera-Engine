@@ -70,7 +70,7 @@ class SpriteSheet {
         this.setup(data);
     }
 
-    async setup(data){
+    setup(data){
 
         if(data.spec && this.type == 'custom'){
             if(data.spec.offset){
@@ -109,8 +109,6 @@ class SpriteSheet {
                 })
                 iy = Math.floor(i/(columns-1))
             }
-
-           
             //tiled stores animations under the tiles section
             if(data.tiles){
                 this.data.tiles.forEach(anim => {
@@ -120,19 +118,16 @@ class SpriteSheet {
                     )
                 })
             }
-
-
         }
-
         this.image = data.name;
     }
 
     resolveSpriteData(name, time){
         if(this.animations.get(name)){
             let anim = this.animations.get(name);
-            return {tile: this.tiles.get(anim(time)), img: this.image};
+            return {sprite: this.tiles.get(anim(time)), imageName: this.image};
         }else {
-            return {tile: this.tiles.get(name), img: this.image};
+            return {sprite: this.tiles.get(name), imageName: this.image};
         }
     }
     resolveTileData(index, time){
@@ -142,9 +137,7 @@ class SpriteSheet {
         }else {
             imageName = this.data.map[index];
         }
-
         if(this.animations.get(imageName)){
-            
             let anim = this.animations.get(imageName);
             return {tile: this.tiles.get(anim(time)), imageName: this.image};
         }else {

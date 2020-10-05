@@ -21,7 +21,7 @@ myGame.setup(
     {
         target: 'game',
        // scale: 1,
-        size: 'full',
+        size: {w: 400, h: 400},
         useController: true,
         debug: true,
         scenes: {

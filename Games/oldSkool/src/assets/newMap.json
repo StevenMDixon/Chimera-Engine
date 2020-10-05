@@ -3,7 +3,8 @@
     {
      "export":
         {
-         "format":"json"
+         "format":"json",
+         "target":"."
         }
     },
  "height":100,
@@ -60,12 +61,12 @@
                  "x":0,
                  "y":0
                 }],
-         "height":32,
+         "height":16,
          "id":4,
          "name":"Entity",
          "opacity":1,
          "startx":0,
-         "starty":-16,
+         "starty":0,
          "type":"tilelayer",
          "visible":true,
          "width":16,
@@ -197,15 +198,45 @@
                  "width":9,
                  "x":70.5,
                  "y":79.5
+                }, 
+                {
+                 "height":0,
+                 "id":42,
+                 "name":"",
+                 "polygon":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":26.099146170511,
+                         "y":0
+                        }, 
+                        {
+                         "x":0,
+                         "y":21.5317955906716
+                        }],
+                 "properties":[
+                        {
+                         "name":"y",
+                         "type":"string",
+                         "value":"sdf"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":97.2193194851536,
+                 "y":96.5668408308908
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":42,
+ "nextobjectid":43,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",

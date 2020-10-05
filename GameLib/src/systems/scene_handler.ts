@@ -35,10 +35,9 @@ class Scene_Handler {
     
         //create new scenes from scenes in engineStore
         store.getStore('engine').update('currentScene', Object.keys(scenes)[0])
-        
+        // define the api to be used in scenes
         this.api = api();
         this._initScenes(scenes);
-        
     }
 
 
@@ -46,27 +45,42 @@ class Scene_Handler {
     public _update(deltaTime){
         const {camera, totalTime, currentScene} = this.engineStore.access();
         this.scenes[currentScene].update(deltaTime);
+        //TODO Handle entity traits
         camera.updateCamera();
         this._draw(deltaTime);
     }
 
     private _draw(deltaTime): void{
-        const {ctx, debug, currentScene} = this.engineStore.access();
+        const {ctx, debug, currentScene, totalTime} = this.engineStore.access();
 
         // clear canvas
-         ctx.clearRect(0,0,ctx.canvas.clientWidth, ctx.canvas.height);
+        ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.height);
  
-        //  let LeveltoDraw = this.scenes[currentScene].getLevel();
 
-        //  if(LeveltoDraw){
-        //      LeveltoDraw.draw(deltaTime, this.totalTime);
-        //  }
+        let LeveltoDraw = this.api.getLevelObject();
+
+        if(LeveltoDraw){
+            if(LeveltoDraw.tileLayers.Ground){
+                LeveltoDraw.tileLayers.Ground.forEach(tile => this.api.drawTile(tile, LeveltoDraw.spriteSheet));
+            }
+            // draw entities over base layer
+
+            // draw layers over
+            Object.keys(LeveltoDraw.tileLayers).forEach(layer => {
+                if(layer !== 'Ground'){
+                    LeveltoDraw.tileLayers[layer].forEach(tile => this.api.drawTile(tile, LeveltoDraw.spriteSheet));
+                }
+            })
+        }else {
+
+        } 
+
         this.scenes[currentScene].draw(deltaTime);
          // draw debug info
          if (debug){
              ctx.font = '20px Arial';
              ctx.fillStyle = 'red';
-             ctx.fillText(`FPS: ${Math.floor(1/( deltaTime/1000))}`, ctx.canvas.width - 50, 20);
+             ctx.fillText(`FPS: ${Math.floor(1/( deltaTime/1000))}`, ctx.canvas.width - 80, 20);
          }
      }
 
