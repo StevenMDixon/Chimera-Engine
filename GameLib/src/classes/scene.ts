@@ -1,16 +1,10 @@
 class Scene {
-    protected _inputs: object;
     protected _store: object;
     protected _game: any;
 
     constructor({store, api}){
         this._store = store;
-        this._inputs = {};
         this._game = api
-    }
-
-    get inputs() {
-        return this._inputs;
     }
 
     get store() {
@@ -33,9 +27,6 @@ class Scene {
         
     }
 
-    public _handleInput(inputs): void{
-        this._inputs = inputs
-    }
 }
 
 export default Scene;

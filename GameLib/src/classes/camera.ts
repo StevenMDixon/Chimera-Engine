@@ -1,5 +1,5 @@
 import {Entity} from './object';
-import {AABB} from '../modules/collider';
+//import {AABB} from '../modules/collider';
 import Vector2D from '../modules/vector';
 
 class Camera extends Entity{
@@ -45,9 +45,9 @@ class Camera extends Entity{
     }
 
     checkifViewable(object){
-        return AABB(
-        new Entity(this.xOffset, this.yOffset, this.size.x, this.size.y)
-        , object);
+        // return AABB(
+        // new Entity(this.xOffset, this.yOffset, this.size.x, this.size.y)
+        // , object);
     }
 }
 

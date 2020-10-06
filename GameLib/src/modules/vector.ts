@@ -88,6 +88,15 @@ class Vector2D {
         this.y += (y - this.y) * a || 0;
         return this;
     }
+
+    // @ todo define static methods
+    static add(){
+
+    }
+
+    static subtract(){
+
+    }
 }
 
 export default Vector2D;

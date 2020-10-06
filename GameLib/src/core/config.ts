@@ -8,5 +8,13 @@ export const config = {
         totalTime: null,
         controllerEnabled: false,
         controllerMap: null,
-        currentScene: ''
+        currentScene: '',
+        layerMap: {
+                0: 'background',
+                1: 'ground',
+                2: 'entity',
+                3: 'foreGround'
+        },
+        systems: [],
+        modules: []
 }

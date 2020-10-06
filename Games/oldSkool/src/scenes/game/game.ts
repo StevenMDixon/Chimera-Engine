@@ -1,4 +1,4 @@
- import { Scene, Vector } from 'GameLib';
+ import { Scene} from 'GameLib';
 import Player from './player';
 import MapData from '../../assets/newMap.json';
 
@@ -11,35 +11,21 @@ import MapData from '../../assets/newMap.json';
 
      constructor(gameProps){
         super(gameProps);
-        this.player = new Player(10, 10, 8, 8);
-        this.player.addTrait('move');
+  
+        //console.log(Components.getComponents())
      }
 
      setup(){
-        this.game.createLevel(MapData, 'colored_tilemap');
+        //this.game.createLevel(MapData, 'colored_tilemap');
         //this.addEntitytoCurrentLevel(this.player);
      }
 
      update(deltaTime){
-      if(this.inputs[37]){
-        this.player.acceleration.add(new Vector(-1, 0))
-      }
-      if(this.inputs[38]){
-        this.player.acceleration.add(new Vector(0, -1))
-      }
-      if(this.inputs[39]){
-        this.player.acceleration.add(new Vector(1, 0))
-      }
-      if(this.inputs[40]){
-        this.player.acceleration.add(new Vector(0, 1))
-      }
 
-      this.player.move(deltaTime)
      }
 
-
      draw(){
-      this.game.drawSprite(this.player);
+     
      }
 
  }

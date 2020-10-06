@@ -22,12 +22,12 @@ class Level {
         if(map.tiledversion){
             let h = map.tileheight;
             let w = map.tilewidth;
-            
             map.layers.forEach(layer => this.loadLayer(layer, w, h))
         } else {
             this.tileLayers['Ground'] = []
             map.forEach((row, y) => {
              row.forEach((tile, x) => {
+
                 this.tileLayers['Ground'].push(new Tile(x*this.mapData.size[0], y*this.mapData.size[1], this.mapData.size[0], this.mapData.size[1], tile, 'custom'))
              })
             })
@@ -51,6 +51,7 @@ class Level {
         for (let i = 0; i <= data.length; i++){
             iy = Math.floor(i/width)
             if(data[i] -1 >= 0){
+                
                 tiles.push(new Tile(
                     i%width*tilew + (x*tilew),
                     iy*tileh + (y*tileh), 

@@ -1,6 +1,5 @@
 import System from './system_base';
 import SpriteSheet from '../modules/spriteSheet';
-import Tile from '../classes/Tile';
 import {Entity} from '../classes/object';
 
 class Renderer extends System{
@@ -38,7 +37,7 @@ class Renderer extends System{
         return images[name];
     }
 
-    public drawTile(tileIn: Tile, sheet?){
+    public drawTile(tileIn, sheet?){
         const offset = {  x:0 , y: 0 }
         if(tileIn.type < 0) return
         
@@ -72,9 +71,8 @@ class Renderer extends System{
         }
 
         const spriteSheet = this.spriteSheets.resolve(spriteIn.spriteSheet)
-        
         const {sprite, imageName} = (spriteSheet.resolveSpriteData(spriteIn._state, totalTime));
-
+        console.log(spriteIn._state)
         const img = this.resolveImage(imageName);
 
         if (spriteIn.rotation ! === 0 || spriteIn.rotation == null){

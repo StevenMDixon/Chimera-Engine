@@ -4,7 +4,7 @@
      "export":
         {
          "format":"json",
-         "target":""
+         "target":"."
         }
     },
  "image":"..\/..\/public\/images\/colored_tilemap.png",
@@ -17,6 +17,24 @@
  "tiledversion":"1.4.2",
  "tileheight":8,
  "tiles":[
+        {
+         "id":0,
+         "properties":[
+                {
+                 "name":"Components",
+                 "type":"string",
+                 "value":""
+                }]
+        }, 
+        {
+         "id":1,
+         "properties":[
+                {
+                 "name":"Obstructs",
+                 "type":"string",
+                 "value":""
+                }]
+        }, 
         {
          "animation":[
                 {

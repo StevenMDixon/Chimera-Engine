@@ -13,11 +13,7 @@ function store_Factory(){
             return Object.keys(_stores);
         }
     }
-
-
 }
-
-
 
 function store(intitialProps){
 

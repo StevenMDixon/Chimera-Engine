@@ -10,7 +10,8 @@ function createTiledAnimation(frames, options){
     let direction = 'loop';
    
     if(options){
-        options.forEach(op => op.name == 'direction'? direction = op.value: '');
+        console.log(options)
+        options.forEach(op => op.name == 'direction'? direction = op.value[0]: '');
     }
     
     let ended = false
@@ -53,7 +54,6 @@ class SpriteSheet {
     tiles: any;
     animations: any;
     offset: number;
-    map: any;
     type: string;
     root: string;
 
@@ -62,7 +62,6 @@ class SpriteSheet {
         this.data = data;
         this.tiles = new Map();
         this.animations = new Map();
-        this.map = new Map();
         this.offset = 0;
         this.type = type;
         this.root = root;
@@ -71,7 +70,7 @@ class SpriteSheet {
     }
 
     setup(data){
-
+        
         if(data.spec && this.type == 'custom'){
             if(data.spec.offset){
                 this.offset = data.spec.offset;
@@ -105,17 +104,32 @@ class SpriteSheet {
                     x: margin + ((i%columns) *tilewidth) + ((i%columns) * spacing),
                     y: margin + (iy*tileheight) + (iy * spacing),
                     w: tilewidth,
-                    h: tileheight
+                    h: tileheight,
+                    components: []
                 })
                 iy = Math.floor(i/(columns-1))
             }
+
+           
             //tiled stores animations under the tiles section
             if(data.tiles){
                 this.data.tiles.forEach(anim => {
-                    this.animations.set(
-                        anim.id,
-                        createTiledAnimation(anim.animation, anim.properties)
-                    )
+
+                    if(anim.animation){
+                        this.animations.set(
+                            anim.id,
+                            createTiledAnimation(anim.animation, anim.properties)
+                        )
+                    }
+
+                    if(anim.properties){
+                        let n = this.tiles.get(anim.id);
+                        anim.properties.forEach(prop => {
+                            prop.value = prop.value.split(',');
+                            n.components.push(prop)
+                        })
+                        this.tiles.set(anim.id, n)
+                    }
                 })
             }
         }
@@ -130,6 +144,7 @@ class SpriteSheet {
             return {sprite: this.tiles.get(name), imageName: this.image};
         }
     }
+
     resolveTileData(index, time){
         let imageName = '';
         if(this.type == 'tiled'){
@@ -143,6 +158,14 @@ class SpriteSheet {
         }else {
             return {tile: this.tiles.get(imageName), imageName: this.image};
         }
+    }
+
+    hasItem(item){
+        return this.tiles.has(item);
+    }
+
+    resolveItemComponents(id){
+        return this.tiles.get(id).componentes
     }
 }
 
@@ -164,6 +187,12 @@ function spriteSheet_Factory(){
         },
         resolve: function(name){
             return _sheets[name];
+        },
+        checkItem: function(name, item){
+            return _sheets[name].hasItem(item)
+        },
+        getCustomProperties: function(name, item){
+            return _sheets[name].resolveItemComponents(item)
         }
     }
 }

@@ -4,7 +4,9 @@ import {config} from './config';
 import {manageDPI} from '../modules/resizer';
 
 import Store from '../modules/store';
-import SceneHandler from '../systems/scene_handler';
+
+import System_Handler from '../component_systems/system';
+
 import Loader from '../modules/loader';
 import Camera from '../classes/camera';
 
@@ -37,7 +39,7 @@ function core(){
     // general shared stor for assets
     const assetStore = store.createStore('asset', {});
     // create renderer pass in global store
-    const sceneHandler = new SceneHandler();
+    const system = new System_Handler();
     // loads images and other assets specified by the user
     const loader = Loader(assetStore);
 
@@ -90,7 +92,7 @@ function core(){
             Promise.all(imageP)
             .catch((error) => console.log(error))
             .then(()=>{
-                sceneHandler.setup();
+                system.init();
                 this._update();
             })
         },
@@ -103,7 +105,7 @@ function core(){
 
             engineStore.update('totalTime',  totalTime + deltaTime);
     
-            sceneHandler._update(deltaTime);
+            system.update(deltaTime);
     
             requestAnimationFrame(() => this._update(now));
         },

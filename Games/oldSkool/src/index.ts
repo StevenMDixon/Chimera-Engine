@@ -2,7 +2,6 @@
 import {GameManager} from 'GameLib';
 
 //import user defined scenes
-import StartScreen from './scenes/start/startScreen';
 import GameScreen from './scenes/game/game';
 
 // import user defined sounds
@@ -12,7 +11,6 @@ import main from './assets/main.wav';
 import TileData from './assets/newTiles.json';
 import PlayerData from './assets/newPlayer.json';
 import ParticleData from './assets/particles.json';
-import test from './assets/colored_tilemap.png'
 //create a new game object
 const myGame = GameManager;
 
@@ -32,6 +30,6 @@ myGame.setup(
 });
 
 
-myGame.loadAssets({TileData, PlayerData, ParticleData, test, main});
+myGame.loadAssets({TileData, PlayerData, ParticleData, main});
 
 myGame.start();

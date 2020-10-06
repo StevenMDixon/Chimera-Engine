@@ -19,7 +19,7 @@ export class Entity {
         this.pos = new Vector2D(x,y);
         this.size = new Vector2D(w,h);
         this.velocity = new Vector2D(0,0);
-        this.friction = new Vector2D(.9,.9);
+        this.friction = new Vector2D(.5,.5);
         this.acceleration = new Vector2D(0,0);
         this.state = '';
         this.spriteSheet = '';
@@ -36,8 +36,17 @@ export class Entity {
     move(dt){
         this.velocity.add(this.acceleration.multiply(dt/100));
         this.pos.add(this.velocity);
-        this.velocity.x *= this.friction.x;
-        this.velocity.y *= this.friction.y;
+        this.velocity.x = (this.velocity.x * this.friction.x);
+        this.velocity.y = (this.velocity.y * this.friction.y);
+
+        if(this.velocity.x > -0.01 && this.velocity.x < 0.01){
+            this.velocity.x = 0;
+        }
+
+        if(this.velocity.y > -0.09 && this.velocity.y < 0.09){
+            this.velocity.y = 0;
+        }
+
         this.acceleration.set(0,0);
     }
 
@@ -62,41 +71,4 @@ export class Entity {
 }
 
 
-export class Polygon extends Entity {
-    vertices: Vector2D[];
-    center: Vector2D;
 
-    constructor(...points){
-        super(0,0,0, 0);
-        this.vertices = createVertices(points);
-        this.pos = getCenterOfPoly(this.vertices)
-    }
-
-    getCameraData(){
-        return {x: this.pos.x, y: this.pos.y, w: this.size.x, h: this.size.y}
-    }
-}
-
-
-function getCenterOfPoly(vertices: Vector2D[]){
-    let center = new Vector2D(0,0);
-    vertices.forEach(vertice => center.add(vertice));
-    return center.divide(vertices.length);
-}
-
-
-function createVertices(v: number[]){
-    let vertices = [];
-    if(v.length == 4) {//square  x,y,w,h
-        vertices.push(new Vector2D(v[0], v[1]))
-        vertices.push(new Vector2D(v[0] + v[2], v[1]))
-        vertices.push(new Vector2D(v[0] + v[2], v[1] + v[3]))
-        vertices.push(new Vector2D(v[0], v[1] + v[3]))
-    } else if(v.length == 6){ //triangle
-
-    } else { //polygon
-
-    }
-    return vertices;
-
-}

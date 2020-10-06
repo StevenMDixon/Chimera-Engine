@@ -13,6 +13,19 @@ class Player extends Entity{
             'walk': 5 
         }
     }
+
+    setState(){
+        console.log(this.velocity)
+        if(this.velocity.x !== 0  && this.velocity.y > 0 || this.velocity.y > 0){
+            this.state = 'walk';
+        } else if (this.velocity.x !== 0 && this.velocity.y < 0 || this.velocity.y < 0){
+            this.state = 'walk-up';
+        } else if (this.velocity.x !== 0) {
+            this.state = 'walk';
+        } else {
+            this.state = 'idle';
+        }
+    }
    // move(deltatime){
         // if(this.xVelocity !== 0  && this.yVelocity > 0 || this.yVelocity > 0){
         //     this.state = 'walk';
