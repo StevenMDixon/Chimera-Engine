@@ -1,29 +1,34 @@
-import store from '../modules/store';
+import Vector from '../modules/vector';
 
-class Renderer{
-    constructor(){
-        
-    }
 
+function primitives(ctx){
+    return {
     //@todo: work on this to change fonts and colors and styles
-    public drawText(text: string, x: number, y: number, color?){
-        const {ctx} = store.getStore('engine').access('ctx');
+    drawText: (text: string, x: number, y: number, color?) => {
         ctx.fillStyle = color
         ctx.textAlign= 'center';
         ctx.textBaseLine = 'center';
         ctx.fillText(text, x, y);
-    }
+    },
 
-    public drawRect(x, y, w, h, color){
-        const {ctx} = store.getStore('engine').access('ctx');
-        let fs = ctx.fillStyle;
-        ctx.fillStyle = color;
-        ctx.fillRect(x, y, w, h)
-        ctx.fillStyle = fs;
-    }
+    drawRect: (x, y, w, h, color, fill, stroke) => {
+        let reserve = null;
+        
+        if(fill){
+            reserve = ctx.fillStyle
+            ctx.fillStyle = color;
+            ctx.fillRect(x, y, w, h)
+            ctx.fillStyle = reserve;
+        }else if(stroke){
+            reserve = ctx.strokeStyle;
+            ctx.strokeStyle = color;
+            ctx.strokeRect(x, y, w, h)
+            ctx.strokeStyle = reserve;
+        }
+    },
 
-    public drawCircle(x, y, r, color){
-        const {ctx} = store.getStore('engine').access('ctx');
+    drawCircle: (x, y, r, color) => {
+       
         let fs = ctx.fillStyle;
         ctx.fillStyle = color;
         ctx.beginPath();
@@ -32,10 +37,9 @@ class Renderer{
         //ctx.stroke();
         ctx.fill();
         ctx.fillStyle = fs;
-    }
+    },
     
-    public drawLine(p1x, p1y, p2x, p2y, color){
-        const {ctx} = store.getStore('engine').access('ctx');
+    drawLine: (p1x, p1y, p2x, p2y, color) => {
         let fs = ctx.strokeStyle
         ctx.strokeStyle = color;
         ctx.beginPath();
@@ -45,10 +49,9 @@ class Renderer{
         ctx.stroke();
         //ctx.fill();
         ctx.strokeStyle = fs;
-    }
+    },
 
-    public drawTriangle(p1x, p1y, p2x, p2y, p3x, p3y, color){
-        const {ctx} = store.getStore('engine').access('ctx');
+    drawTriangle : (p1x, p1y, p2x, p2y, p3x, p3y, color) =>{
         let fs = ctx.fillStyle
         ctx.fillStyle = color;
         ctx.beginPath();
@@ -59,5 +62,56 @@ class Renderer{
         //ctx.stroke();
         ctx.fill();
         ctx.fillStyle = fs;
+    },
+
+    drawPolygon: (color, fill, stroke, pos, vertices) =>{
+        let reserve = ctx.strokeStyle;
+        ctx.strokeStyle = color;
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+        vertices.forEach(v => {
+            ctx.lineTo(v.x + pos.x, v.y + pos.y)
+        })
+        ctx.closePath();
+        ctx.stroke();
+        ctx.strokeStyle = reserve
     }
-} 
+}
+}
+
+function game(ctx){
+    return {
+        drawTile(img, tile, x, y, w, h){ 
+            //Math.floor(tileIn.pos.x - Math.ceil(offset.x)), Math.floor(tileIn.pos.y - Math.ceil(offset.y))
+            ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, x, y, w, h);
+        },
+        drawSprite(img, sprite, x, y, w, h){
+            ctx.drawImage(img, sprite.x, sprite.y, sprite.w, sprite.h, x, y, w, h);
+        }
+    }
+}
+
+function images(){
+    
+}
+
+
+function Render_Factory(ctx){
+    return function getRenderer(type){
+        if(type === 'system'){
+            return {
+                ...primitives(ctx),
+                ...game(ctx)
+            }
+        }
+    
+        if(type === 'user'){
+            return {
+                ...primitives(ctx)
+            }
+        }
+    }
+}
+
+
+export default Render_Factory;

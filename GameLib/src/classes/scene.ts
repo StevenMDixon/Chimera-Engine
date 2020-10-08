@@ -2,13 +2,9 @@ class Scene {
     protected _store: object;
     protected _game: any;
 
-    constructor({store, api}){
-        this._store = store;
+    constructor(api){
+    
         this._game = api
-    }
-
-    get store() {
-        return this._store;
     }
 
     get game() {
@@ -20,7 +16,7 @@ class Scene {
     }
     
     public update(deltaTime: number): void{
-
+        
     }
 
     public draw(deltaTime: number): void{

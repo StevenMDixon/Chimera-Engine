@@ -10,7 +10,6 @@ function createTiledAnimation(frames, options){
     let direction = 'loop';
    
     if(options){
-        console.log(options)
         options.forEach(op => op.name == 'direction'? direction = op.value[0]: '');
     }
     
@@ -139,6 +138,7 @@ class SpriteSheet {
     resolveSpriteData(name, time){
         if(this.animations.get(name)){
             let anim = this.animations.get(name);
+
             return {sprite: this.tiles.get(anim(time)), imageName: this.image};
         }else {
             return {sprite: this.tiles.get(name), imageName: this.image};
@@ -184,6 +184,7 @@ function spriteSheet_Factory(){
                     _sheets[sheet.name] = new SpriteSheet(sheet, 'custom', this.imageRoot);
                 }
             })
+
         },
         resolve: function(name){
             return _sheets[name];
@@ -192,7 +193,7 @@ function spriteSheet_Factory(){
             return _sheets[name].hasItem(item)
         },
         getCustomProperties: function(name, item){
-            return _sheets[name].resolveItemComponents(item)
+            return _sheets[name].resolveItemComponents(item) || []
         }
     }
 }

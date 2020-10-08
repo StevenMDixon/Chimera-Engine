@@ -7,10 +7,6 @@ export class Component{
     constructor(){
         this.gameObject = null;
     }
-
-    public start(): void{}
-
-    public update(dt: number): void{};
 }
 
 class Solid extends Component{};
@@ -46,10 +42,10 @@ class Animate extends Component{
 };
 
 class Sprite extends Component{
-    spriteSheet: string;
+    spriteSheetName: string;
     constructor(spriteSheet: string){
         super();
-        this.spriteSheet = spriteSheet;
+        this.spriteSheetName = spriteSheet;
     }
 };
 
@@ -71,13 +67,23 @@ class State extends Component{
     }
 };
 
+class Entity extends Component{
+    entityType: number | string;
+    sheetType: string;
+    constructor(entityType: string, sheetType: string){
+        super();
+        this.entityType = entityType;
+        this.sheetType = sheetType;
+    }
+};
+
 class Tile extends Component{
-    type: number | string;
+    tileType: number | string;
     sheetType: string;
     constructor(type: string, sheetType: string){
         super();
-        this.type = '';
-        this.sheetType = '';
+        this.tileType = type;
+        this.sheetType = sheetType;
     }
 };
 
@@ -99,23 +105,18 @@ class Size extends Component{
 
 class Polygon extends Component{
     vertices: Vector2D[];
-    constructor(){
+    constructor(vertices){
         super();
         this.vertices = [];
+        this.createVertices(vertices)
     }
 
-    createVertices(v: number[]){
+    createVertices(v: any[]){
         let vertices = [];
-        if(v.length == 4) {//square  x,y,w,h
-            vertices.push(new Vector2D(v[0], v[1]))
-            vertices.push(new Vector2D(v[0] + v[2], v[1]))
-            vertices.push(new Vector2D(v[0] + v[2], v[1] + v[3]))
-            vertices.push(new Vector2D(v[0], v[1] + v[3]))
-        } else if(v.length == 6){ //triangle
-    
-        } else { //polygon
-    
-        }
+        v.forEach(vertice => {
+            vertices.push(new Vector2D(vertice.x, vertice.y))
+        })
+        console.log(v, vertices)
         this.vertices = vertices;
     }
 
@@ -173,7 +174,8 @@ function Components(){
         Position,
         Size,
         Polygon,
-        Physics
+        Physics,
+        Entity
     }
 
     return {
@@ -186,8 +188,6 @@ function Components(){
             })
         }
     }
-
-
 }
 
 

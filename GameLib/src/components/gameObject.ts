@@ -31,6 +31,10 @@ class GameObject{
         return this.components.get(name);
     }
 
+    getComponents(name: string){
+        return this.components.entries;
+    }
+
     hasComponent(name: string){
         return this.components.has(name);
     }

@@ -1,4 +1,4 @@
- import { Scene} from 'GameLib';
+ import {Scene} from 'GameLib';
 import Player from './player';
 import MapData from '../../assets/newMap.json';
 
@@ -11,21 +11,17 @@ import MapData from '../../assets/newMap.json';
 
      constructor(gameProps){
         super(gameProps);
-  
-        //console.log(Components.getComponents())
      }
 
      setup(){
-        //this.game.createLevel(MapData, 'colored_tilemap');
-        //this.addEntitytoCurrentLevel(this.player);
+        this.game.addMap(MapData, 'colored_tilemap')
      }
 
      update(deltaTime){
-
+      
      }
 
      draw(){
-     
      }
 
  }

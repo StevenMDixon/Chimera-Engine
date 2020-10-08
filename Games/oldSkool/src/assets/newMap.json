@@ -79,7 +79,7 @@
          "name":"Collisions",
          "objects":[
                 {
-                 "height":23,
+                 "height":31,
                  "id":3,
                  "name":"",
                  "rotation":0,
@@ -87,7 +87,7 @@
                  "visible":true,
                  "width":3,
                  "x":40,
-                 "y":56
+                 "y":48
                 }, 
                 {
                  "height":8.5,
@@ -134,25 +134,25 @@
                  "y":119.5
                 }, 
                 {
-                 "height":39,
+                 "height":39.5,
                  "id":31,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":10.5,
+                 "width":7.75,
                  "x":77,
-                 "y":40
+                 "y":40.5
                 }, 
                 {
-                 "height":16.5,
+                 "height":8.5,
                  "id":32,
                  "name":"",
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":36.5,
-                 "x":40,
+                 "width":32,
+                 "x":44.5,
                  "y":39
                 }, 
                 {
@@ -162,12 +162,12 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":30.5,
-                 "x":48.5,
+                 "width":24,
+                 "x":52,
                  "y":31.5
                 }, 
                 {
-                 "height":7.5,
+                 "height":4.75,
                  "id":34,
                  "name":"",
                  "rotation":0,
@@ -175,7 +175,7 @@
                  "visible":true,
                  "width":14.5,
                  "x":56.5,
-                 "y":23.5
+                 "y":26.25
                 }, 
                 {
                  "height":9.5,
@@ -205,16 +205,28 @@
                  "name":"",
                  "polygon":[
                         {
-                         "x":0,
-                         "y":0
+                         "x":0.5,
+                         "y":-0.25
                         }, 
                         {
                          "x":26.099146170511,
                          "y":0
                         }, 
                         {
-                         "x":0,
-                         "y":21.5317955906716
+                         "x":21.5752199304529,
+                         "y":8.27742910665692
+                        }, 
+                        {
+                         "x":16.2215540003176,
+                         "y":14.7608893521768
+                        }, 
+                        {
+                         "x":8.83815132027395,
+                         "y":19.7528207514456
+                        }, 
+                        {
+                         "x":0.75,
+                         "y":23.0317955906716
                         }],
                  "properties":[
                         {
@@ -226,8 +238,32 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":97.2193194851536,
-                 "y":96.5668408308908
+                 "x":99.2193194851536,
+                 "y":9.0668408308908
+                }, 
+                {
+                 "height":0,
+                 "id":45,
+                 "name":"",
+                 "polygon":[
+                        {
+                         "x":0,
+                         "y":0
+                        }, 
+                        {
+                         "x":25,
+                         "y":20.5
+                        }, 
+                        {
+                         "x":-1,
+                         "y":20.5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5,
+                 "y":97.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -236,7 +272,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":43,
+ "nextobjectid":46,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.4.2",
