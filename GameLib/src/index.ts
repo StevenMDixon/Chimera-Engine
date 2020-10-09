@@ -9,5 +9,4 @@ import Components from './components/components';
 
 import GameManager from './core/core';
 
-
 export {GameManager, Scene, Entity, Menu, Vector, Components};

@@ -138,9 +138,9 @@ class SpriteSheet {
     resolveSpriteData(name, time){
         if(this.animations.get(name)){
             let anim = this.animations.get(name);
-
             return {sprite: this.tiles.get(anim(time)), imageName: this.image};
         }else {
+            console.log(name, this.tiles.get(name))
             return {sprite: this.tiles.get(name), imageName: this.image};
         }
     }

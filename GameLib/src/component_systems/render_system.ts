@@ -63,10 +63,13 @@ class Render_System extends System_Base{
                 const {size} = t.getComponent('Size');
                 const {entityType} = t.getComponent('Entity');
                 const ss = this.spriteSheets.resolve(spriteSheetName)
-                const {sprite, imageName} = (ss.resolveSpriteData(entityType, totalTime));
-
+                const {sprite, imageName} = (ss.resolveSpriteData(parseInt(entityType), totalTime));
+                if(t.hasComponent('Player')){
+                    console.log(sprite, imageName, entityType)
+                }
                 const image = images[imageName];
                 if(image && sprite){
+                    
                     this.renderer.drawSprite(image, sprite,  pos.x, pos.y, size.x, size.y)
                 }
             }else if(t.hasComponent('Size')){

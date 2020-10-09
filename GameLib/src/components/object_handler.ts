@@ -12,7 +12,7 @@ class Object_Handler {
         go.forEach(item => {
             item.UUID = this.UUIDTrack;
             this.UUIDTrack++;
-            this.gameObjects.push(item)
+            this.gameObjects.push(item);
         })
     }
 

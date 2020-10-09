@@ -8,6 +8,8 @@ export class Component{
     }
 }
 
+class Player extends Component{};
+
 class Solid extends Component{};
 
 class Renderable extends Component{};
@@ -154,6 +156,7 @@ class Physics extends Component{
 
 function Components(){
     const comp = {
+        Player,
         Solid,
         Renderable,
         Movable,

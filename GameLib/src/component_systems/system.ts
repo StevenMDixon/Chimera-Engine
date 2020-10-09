@@ -3,6 +3,7 @@ import Object_Handler from '../components/object_handler';
 import store from '../modules/store';
 import {loadMap} from '../modules/loadMap';
 import Renderer from '../modules/renderer';
+import Composer from '../modules/composer';
 
 import inputSystem from './input_system';
 import renderSystem from './render_system';
@@ -96,6 +97,9 @@ class System_Handler{
         const context = this;
         return {
             addMap: (map, spriteSheet)=> { this.addGameObjects(loadMap(map, spriteSheet))},
+            createEntity: (componentsList) => {
+                this.addGameObjects(Composer.compose(componentsList));
+            },
             addGameObject: this.addGameObjects.bind(context),
             getStore: (key?: string) => {
                 return store.getStore('user').access(key);
