@@ -4,8 +4,10 @@ import {Component} from './components';
 class GameObject{
     components: any;
     children: GameObject[];
+    UUID: number;
     constructor(){
         this.components = new Map();
+        this.UUID = null;
         // @Todo implement children
         this.children = [] as GameObject[];
     }
@@ -22,9 +24,9 @@ class GameObject{
         })
     }
 
-    addComponent(name: string, component: any): void{
+    addComponent(component: any): void{
         component.gameObject = this;
-        this.components.set(name, component);
+        this.components.set(component.__proto__.constructor.name, component);
     }
 
     getComponent(name: string){

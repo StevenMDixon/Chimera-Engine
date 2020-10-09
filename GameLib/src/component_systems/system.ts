@@ -1,11 +1,14 @@
 //import Scene from '../classes/scene';
 import Object_Handler from '../components/object_handler';
 import store from '../modules/store';
-import inputSystem from './input_system';
-import renderSystem from './render_system';
-import System_Base from './system_base';
 import {loadMap} from '../modules/loadMap';
 import Renderer from '../modules/renderer';
+
+import inputSystem from './input_system';
+import renderSystem from './render_system';
+import colissionSystem from './collision_system';
+import System_Base from './system_base';
+import cameraSystem from './camera_system';
 
 class System_Handler{
     scenes: {
@@ -32,10 +35,12 @@ class System_Handler{
     init(){
         const {systems, scenes, ctx} = store.getStore('engine').access('systems', 'scenes', 'ctx');
         //create systems with user defined systems
-        this.systems = createSystemsList([renderSystem, inputSystem] ,systems);
+        this.systems = createSystemsList([renderSystem, inputSystem, colissionSystem, cameraSystem] ,systems);
 
+        //initialize renderer
         this.renderer = Renderer(ctx);
     
+        // create api for scenes to use
         this.api = this.createAPI(this.renderer);
 
         //init systems
@@ -59,11 +64,14 @@ class System_Handler{
         const {ctx, debug, currentScene} = store.getStore('engine').access('ctx', 'debug', 'currentScene');
         const scene = this.getScene();
 
+        // @Todo make this an option
         ctx.clearRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.height);
         ctx.fillStyle = 'black';
         ctx.fillRect(0, 0, ctx.canvas.clientWidth, ctx.canvas.height);
 
         scene.update(dt);
+
+        //@Todo create camera
         //camera.updateCamera();
         this.systems.forEach(system => system.update(dt, this.gameObject[currentScene].query(...system.targetComponents)));
         

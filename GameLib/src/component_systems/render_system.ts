@@ -76,7 +76,7 @@ class Render_System extends System_Base{
             } else if (t.hasComponent('Polygon')){
                 const {vertices} = t.getComponent('Polygon');
                 const {pos} = t.getComponent('Position');
-                console.log(vertices)
+            
                 this.renderer.drawPolygon('red', false, true, pos, vertices);
             }
             

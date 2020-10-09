@@ -2,13 +2,18 @@ import GameObject from './gameObject';
 
 class Object_Handler {
     gameObjects: GameObject[];
-
+    UUIDTrack: number;
     constructor(){
         this.gameObjects = [];
+        this.UUIDTrack = 0;
     }
 
     addGameObject(go: GameObject[]) :void {
-        go.forEach(item => this.gameObjects.push(item))
+        go.forEach(item => {
+            item.UUID = this.UUIDTrack;
+            this.UUIDTrack++;
+            this.gameObjects.push(item)
+        })
     }
 
     // grabs all components with the listed components

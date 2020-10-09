@@ -230,9 +230,9 @@
                         }],
                  "properties":[
                         {
-                         "name":"y",
+                         "name":"Solid",
                          "type":"string",
-                         "value":"sdf"
+                         "value":""
                         }],
                  "rotation":0,
                  "type":"",
@@ -257,6 +257,12 @@
                         {
                          "x":-1,
                          "y":20.5
+                        }],
+                 "properties":[
+                        {
+                         "name":"Solid",
+                         "type":"string",
+                         "value":""
                         }],
                  "rotation":0,
                  "type":"",

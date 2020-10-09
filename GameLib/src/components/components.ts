@@ -3,7 +3,6 @@ import Vector2D from '../modules/vector';
 
 export class Component{
     gameObject: GameObject;
-
     constructor(){
         this.gameObject = null;
     }
@@ -19,9 +18,13 @@ class Gravity extends Component{};
 
 class Inputs extends Component{};
 
+class CameraFocus extends Component{};
+
+class Obstructs extends Component{};
+
 class Killable extends Component{
     dead: boolean;
-    constructor(index: number){
+    constructor(){
         super();
         this.dead = false;
     }
@@ -36,7 +39,7 @@ class zIndex extends Component{
 };
 
 class Animate extends Component{
-    constructor(index: number){
+    constructor(){
         super();
     }
 };
@@ -112,20 +115,17 @@ class Polygon extends Component{
     }
 
     createVertices(v: any[]){
-        let vertices = [];
-        v.forEach(vertice => {
-            vertices.push(new Vector2D(vertice.x, vertice.y))
+       this.vertices = v.map(vertice => {
+            return new Vector2D(vertice.x, vertice.y)
         })
-        console.log(v, vertices)
-        this.vertices = vertices;
     }
 
-    getCenterOfPoly(vertices: Vector2D[]){
-        let center = new Vector2D(0,0);
-        vertices.forEach(vertice => center.add(vertice));
-        this.gameObject.getComponent('Position').pos =
-        center.divide(vertices.length);
-    }
+    // getCenterOfPoly(vertices: Vector2D[]){
+    //     let center = new Vector2D(0,0);
+    //     vertices.forEach(vertice => center.add(vertice));
+    //     this.gameObject.getComponent('Position').pos =
+    //     center.divide(vertices.length);
+    // }
 };
 
 class Physics extends Component{
@@ -139,12 +139,6 @@ class Physics extends Component{
         this.friction = new Vector2D(.9,.9);
         this.acceleration = new Vector2D(0,0);
         this.mass = 1;
-    };
-
-    start(){
-        if(!this.gameObject.getComponent('Position')){
-            //must have a position 
-        }
     };
 
     // update(dt){
@@ -163,6 +157,7 @@ function Components(){
         Solid,
         Renderable,
         Movable,
+        Obstructs,
         Gravity,
         Inputs,
         Killable,
@@ -175,7 +170,8 @@ function Components(){
         Size,
         Polygon,
         Physics,
-        Entity
+        Entity,
+        CameraFocus
     }
 
     return {

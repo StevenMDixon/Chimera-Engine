@@ -165,7 +165,8 @@ class SpriteSheet {
     }
 
     resolveItemComponents(id){
-        return this.tiles.get(id).componentes
+        //console.log(this.tiles.get(id).components)
+        return this.tiles.get(id).components
     }
 }
 

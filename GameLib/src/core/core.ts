@@ -10,6 +10,8 @@ import System_Handler from '../component_systems/system';
 import Loader from '../modules/loader';
 import Camera from '../classes/camera';
 
+import Components from '../components/components';
+
 
 interface gameData {
     target: string,
@@ -28,7 +30,9 @@ interface gameData {
     },
     sounds?: {
         [key: string]: any
-    }
+    },
+    components?: any,
+    systems?: any
 }
 
 
@@ -46,7 +50,7 @@ function core(){
     return {
 
         setup(gamedata: gameData){
-            const {target, size, useController, debug, imageRoot, scenes, controllerMap, sounds} = gamedata;
+            const {target, size, useController, debug, imageRoot, scenes, controllerMap, sounds, components, systems} = gamedata;
             
             const canvas = document.getElementById(target) as any;
 
@@ -57,10 +61,15 @@ function core(){
                 controllerMap,
                 sounds,
                 imageRoot: imageRoot || config.imageRoot,
-                scenes
+                scenes,
+                components,
+                systems
             });
 
-            assetStore.set({imageRoot: imageRoot || config.imageRoot})
+            assetStore.set({imageRoot: imageRoot || config.imageRoot});
+
+            // add user defined components to component list
+            Components.addComponents(components || []);
  
             const {ctx} = engineStore.access('ctx');
             
@@ -88,6 +97,7 @@ function core(){
         },
         
         async start(){
+            // grab the loaded image 
             const {imageP} = assetStore.access('imageP');
             Promise.all(imageP)
             .catch((error) => console.log(error))
