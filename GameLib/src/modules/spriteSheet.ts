@@ -140,7 +140,6 @@ class SpriteSheet {
             let anim = this.animations.get(name);
             return {sprite: this.tiles.get(anim(time)), imageName: this.image};
         }else {
-            console.log(name, this.tiles.get(name))
             return {sprite: this.tiles.get(name), imageName: this.image};
         }
     }
@@ -165,7 +164,6 @@ class SpriteSheet {
     }
 
     resolveItemComponents(id){
-        //console.log(this.tiles.get(id).components)
         return this.tiles.get(id).components
     }
 }

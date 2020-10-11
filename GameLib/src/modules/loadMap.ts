@@ -114,6 +114,10 @@ function loadObjects(objects, type, components){
     return objects.map(object => {
         let t = new GameObject();   
         if(object.polygon){
+            object.polygon = object.polygon.map(poly => {
+                return {x: poly.x + object.x, y: poly.y + object.y}
+            })
+
             t.addComponent(new components.Polygon(object.polygon));
             t.addComponent(new components.Renderable());
             t.addComponent(new components.Position(object.x, object.y));

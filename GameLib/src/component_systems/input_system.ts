@@ -1,6 +1,5 @@
 import System_Base from './system_base';
 import Controller from '../modules/controller';
-import { Entity } from '..';
 
 class Controller_System extends System_Base{
     enablePad: boolean;
@@ -13,7 +12,7 @@ class Controller_System extends System_Base{
         this.enablePad = false;
         this.gamePad = new Controller();
         this.inputs = {}
-        this.targetComponents = ['controller'];
+        this.targetComponents = ['Inputs'];
     }
 
     init(): void{
@@ -24,10 +23,12 @@ class Controller_System extends System_Base{
         }
     }
 
-    update(deltaTime: number, enities){
+    update(deltaTime: number, entities){
         //@Todo find all gameObjects listening for inputs give them the inputs
-        //console.log(enities)
-        enities.forEach(e => e.getComponent('Input').inputs = this.inputs);
+        entities.forEach(e => {
+            e.getComponent('Inputs').inputs = this.inputs
+        } 
+            );
     }
 
     onKey(event, key, pressed, type): void{

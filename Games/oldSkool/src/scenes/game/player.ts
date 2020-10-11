@@ -1,50 +1,21 @@
-import {Entity} from 'GameLib';
-
-class Player extends Entity{
-
-    constructor(x, y, w, h){
-        super(x, y, w, h);
-        this.state = 'idle'
-        //this.rotation = r;
-        this.spriteSheet = 'player';
-        this.stateMap = {
-            'idle': 0,
-            'walk-up': 2,
-            'walk': 5 
-        }
-    }
-
-    setState(){
-        console.log(this.velocity)
-        if(this.velocity.x !== 0  && this.velocity.y > 0 || this.velocity.y > 0){
-            this.state = 'walk';
-        } else if (this.velocity.x !== 0 && this.velocity.y < 0 || this.velocity.y < 0){
-            this.state = 'walk-up';
-        } else if (this.velocity.x !== 0) {
-            this.state = 'walk';
-        } else {
-            this.state = 'idle';
-        }
-    }
-   // move(deltatime){
-        // if(this.xVelocity !== 0  && this.yVelocity > 0 || this.yVelocity > 0){
-        //     this.state = 'walk';
-        // } else if (this.xVelocity !== 0 && this.yVelocity < 0 || this.yVelocity < 0){
-        //     this.state = 'walk-up';
-        // } else if (this.xVelocity !== 0) {
-        //     this.state = 'walk';
-        // } else {
-        //     this.state = 'idle'
-        // }
-
-        // this.y += this.yVelocity * deltatime/100;
-        // this.yVelocity *= this.yFriction;
-
-        // this.x += this.xVelocity * deltatime/100;
-        // this.xVelocity *= this.xFriction;
-   // }
+import {Components} from 'GameLib';
 
 
+export function Player(){
+    let comp = Components.getComponents();
+    return [
+        {component: comp.Position, values: "15,15"},
+        {component: comp.Size, values: "8,8"},
+        {component: comp.Sprite, values: "colored_tilemap"},
+        {component: comp.Renderable, values: ""},
+        {component: comp.Entity, values: "5,Tiled"},
+        {component: comp.Player, values: ""},
+        {component: comp.Movable, values: ""},
+        {component: comp.Inputs, values: ""},
+        {component: comp.CameraFocus, values: ""},
+        {component: comp.Physics, values: ""},
+        {component: comp.Solid, values: ""},
+        //{component: comp.Gravity, values: ".5"},
+        {component: comp.Bounce, values: "2"}
+      ]; 
 }
-
-export default Player;

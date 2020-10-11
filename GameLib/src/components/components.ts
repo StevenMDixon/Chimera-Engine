@@ -1,5 +1,7 @@
 import GameObject from './gameObject';
 import Vector2D from '../modules/vector';
+import {createVertices} from '../modules/utils';
+import { Vector } from '..';
 
 export class Component{
     gameObject: GameObject;
@@ -14,11 +16,32 @@ class Solid extends Component{};
 
 class Renderable extends Component{};
 
-class Movable extends Component{};
+class Movable extends Component{
+};
 
-class Gravity extends Component{};
+class Bounce extends Component{
+    bounce: Vector2D;
+    constructor(value){
+        super();
+        this.bounce = value || 5;
+    }
+}
 
-class Inputs extends Component{};
+class Gravity extends Component{
+    gravity: Vector2D;
+    constructor(value){
+        super();
+        this.gravity = new Vector(0, value || .1);
+    }
+};
+
+class Inputs extends Component{
+    inputs: any;
+    constructor(){
+        super();
+        this.inputs = {};
+    }
+};
 
 class CameraFocus extends Component{};
 
@@ -112,46 +135,27 @@ class Polygon extends Component{
     vertices: Vector2D[];
     constructor(vertices){
         super();
-        this.vertices = [];
-        this.createVertices(vertices)
+        this.vertices = createVertices(vertices);
     }
-
-    createVertices(v: any[]){
-       this.vertices = v.map(vertice => {
-            return new Vector2D(vertice.x, vertice.y)
-        })
-    }
-
-    // getCenterOfPoly(vertices: Vector2D[]){
-    //     let center = new Vector2D(0,0);
-    //     vertices.forEach(vertice => center.add(vertice));
-    //     this.gameObject.getComponent('Position').pos =
-    //     center.divide(vertices.length);
-    // }
 };
 
+
 class Physics extends Component{
+    collided: boolean;
     mass: number;
     velocity: Vector2D;
     friction: Vector2D;
     acceleration: Vector2D;
+    resolve: any;
     constructor(){
         super();
         this.velocity = new Vector2D(0,0);
-        this.friction = new Vector2D(.9,.9);
+        this.friction = new Vector2D(.8,.8);
         this.acceleration = new Vector2D(0,0);
         this.mass = 1;
+        this.collided = false;
+        this.resolve = {x: 0, y: 0}
     };
-
-    // update(dt){
-    //     if(this.gameObject.getComponent('Position')){
-    //         this.velocity.add(this.acceleration.multiply(dt/100));
-    //         this.gameObject.getComponent('Position').pos.add(this.velocity);
-    //         this.velocity.x *= this.friction.x;
-    //         this.velocity.y *= this.friction.y;
-    //         this.acceleration.set(0,0);
-    //     }   
-    // };
 };
 
 function Components(){
@@ -174,7 +178,8 @@ function Components(){
         Polygon,
         Physics,
         Entity,
-        CameraFocus
+        CameraFocus,
+        Bounce
     }
 
     return {

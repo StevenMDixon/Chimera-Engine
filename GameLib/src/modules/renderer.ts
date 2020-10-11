@@ -64,13 +64,13 @@ function primitives(ctx){
         ctx.fillStyle = fs;
     },
 
-    drawPolygon: (color, fill, stroke, pos, vertices) =>{
+    drawPolygon: (color, fill, stroke, xOffset, yOffset, vertices) =>{
         let reserve = ctx.strokeStyle;
         ctx.strokeStyle = color;
         ctx.beginPath();
-        ctx.moveTo(pos.x, pos.y);
+        //ctx.moveTo(x, y);
         vertices.forEach(v => {
-            ctx.lineTo(v.x + pos.x, v.y + pos.y)
+            ctx.lineTo(v.x - xOffset, v.y - yOffset)
         })
         ctx.closePath();
         ctx.stroke();
@@ -82,7 +82,7 @@ function primitives(ctx){
 function game(ctx){
     return {
         drawTile(img, tile, x, y, w, h){ 
-            //Math.floor(tileIn.pos.x - Math.ceil(offset.x)), Math.floor(tileIn.pos.y - Math.ceil(offset.y))
+            //Math.floor(.pos.x - Math.ceil(offset.x)), Math.floor(pos.y - Math.ceil(offset.y))
             ctx.drawImage(img, tile.x, tile.y, tile.w, tile.h, x, y, w, h);
         },
         drawSprite(img, sprite, x, y, w, h){

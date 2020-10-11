@@ -18,24 +18,6 @@
  "tileheight":8,
  "tiles":[
         {
-         "id":0,
-         "properties":[
-                {
-                 "name":"Components",
-                 "type":"string",
-                 "value":""
-                }]
-        }, 
-        {
-         "id":1,
-         "properties":[
-                {
-                 "name":"Obstructs",
-                 "type":"string",
-                 "value":""
-                }]
-        }, 
-        {
          "animation":[
                 {
                  "duration":100,
@@ -46,6 +28,15 @@
                  "tileid":12
                 }],
          "id":13
+        }, 
+        {
+         "id":16,
+         "properties":[
+                {
+                 "name":"Solid",
+                 "type":"string",
+                 "value":""
+                }]
         }, 
         {
          "animation":[
@@ -75,6 +66,15 @@
                  "name":"direction",
                  "type":"string",
                  "value":"forward"
+                }]
+        }, 
+        {
+         "id":34,
+         "properties":[
+                {
+                 "name":"Solid",
+                 "type":"string",
+                 "value":""
                 }]
         }],
  "tilewidth":8,

@@ -1,6 +1,7 @@
 // import game library to handle the game
 import {GameManager} from 'GameLib';
-
+import Movement_System from './systems/movement';
+import Physics_System from './systems/physics';
 //import user defined scenes
 import GameScreen from './scenes/game/game';
 
@@ -26,7 +27,8 @@ myGame.setup(
            //StartScreen,
            GameScreen
         },
-        controllerMap: {}
+        controllerMap: {},
+        systems: [Movement_System, Physics_System]
 });
 
 

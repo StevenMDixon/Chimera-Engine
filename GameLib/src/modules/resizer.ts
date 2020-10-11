@@ -27,7 +27,7 @@ ctx.canvas.width = Math.floor(rect.width * devicePixelRatio);
 ctx.canvas.height = Math.floor(rect.height * devicePixelRatio);
 
 // ensure all drawing operations are scaled
-ctx.scale(devicePixelRatio, devicePixelRatio);
+ctx.scale(devicePixelRatio * 1, devicePixelRatio * 1);
 
 // scale everything down using CSS
 ctx.canvas.style.width = rect.width + 'px';

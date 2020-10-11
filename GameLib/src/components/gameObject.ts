@@ -33,12 +33,21 @@ class GameObject{
         return this.components.get(name);
     }
 
-    getComponents(name: string){
+    getComponents(name: string): any[]{
         return this.components.entries;
     }
 
-    hasComponent(name: string){
-        return this.components.has(name);
+    hasComponent(...names: string[]): boolean{
+        let has = true;
+        
+        for(let i = 0; i < names.length; i++){
+            if (!this.components.has(names[i])){
+                has = false;
+                break;
+            }
+        }
+
+        return has;
     }
 }
 

@@ -17,18 +17,21 @@ limit - limits the magnitude
 
 */
 
+import { Vector } from "..";
+
 class Vector2D {
     x: number;
     y: number;
 
     constructor(x, y){
-        this.x = x;
-        this.y = y;
+        this.x = parseFloat(x);
+        this.y = parseFloat(y);
     }
 
-    set(x,y){
-        this.x = x;
-        this.y = y;
+    set(vector: Vector2D){
+        this.x = vector.x;
+        this.y = vector.y;
+        return this
     }
 
     add(vector: Vector2D){
@@ -69,8 +72,9 @@ class Vector2D {
 
     normalize(){
         // divide by magnitude
-        const len = this.mag();
-        if (len !== 0) this.multiply(1 / len);
+        let mag = this.mag();
+        this.x /= mag;
+        this.y /= mag;
         return this;
     }
 
@@ -79,8 +83,8 @@ class Vector2D {
         return this;
     }
 
-    dot(x, y){
-        return this.x * (x || 0) + this.y * (y || 0);
+    dot(v){
+        return this.x * v.x + this.y * v.y;
     }
 
     linearInt(x, y, a){
@@ -89,13 +93,39 @@ class Vector2D {
         return this;
     }
 
-    // @ todo define static methods
-    static add(){
-
+    perp(){
+        let tmp = this.x;
+        this.x = -this.y;
+        this.y = tmp;
+        return this;
     }
 
-    static subtract(){
 
+    scalarProject(vec){
+        return this.dot(vec) / vec.mag();
+    }
+
+    scalarProjectUnit(vec) {
+        return this.dot(vec);
+    }
+
+    negate(){
+        this.x = -this.x;
+        this.y = -this.y;
+        return this;
+    }
+
+    // @ todo define static methods
+    static add(v1, v2){
+        return new Vector(v1.x + v2.x, v1.y + v2.y);
+    }
+
+    static multiply(v1, v2){
+        return new Vector(v1.x * v2.x, v1.y * v2.y)
+    }
+
+    static subtract(v1, v2){
+        return new Vector(v1.x - v2.x, v1.y - v2.y);
     }
 }
 
