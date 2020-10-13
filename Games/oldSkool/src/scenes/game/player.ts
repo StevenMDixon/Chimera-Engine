@@ -6,7 +6,7 @@ export function Player(){
     return [
         {component: comp.Position, values: "15,15"},
         {component: comp.Size, values: "8,8"},
-        {component: comp.Sprite, values: "colored_tilemap"},
+        {component: comp.Sprite, values: "player"},
         {component: comp.Renderable, values: ""},
         {component: comp.Entity, values: "5,Tiled"},
         {component: comp.Player, values: ""},
@@ -16,6 +16,14 @@ export function Player(){
         {component: comp.Physics, values: ""},
         {component: comp.Solid, values: ""},
         //{component: comp.Gravity, values: ".5"},
-        {component: comp.Bounce, values: "2"}
+        //{component: comp.Bounce, values: "2"}
+        //new comp.Gravity(.2)
+        new comp.State('idle'),
+        new comp.Animate({
+          'idle': 0,
+          'walk-up': 2,
+          'walk': 5
+        })
       ]; 
+    
 }
