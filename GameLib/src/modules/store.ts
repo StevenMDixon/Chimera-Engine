@@ -1,19 +1,4 @@
 
-function store_Factory(){
-    const _stores = {}
-    return {
-        createStore: function(name, data){
-            _stores[name] = store(data);
-            return _stores[name];
-        },
-        getStore: function(name){
-            return _stores[name];
-        },
-        getCurrent: function(){
-            return Object.keys(_stores);
-        }
-    }
-}
 
 function store(intitialProps){
 
@@ -60,5 +45,21 @@ function store(intitialProps){
 
 }
 
+class Store_Factory {
+    private _stores: any
+    constructor(){
+        this._stores = {}
+    }
+    createStore(name, data){
+        this._stores[name] = store(data);
+        return this._stores[name];
+    }
+    getStore (name){
+        return this._stores[name];
+    }
+}
 
-export default store_Factory();
+const instance = new Store_Factory();
+Object.freeze(instance)
+
+export default instance;

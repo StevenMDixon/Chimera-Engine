@@ -16,16 +16,16 @@ class Movement_System extends System_Base {
                 const newVec = new Vector(0, 0);
 
                 if(inputs[38] === true){
-                   newVec.add(new Vector(0, -1.5))
+                   newVec.add(new Vector(0, -1))
                 }
                 if(inputs[40] === true){
-                    newVec.add(new Vector(0, 1.5))
+                    newVec.add(new Vector(0, 1))
                 }
                 if(inputs[39] === true){
-                    newVec.add(new Vector(1.5, 0))
+                    newVec.add(new Vector(1, 0))
                 }
                 if(inputs[37] === true){
-                    newVec.add(new Vector(-1.5, 0))
+                    newVec.add(new Vector(-1, 0))
                 }
                 if(e.hasComponent("Physics")){
                     e.getComponent("Physics").acceleration.add(newVec);

@@ -1,10 +1,10 @@
 
-export function manageDPI(ctx){
-    window.addEventListener('resize', (e) => resize(ctx, e));
-    resize(ctx);
+export function manageDPI(ctx, scale){
+    window.addEventListener('resize', (e) => resize(ctx, scale));
+    resize(ctx, scale);
 }
 
-function resize(ctx, event?) {
+function resize(ctx, scale, event?) {
     // Get the height and width of the window
     // var height = document.documentElement.clientHeight;
     // var width  = document.documentElement.clientWidth;
@@ -27,7 +27,7 @@ ctx.canvas.width = Math.floor(rect.width * devicePixelRatio);
 ctx.canvas.height = Math.floor(rect.height * devicePixelRatio);
 
 // ensure all drawing operations are scaled
-ctx.scale(devicePixelRatio * 1, devicePixelRatio * 1);
+ctx.scale(devicePixelRatio * scale, devicePixelRatio * scale);
 
 // scale everything down using CSS
 ctx.canvas.style.width = rect.width + 'px';

@@ -54,16 +54,14 @@ class SpriteSheet {
     animations: any;
     offset: number;
     type: string;
-    root: string;
 
-    constructor(data, type, root){
+    constructor(data, type){
         this.image = null;
         this.data = data;
         this.tiles = new Map();
         this.animations = new Map();
         this.offset = 0;
         this.type = type;
-        this.root = root;
 
         this.setup(data);
     }
@@ -169,32 +167,33 @@ class SpriteSheet {
 }
 
 
+class SpriteSheet_Factory{
+    _sheets: any;
+    constructor(){
+        this._sheets = {};
+    }
+    create(sheets){
+        sheets.forEach(sheet => {
+            if(sheet.tiledversion){
+                //         // this is a tile sheet from tiled
+                this._sheets[sheet.name] = new SpriteSheet(sheet, 'tiled');
+            }else {
+                this. _sheets[sheet.name] = new SpriteSheet(sheet, 'custom');
+            }
+        })
 
-
-function spriteSheet_Factory(){
-    const _sheets = {};
-    return {
-        create: function(sheets){
-            sheets.forEach(sheet => {
-                if(sheet.tiledversion){
-                    //         // this is a tile sheet from tiled
-                    _sheets[sheet.name] = new SpriteSheet(sheet, 'tiled', this.imageRoot);
-                }else {
-                    _sheets[sheet.name] = new SpriteSheet(sheet, 'custom', this.imageRoot);
-                }
-            })
-
-        },
-        resolve: function(name){
-            return _sheets[name];
-        },
-        checkItem: function(name, item){
-            return _sheets[name].hasItem(item)
-        },
-        getCustomProperties: function(name, item){
-            return _sheets[name].resolveItemComponents(item) || []
-        }
+    }
+    resolve(name){
+        return this._sheets[name];
+    }
+    checkItem(name, item){
+        return this._sheets[name].hasItem(item)
+    }
+    getCustomProperties(name, item){
+        return this._sheets[name].resolveItemComponents(item) || []
     }
 }
 
-export default spriteSheet_Factory();
+const instance = new SpriteSheet_Factory();
+
+export default instance;

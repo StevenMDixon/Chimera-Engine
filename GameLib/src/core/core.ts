@@ -71,7 +71,7 @@ function core(){
             // add user defined components to component list
             Components.addComponents(components || []);
  
-            const {ctx} = engineStore.access('ctx');
+            const {ctx, scale} = engineStore.access('ctx', 'scale');
             
             if(!ctx){
                 throw new Error('ctx cannot be bound or canvas is missing');
@@ -92,8 +92,8 @@ function core(){
             engineStore.set({'camera': new Camera(0, 0, ctx.canvas.width, ctx.canvas.height)})
 
             // fix issues with resizing screens
-            window.addEventListener('resize', (e) => manageDPI(ctx));
-            manageDPI(ctx);       
+            window.addEventListener('resize', (e) => manageDPI(ctx, scale));
+            manageDPI(ctx, scale);       
         },
         
         async start(){

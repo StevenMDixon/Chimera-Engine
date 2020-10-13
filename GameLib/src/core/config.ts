@@ -16,5 +16,6 @@ export const config = {
                 3: 'foreGround'
         },
         systems: [],
-        components: []
+        components: [],
+        scale: 2
 }
