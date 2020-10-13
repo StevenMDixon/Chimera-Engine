@@ -49,11 +49,24 @@ class Render_System extends System_Base{
                 const {spriteSheetName} = t.getComponent('Sprite')
                 const {size} = t.getComponent('Size');
                 const {entityType} = t.getComponent('Entity');
-                const ss = this.spriteSheets.resolve(spriteSheetName)
-                const {sprite, imageName} = (ss.resolveSpriteData(parseInt(entityType), totalTime));
+                const {map} = t.getComponent('Animate');
+                const {state} = t.getComponent('State');
+                const ss = this.spriteSheets.resolve(spriteSheetName);
+
+                let anim = parseInt(entityType);
+                if(map && state){
+                    anim = map[state];
+                }
+
                 if(t.hasComponent('Player')){
                     //@TODO implement player logic?
+               
                 }
+                
+                const {sprite, imageName} = (ss.resolveSpriteData(anim, totalTime));
+ 
+
+                
                 const image = images[imageName];
                 if(image && sprite){
                     

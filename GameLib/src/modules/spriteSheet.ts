@@ -6,17 +6,12 @@ function createAnimation(frames, length){
 }
 
 function createTiledAnimation(frames, options){
-    
     let direction = 'loop';
-   
     if(options){
         options.forEach(op => op.name == 'direction'? direction = op.value[0]: '');
     }
-    
     let ended = false
-    
     const totalFrameTime = frames.reduce((acc, cur)=>{return acc + cur.duration}, 0);
-    
     return function resolveFrame(d, e){
         let clampedT = (d % totalFrameTime);
         let i = 0;
@@ -39,7 +34,6 @@ function createTiledAnimation(frames, options){
         } else if (direction == 'forward' && ended) {
             i = frames.length - 1
         }
-
         return frames[i].tileid;
     }
 }

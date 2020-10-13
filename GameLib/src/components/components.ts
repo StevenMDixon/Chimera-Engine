@@ -1,7 +1,6 @@
 import GameObject from './gameObject';
 import Vector2D from '../modules/vector';
 import {createVertices} from '../modules/utils';
-import { Vector } from '..';
 
 export class Component{
     gameObject: GameObject;
@@ -31,7 +30,7 @@ class Gravity extends Component{
     gravity: Vector2D;
     constructor(value){
         super();
-        this.gravity = new Vector(0, value || .1);
+        this.gravity = new Vector2D(0, value || .1);
     }
 };
 
@@ -64,8 +63,10 @@ class zIndex extends Component{
 };
 
 class Animate extends Component{
-    constructor(){
+    map: any;
+    constructor(map){
         super();
+        this.map = map;
     }
 };
 
@@ -78,20 +79,10 @@ class Sprite extends Component{
 };
 
 class State extends Component{
-    _state: string;
-    stateMap: object;
-    constructor(currentState: string, stateMap: object){
+    state: string;
+    constructor(currentState: string){
         super();
-        this._state = currentState;
-        this.stateMap = stateMap;
-    }
-    get state(){
-        return this.stateMap[this._state];
-    }
-    set state(newState){
-        if(this.stateMap[newState]){
-            this._state = newState
-        }
+        this.state = currentState;
     }
 };
 
@@ -154,7 +145,7 @@ class Physics extends Component{
         this.acceleration = new Vector2D(0,0);
         this.mass = 1;
         this.collided = false;
-        this.resolve = {x: 0, y: 0}
+        //this.resolve = {x: 0, y: 0}
     };
 };
 
