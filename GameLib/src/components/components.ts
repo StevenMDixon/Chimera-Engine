@@ -15,8 +15,7 @@ class Solid extends Component{};
 
 class Renderable extends Component{};
 
-class Movable extends Component{
-};
+class Movable extends Component{};
 
 class Bounce extends Component{
     bounce: Vector2D;

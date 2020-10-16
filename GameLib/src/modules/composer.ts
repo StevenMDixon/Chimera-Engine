@@ -6,11 +6,9 @@ function compose(componentList): gameObject[]
 {
     let t = new gameObject();
     componentList.forEach(item => {
-        console.log(item)
             if(item['component']){
                 t.addComponent(new item.component(...item.values.split(",")));
             }else if (item instanceof Component){
-                console.log('r')
                 t.addComponent(item);
             }
     })

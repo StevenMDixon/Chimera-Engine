@@ -101,7 +101,7 @@ function LoadEntityChunk(chunk, w, h, c, ss?){
             cd.forEach(component => {
                 if(c[component.name]){
                     t.addComponent(new c[component.name](...component.values));
-                }
+                }else{}
             })
 
             tiles.push(t);
