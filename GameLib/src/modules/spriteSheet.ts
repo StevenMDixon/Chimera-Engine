@@ -1,49 +1,8 @@
-function createAnimation(frames, length){
-    return function resolveFrame(d){
-        const index = Math.floor(d/ length) % frames.length;
-        return frames[index];
-    }
-}
-
-function createTiledAnimation(frames, options){
-    let direction = 'loop';
-    if(options){
-        options.forEach(op => op.name == 'direction'? direction = op.value[0]: '');
-    }
-    let ended = false
-    const totalFrameTime = frames.reduce((acc, cur)=>{return acc + cur.duration}, 0);
-    return function resolveFrame(d, e){
-        let clampedT = (d % totalFrameTime);
-        let i = 0;
-
-        if(direction == 'loop'){
-            frames.forEach(frame => {
-                clampedT -= frame.duration;
-                if(clampedT >= 0){ i += 1}
-            })
-
-            return frames[i].tileid;
-        }
-
-        if(direction == 'forward' && !ended){
-            frames.forEach(frame => {
-                clampedT -= frame.duration;
-                if(clampedT >= 0){ i += 1}
-                if(i == frames.length -1) {ended = true}
-            })
-        } else if (direction == 'forward' && ended) {
-            i = frames.length - 1
-        }
-        return frames[i].tileid;
-    }
-}
-
+import {createAnimation, createTiledAnimation} from './animation';
 
 class SpriteSheet {
-    src:  any;
     data: any;
     image: any;
-    name: string
     tiles: any;
     animations: any;
     offset: number;
@@ -105,7 +64,6 @@ class SpriteSheet {
             //tiled stores animations under the tiles section
             if(data.tiles){
                 this.data.tiles.forEach(anim => {
-
                     if(anim.animation){
                         this.animations.set(
                             anim.id,
@@ -162,14 +120,16 @@ class SpriteSheet {
 
 
 class SpriteSheet_Factory{
-    _sheets: any;
+    _sheets: {
+        [key: string]: SpriteSheet
+    };
     constructor(){
         this._sheets = {};
     }
     create(sheets){
         sheets.forEach(sheet => {
             if(sheet.tiledversion){
-                //         // this is a tile sheet from tiled
+                // this is a tile sheet from tiled
                 this._sheets[sheet.name] = new SpriteSheet(sheet, 'tiled');
             }else {
                 this. _sheets[sheet.name] = new SpriteSheet(sheet, 'custom');
@@ -188,6 +148,4 @@ class SpriteSheet_Factory{
     }
 }
 
-const instance = new SpriteSheet_Factory();
-
-export default instance;
+export default new SpriteSheet_Factory();
