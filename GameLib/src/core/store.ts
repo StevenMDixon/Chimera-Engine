@@ -60,6 +60,6 @@ class Store_Factory {
 }
 
 const instance = new Store_Factory();
-Object.freeze(instance)
+Object.freeze(instance);
 
 export default instance;

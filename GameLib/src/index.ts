@@ -6,8 +6,11 @@ import Vector from './modules/vector';
 
 import System_Base from './component_systems/system_base';
 
+import Event from './core/event_system';
+
 import Components from './components/components';
+import {Component} from './components/components'
 
 import GameManager from './core/core';
 
-export {GameManager, Scene, Menu, Vector, Components, System_Base};
+export {GameManager, Scene, Menu, Vector, Components, System_Base, Event, Component};

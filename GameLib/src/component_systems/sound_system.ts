@@ -11,7 +11,7 @@ class Sound_System extends System_Base{
     }
 
 
-    update(deltaTime){
+    update({deltaTime}){
 
     }
 }

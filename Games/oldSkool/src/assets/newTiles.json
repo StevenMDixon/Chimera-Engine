@@ -63,9 +63,9 @@
          "id":32,
          "properties":[
                 {
-                 "name":"direction",
+                 "name":"Solid",
                  "type":"string",
-                 "value":"forward"
+                 "value":""
                 }]
         }, 
         {

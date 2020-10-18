@@ -4,7 +4,7 @@ import {Components} from 'GameLib';
 export function Player(){
     let comp = Components.getComponents();
     return [
-        {component: comp.Position, values: "15,15"},
+        new comp.Position(15,15),
         {component: comp.Size, values: "8,8"},
         {component: comp.Sprite, values: "player"},
         {component: comp.Renderable, values: ""},
@@ -16,8 +16,8 @@ export function Player(){
         {component: comp.Physics, values: ""},
         {component: comp.Solid, values: ""},
         //{component: comp.Gravity, values: ".5"},
-        //{component: comp.Bounce, values: "2"}
-        //new comp.Gravity(.2)
+        //{component: comp.Bounce, values: "1"}
+        //,new comp.Gravity(.3),
         new comp.State('idle'),
         new comp.Animate({
           'idle': 0,

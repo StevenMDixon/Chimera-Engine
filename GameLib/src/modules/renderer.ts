@@ -1,6 +1,3 @@
-import Vector from '../modules/vector';
-
-
 function primitives(ctx){
     return {
     //@todo: work on this to change fonts and colors and styles
@@ -97,18 +94,10 @@ function images(){
 
 
 function Render_Factory(ctx){
-    return function getRenderer(type){
-        if(type === 'system'){
-            return {
-                ...primitives(ctx),
-                ...game(ctx)
-            }
-        }
-    
-        if(type === 'user'){
-            return {
-                ...primitives(ctx)
-            }
+    return function getRenderer(){
+        return {
+            ...primitives(ctx),
+            ...game(ctx)
         }
     }
 }

@@ -1,5 +1,6 @@
 import System_Base from './system_base';
 import Controller from '../modules/controller';
+import events from '../core/event_system';
 
 class Controller_System extends System_Base{
     enablePad: boolean;
@@ -23,12 +24,13 @@ class Controller_System extends System_Base{
         }
     }
 
-    update(deltaTime: number, entities){
+    update({deltaTime, entities}){
         //@Todo find all gameObjects listening for inputs give them the inputs
-        entities.forEach(e => {
-            e.getComponent('Inputs').inputs = this.inputs
-        } 
-            );
+        entities.query(...this.targetComponents).forEach(e => {
+            if(e.hasComponent('Inputs')){
+                e.getComponent('Inputs').inputs = this.inputs
+            }
+        } );
     }
 
     onKey(event, key, pressed, type): void{
@@ -41,6 +43,7 @@ class Controller_System extends System_Base{
              this.inputs[item] = pressed;
            })
         }
+        events.publish('input_update', this.inputs);
     }
 
     overrideControllerMapping(map: object): void{

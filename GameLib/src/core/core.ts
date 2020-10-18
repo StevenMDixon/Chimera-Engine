@@ -3,9 +3,9 @@
 import {config} from './config';
 import {manageDPI} from '../modules/resizer';
 
-import Store from '../modules/store';
+import Store from './store';
 
-import System_Handler from '../component_systems/system';
+import System_Handler from './core_system';
 
 import Loader from '../modules/loader';
 import Camera from '../classes/camera';
@@ -55,21 +55,17 @@ function core(){
             const canvas = document.getElementById(target) as any;
 
             store.getStore('engine').set({
-                ctx: canvas.getContext('2d'),
-                useController,
-                debug,
-                controllerMap,
-                sounds,
-                imageRoot: imageRoot || config.imageRoot,
-                scenes,
-                components,
-                systems
+                ...config,
+                ...gamedata,
+                ...{canvas, ctx: canvas.getContext('2d')}
             });
 
             assetStore.set({imageRoot: imageRoot || config.imageRoot});
 
             // add user defined components to component list
+            console.log(components)
             Components.addComponents(components || []);
+            console.log(Components.getComponents())
  
             const {ctx, scale} = engineStore.access('ctx', 'scale');
             
@@ -103,7 +99,7 @@ function core(){
             .catch((error) => console.log(error))
             .then(()=>{
                 system.init();
-                this._update();
+                requestAnimationFrame(() => this._update());
             })
         },
 
