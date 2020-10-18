@@ -7,9 +7,9 @@ class Movement_System extends System_Base {
         this.targetComponents = ["Movable", "Inputs"];
     }
 
-    update(deltaTime, entities){
+    update({deltaTime, entities}){
         //console.log(entities)
-        entities.forEach(e => {
+        entities.query(...this.targetComponents).forEach(e => {
             if(e.hasComponent("Player", "Position")){
                 //if(e.getComponent("Inputs").inputs.length > 0)
                 const {inputs} = e.getComponent("Inputs");
@@ -17,16 +17,16 @@ class Movement_System extends System_Base {
                 const newVec = new Vector(0, 0);
 
                 if(inputs[38] === true){
-                   newVec.add(new Vector(0, -1))
+                   newVec.add(new Vector(0, -2))
                 }
                 if(inputs[40] === true){
-                    newVec.add(new Vector(0, 1));
+                    newVec.add(new Vector(0, 2));
                 }
                 if(inputs[39] === true){
-                    newVec.add(new Vector(1, 0))
+                    newVec.add(new Vector(2, 0))
                 }
                 if(inputs[37] === true){
-                    newVec.add(new Vector(-1, 0))
+                    newVec.add(new Vector(-2, 0))
                 }
                 if(!inputs[37] && !inputs[38] && !inputs[39] && !inputs[40]){
                     if(state){
@@ -43,13 +43,10 @@ class Movement_System extends System_Base {
                     e.getComponent("State").state = 'walk-up'
                 }
                 else if( newVec.y > 0 ){
-                    console.log(newVec.y)
                     e.getComponent("State").state = 'walk'
                 }else if( newVec.x != 0){
                     e.getComponent("State").state = 'walk'
                 }
-
-                //console.log(e.getComponents("State").state)
             }
         })
     }

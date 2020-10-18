@@ -48,7 +48,11 @@ function loadLayer(layer, w, h, components, ss){
 
         //@Todo Define object loading
         if(layer.type == 'objectgroup'){
-            items = loadObjects(layer.objects, layer.name, components);
+            if(layer.name == 'Collisions'){
+                items = loadObjects(layer.objects, layer.name, components);
+            }else if(layer.name == 'Entity'){
+                items = LoadEntityObjects(layer.objects, layer.name, components, ss);
+            }
          }
         
         return items
@@ -75,7 +79,6 @@ function loadTileChunk(chunk, tilew, tileh, c, ss){
                     t.addComponent(new c[component.name](...component.value));
                 }
             }) 
-
             tiles.push(t);
         }
     }
@@ -96,11 +99,10 @@ function LoadEntityChunk(chunk, w, h, c, ss?){
             t.addComponent(new c.Sprite(ss));
             t.addComponent( new c.Entity(data[i] -1, 'tiled'));
             t.addComponent(new c.zIndex(2));
-            
             let cd = SpriteSheet.getCustomProperties(ss, data[i] -1);
             cd.forEach(component => {
                 if(c[component.name]){
-                    t.addComponent(new c[component.name](...component.values));
+                    t.addComponent(new c[component.name](...component.value));
                 }else{}
             })
 
@@ -126,7 +128,6 @@ function loadObjects(objects, type, components){
             t.addComponent(new components.Renderable());
             t.addComponent( new components.Position(object.x, object.y));
             t.addComponent(new components.Size(object.width, object.height));
-            t.addComponent(new components.Size(object.width, object.height));
             t.addComponent(new components.zIndex(3));
         }
         if(object.properties){
@@ -135,9 +136,29 @@ function loadObjects(objects, type, components){
                     t.addComponent(new components[prop.name](...prop.value.split(',')));
                 }
             })
-            
         }
 
+        return t
+    })
+}
+
+function LoadEntityObjects(objects, type, components, ss){
+    return objects.map(object => {
+        let t = new GameObject(); 
+        if(object.gid >= 0){
+            t.addComponent(new components.Sprite(ss));
+            t.addComponent( new components.Entity(object.gid - 1, 'tiled'));
+        }
+        t.addComponent(new components.Position(object.x, object.y - object.height));
+        t.addComponent(new components.Size(object.width, object.height));
+        t.addComponent(new components.zIndex(2));
+        if(object.properties){
+            object.properties.forEach(prop => {
+                if(components[prop.name]){
+                    t.addComponent(new components[prop.name](...prop.value.split(',')));
+                }
+            })
+        }
         return t
     })
 }

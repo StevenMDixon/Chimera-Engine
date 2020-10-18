@@ -43,8 +43,6 @@ class Inputs extends Component{
 
 class CameraFocus extends Component{};
 
-class Obstructs extends Component{};
-
 class Killable extends Component{
     dead: boolean;
     constructor(){
@@ -144,9 +142,10 @@ class Physics extends Component{
         this.acceleration = new Vector2D(0,0);
         this.mass = 1;
         this.collided = false;
-        //this.resolve = {x: 0, y: 0}
     };
 };
+
+class Collectible extends Component{}
 
 function Components(){
     const comp = {
@@ -154,7 +153,6 @@ function Components(){
         Solid,
         Renderable,
         Movable,
-        Obstructs,
         Gravity,
         Inputs,
         Killable,
@@ -169,7 +167,8 @@ function Components(){
         Physics,
         Entity,
         CameraFocus,
-        Bounce
+        Bounce,
+        Collectible
     }
 
     return {
@@ -178,7 +177,8 @@ function Components(){
         },
         addComponents(components){
             components.forEach(com =>{
-                comp[com] = com;
+                let temp = new com();
+                comp[temp.constructor.name] = com;
             })
         }
     }

@@ -2,6 +2,9 @@
 import {GameManager} from 'GameLib';
 import Movement_System from './systems/movement';
 import Physics_System from './systems/physics';
+import Components from './systems/components';
+import Collision_Resolver_System from './systems/collision_resolver';
+import Door from './systems/door';
 //import user defined scenes
 import GameScreen from './scenes/game/game';
 
@@ -28,7 +31,8 @@ myGame.setup(
            GameScreen
         },
         controllerMap: {},
-        systems: [Movement_System, Physics_System]
+        components: Components,
+        systems: [Movement_System, Physics_System, Collision_Resolver_System, Door]
 });
 
 

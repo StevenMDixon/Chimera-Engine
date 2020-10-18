@@ -47,17 +47,14 @@ class SpriteSheet {
 
         if(this.type == 'tiled'){
             const {tileheight, tilewidth, margin, spacing, tilecount, columns} = this.data;
-            let iy = 0;
             for(let i = 0; i < tilecount; i++){
-                
                 this.tiles.set(i, {
                     x: margin + ((i%columns) *tilewidth) + ((i%columns) * spacing),
-                    y: margin + (iy*tileheight) + (iy * spacing),
+                    y: margin + (Math.floor(i/(columns))*tileheight) + (Math.floor(i/(columns)) * spacing),
                     w: tilewidth,
                     h: tileheight,
                     components: []
-                })
-                iy = Math.floor(i/(columns-1))
+                });
             }
 
            

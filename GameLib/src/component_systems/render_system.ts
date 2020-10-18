@@ -1,6 +1,6 @@
 import System_Base from './system_base';
 import SpriteSheet from '../modules/spriteSheet';
-import Store from '../modules/store';
+import Store from '../core/store';
 import Renderer from '../modules/renderer';
 import {partition, getCenterOfPoly, createVerticesFromSize} from '../modules/utils';
 
@@ -20,11 +20,13 @@ class Render_System extends System_Base{
         const {sheets, imageRoot} = Store.getStore('asset').access('sheets', 'imageRoot');
         const {ctx} = Store.getStore('engine').access('ctx')
         this.spriteSheets.create(sheets, imageRoot);
-        this.renderer = Renderer(ctx)('system');
+        this.renderer = Renderer(ctx)();
     }
 
-    update(deltaTime, enities){
-        const [tiles, sprites] = partition(enities, (e) => e.hasComponent('Tile'));
+    update({deltaTime, entities}){
+        //@Todo filter out every tile not inside of the cameras view so it is not rendered.
+
+        const [tiles, sprites] = partition(entities.query(...this.targetComponents), (e) => e.hasComponent('Tile'));
 
         const {camera, totalTime} = Store.getStore('engine').access('camera', 'totalTime');
         const {images} = Store.getStore('asset').access('images');
@@ -61,12 +63,6 @@ class Render_System extends System_Base{
                     const {state} = t.getComponent('State');
                     anim = map[state];
                 }
-
-
-                if(t.hasComponent('Player')){
-                    //@TODO implement player logic?
-               
-                }
                 
                 const {sprite, imageName} = (ss.resolveSpriteData(anim, totalTime));
  
@@ -74,21 +70,18 @@ class Render_System extends System_Base{
                 if(image && sprite){
                     
                     this.renderer.drawSprite(image, sprite,  pos.x - camera.offSets.x ,  pos.y - camera.offSets.y, size.x, size.y)
-                    if(t.hasComponent("Player")){
-                        let e1 = {};
-                        let {pos} = t.getComponent("Position");
-                        let vertices = createVerticesFromSize(pos, t.getComponent("Size").size)
-                        e1['pos'] = getCenterOfPoly(vertices);
-                        e1['vertices'] = vertices;
+                    
+                    if(t.hasComponent("Solid") && Store.getStore('engine').access('debug').debug){
+                        let vertices = createVerticesFromSize(pos, t.getComponent("Size").size);
                         this.renderer.drawPolygon('red', false, true, camera.offSets.x ,  camera.offSets.y , vertices);
                     }
-
+                    
                 }
-            }else if(t.hasComponent('Size')){
+            }else if(t.hasComponent('Size') && Store.getStore('engine').access('debug').debug){
                 const {pos} = t.getComponent('Position');
                 const {size} = t.getComponent('Size');
-                this.renderer.drawRect(pos.x - camera.offSets.x ,  pos.y - camera.offSets.y , size.x, size.y, 'red', false, true)
-            } else if (t.hasComponent('Polygon')){
+                this.renderer.drawRect(pos.x - camera.offSets.x ,  pos.y - camera.offSets.y , size.x, size.y, 'red', false, true);
+            } else if (t.hasComponent('Polygon') && Store.getStore('engine').access('debug').debug){
                 const {vertices} = t.getComponent('Polygon');
                 this.renderer.drawPolygon('red', false, true, camera.offSets.x , camera.offSets.y , vertices);
             }

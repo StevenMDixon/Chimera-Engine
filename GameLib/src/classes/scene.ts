@@ -23,6 +23,10 @@ class Scene {
         
     }
 
+    public input_event(inputs){
+        
+    } 
+
 }
 
 export default Scene;

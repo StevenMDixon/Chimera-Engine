@@ -8,7 +8,7 @@ class System_Base {
 
     init(){}
 
-    update(deltaTime, enities){}
+    update({}){}
 }
 
 export default System_Base;

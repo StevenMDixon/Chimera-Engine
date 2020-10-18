@@ -7,9 +7,9 @@ class Physics_System extends System_Base {
         this.targetComponents = ["Physics", "Position"];
     }
 
-    update(deltaTime, entities){
-        entities.forEach(e => {
-
+    update({deltaTime, entities}){
+        entities.query(...this.targetComponents).forEach(e => {
+            if(!e.hasComponent('Physics')) return 
             const {velocity, friction , acceleration, mass} = e.getComponent("Physics");
             const {pos} = e.getComponent("Position");
             
