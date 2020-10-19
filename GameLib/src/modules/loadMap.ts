@@ -76,7 +76,7 @@ function loadTileChunk(chunk, tilew, tileh, c, ss){
             let cd = SpriteSheet.getCustomProperties(ss, data[i] -1);
             cd.forEach(component => {
                 if(c[component.name]){
-                    t.addComponent(new c[component.name](...component.value));
+                    t.addComponent(new c[component.name](parseJsonInput(component.value)));
                 }
             }) 
             tiles.push(t);
@@ -101,8 +101,8 @@ function LoadEntityChunk(chunk, w, h, c, ss?){
             t.addComponent(new c.zIndex(2));
             let cd = SpriteSheet.getCustomProperties(ss, data[i] -1);
             cd.forEach(component => {
-                if(c[component.name]){
-                    t.addComponent(new c[component.name](...component.value));
+                if(c[component.name]){ 
+                    t.addComponent(new c[component.name](parseJsonInput(component.value)));
                 }else{}
             })
 
@@ -133,7 +133,7 @@ function loadObjects(objects, type, components){
         if(object.properties){
             object.properties.forEach(prop => {
                 if(components[prop.name]){
-                    t.addComponent(new components[prop.name](...prop.value.split(',')));
+                    t.addComponent(new components[prop.name](parseJsonInput(prop.value)));
                 }
             })
         }
@@ -154,11 +154,24 @@ function LoadEntityObjects(objects, type, components, ss){
         t.addComponent(new components.zIndex(2));
         if(object.properties){
             object.properties.forEach(prop => {
-                if(components[prop.name]){
-                    t.addComponent(new components[prop.name](...prop.value.split(',')));
+                if(components[prop.name]){  
+                    t.addComponent(new components[prop.name](parseJsonInput(prop.value)));
                 }
             })
         }
         return t
     })
+}   
+
+function parseJsonInput(input){
+    //console.log(input)
+    let v = {};
+    try {
+        v = JSON.parse(input) 
+    } catch(e){
+        //console.log(e)
+    }
+    //console.log(v)
+    
+    return v
 }

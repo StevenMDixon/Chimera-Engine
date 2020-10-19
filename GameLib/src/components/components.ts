@@ -194,7 +194,7 @@ function Components(){
         },
         addComponents(components){
             components.forEach(com =>{
-                let temp = new com();
+                let temp = new com({});
                 comp[temp.constructor.name] = com;
             })
         }

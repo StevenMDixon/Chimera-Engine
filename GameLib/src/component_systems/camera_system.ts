@@ -2,15 +2,14 @@ import System_Base from './system_base';
 import Store from '../core/store';
 import Vector from "../modules/vector";
 
+
 class Camera_System extends System_Base{
     constructor(){
         super();
         this.targetComponents = ['CameraFocus'];
     }
 
-    init(){
-        
-    }
+    init(){}
 
     update({deltaTime, entities}){
        const {camera, scale} = Store.getStore('engine').access('camera', 'scale');

@@ -16,9 +16,7 @@ class Collision_Resolver_System extends System_Base {
 
     handle({data, gameObject}){
         gameObject.query('Door').forEach(item =>{
-            console.log(item)
             let {door} = item.getComponent('Door');
-            console.log(door, data)
             if(door == data){
                 gameObject.removeGameObject(item)
             }
