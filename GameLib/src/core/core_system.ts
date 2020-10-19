@@ -10,6 +10,7 @@ import renderSystem from '../component_systems/render_system';
 import colissionSystem from '../component_systems/collision_system';
 import System_Base from '../component_systems/system_base';
 import cameraSystem from '../component_systems/camera_system';
+import ParticleSystem from '../component_systems/particle_system';
 
 import event from './event_system';
 
@@ -38,7 +39,7 @@ class System_Handler{
     init(){
         const {systems, scenes, ctx} = store.getStore('engine').access('systems', 'scenes', 'ctx');
         //create systems with user defined systems
-        createSystemsList([renderSystem, inputSystem, colissionSystem, cameraSystem] ,systems);
+        createSystemsList([renderSystem, inputSystem, colissionSystem, cameraSystem, ParticleSystem] ,systems);
         
         //initialize renderer
         this.renderer = Renderer(ctx);
@@ -67,6 +68,11 @@ class System_Handler{
     getScene(){
         const {currentScene} = store.getStore('engine').access('currentScene');
         return this.scenes[currentScene];
+    }
+
+    getSceneName(){
+        const {currentScene} = store.getStore('engine').access('currentScene');
+        return currentScene;
     }
 
     update(dt){

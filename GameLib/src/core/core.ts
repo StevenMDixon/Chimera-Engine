@@ -63,9 +63,7 @@ function core(){
             assetStore.set({imageRoot: imageRoot || config.imageRoot});
 
             // add user defined components to component list
-            console.log(components)
             Components.addComponents(components || []);
-            console.log(Components.getComponents())
  
             const {ctx, scale} = engineStore.access('ctx', 'scale');
             

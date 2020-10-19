@@ -3,6 +3,8 @@ import SpriteSheet from '../modules/spriteSheet';
 import Store from '../core/store';
 import Renderer from '../modules/renderer';
 import {partition, getCenterOfPoly, createVerticesFromSize} from '../modules/utils';
+import {SAT} from '../modules/collider';
+
 
 class Render_System extends System_Base{
     private spriteSheets: any;
@@ -25,28 +27,62 @@ class Render_System extends System_Base{
 
     update({deltaTime, entities}){
         //@Todo filter out every tile not inside of the cameras view so it is not rendered.
-
-        const [tiles, sprites] = partition(entities.query(...this.targetComponents), (e) => e.hasComponent('Tile'));
-
         const {camera, totalTime} = Store.getStore('engine').access('camera', 'totalTime');
         const {images} = Store.getStore('asset').access('images');
 
 
-        tiles.forEach(t => {
-            const {pos} = t.getComponent('Position');
-            const {spriteSheetName} = t.getComponent('Sprite')
-            const {size} = t.getComponent('Size');
-            const {tileType} = t.getComponent('Tile');
-            const ss = this.spriteSheets.resolve(spriteSheetName)
-            const {tile, imageName} = (ss.resolveTileData(tileType, totalTime));
-            const image = images[imageName];
-            if(image && tile){
-                this.renderer.drawTile(image, tile,  pos.x - camera.offSets.x ,  pos.y - camera.offSets.y, size.x, size.y)
+       
+
+        let targetEntities = entities.query(...this.targetComponents);
+        let e1 = {}, e2 = {};
+
+
+        e1['pos'] = {x: camera.offSets.x + camera.size.x/2, y: camera.offSets.y + camera.size.y/2}
+        e1['vertices'] = createVerticesFromSize(camera.offSets, camera.size);
+
+        targetEntities = targetEntities.filter(item => {
+            if(item.hasComponent("Polygon")){
+                const {vertices} = item.getComponent("Polygon");
+                e2['vertices'] = vertices;
+                e2['pos'] = getCenterOfPoly(vertices);
+            }else if(item.hasComponent("Size")){
+                let {pos} = item.getComponent("Position");
+                let {size} = item.getComponent("Size");
+                let vertices = createVerticesFromSize(pos, item.getComponent("Size").size);
+                e2['pos'] = {x: pos.x + size.x/2, y: pos.y + size.y/2}
+                e2['vertices'] = vertices;
             }
+            if (SAT(e1, e2)) return item;
         })
 
-        sprites.forEach(t => {
-            if(t.hasComponent('Sprite'))  {
+        //const [tiles, sprites] = partition(targetEntities, (e) => e.hasComponent('Tile'));
+
+        // tiles.forEach(t => {
+        //     const {pos} = t.getComponent('Position');
+        //     const {spriteSheetName} = t.getComponent('Sprite')
+        //     const {size} = t.getComponent('Size');
+        //     const {tileType} = t.getComponent('Tile');
+        //     const ss = this.spriteSheets.resolve(spriteSheetName)
+        //     const {tile, imageName} = (ss.resolveTileData(tileType, totalTime));
+        //     const image = images[imageName];
+        //     if(image && tile){
+        //         this.renderer.drawTile(image, tile,  pos.x - camera.offSets.x ,  pos.y - camera.offSets.y, size.x, size.y)
+        //     }
+        // })
+
+        targetEntities.forEach(t => {
+            if(t.hasComponent('Tile')){
+                const {pos} = t.getComponent('Position');
+                const {spriteSheetName} = t.getComponent('Sprite')
+                const {size} = t.getComponent('Size');
+                const {tileType} = t.getComponent('Tile');
+                const ss = this.spriteSheets.resolve(spriteSheetName)
+                const {tile, imageName} = (ss.resolveTileData(tileType, totalTime));
+                const image = images[imageName];
+                if(image && tile){
+                    this.renderer.drawTile(image, tile,  pos.x - camera.offSets.x ,  pos.y - camera.offSets.y, size.x, size.y)
+                }
+            }else if(t.hasComponent('Sprite'))  {
                 const {pos} = t.getComponent('Position');
                 const {spriteSheetName} = t.getComponent('Sprite')
                 const {size} = t.getComponent('Size');

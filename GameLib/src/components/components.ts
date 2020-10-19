@@ -147,6 +147,21 @@ class Physics extends Component{
 
 class Collectible extends Component{}
 
+class Emitter extends Component{
+    spriteSheet: string;
+    entity: number;
+    lifeTime: number;
+    constructor(){
+        super();
+        this.spriteSheet;
+        this.entity = 0;
+        this.lifeTime = 0;
+
+    }
+}
+
+class Particle extends Component{}
+
 function Components(){
     const comp = {
         Player,
@@ -168,7 +183,9 @@ function Components(){
         Entity,
         CameraFocus,
         Bounce,
-        Collectible
+        Collectible,
+        Emitter,
+        Particle 
     }
 
     return {

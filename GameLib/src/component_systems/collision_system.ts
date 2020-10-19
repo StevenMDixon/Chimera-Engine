@@ -14,7 +14,6 @@ class Collision_System extends System_Base{
     init(){}
 
     update({deltaTime, entities}){
-    
         const targetEntities = entities.query(...this.targetComponents);
 
         for (let m = 0; m < targetEntities.length; m++){
