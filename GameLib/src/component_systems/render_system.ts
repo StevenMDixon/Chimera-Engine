@@ -2,7 +2,7 @@ import System_Base from './system_base';
 import SpriteSheet from '../modules/spriteSheet';
 import Store from '../core/store';
 import Renderer from '../modules/renderer';
-import {partition, getCenterOfPoly, createVerticesFromSize} from '../modules/utils';
+import {partition, getCenterOfPoly, createVerticesFromSize, convertToCollidable} from '../modules/utils';
 import {SAT} from '../modules/collider';
 
 
@@ -34,24 +34,14 @@ class Render_System extends System_Base{
        
 
         let targetEntities = entities.query(...this.targetComponents);
-        let e1 = {}, e2 = {};
+        let e1 = {};
 
 
         e1['pos'] = {x: camera.offSets.x + camera.size.x/2, y: camera.offSets.y + camera.size.y/2}
         e1['vertices'] = createVerticesFromSize(camera.offSets, camera.size);
 
         targetEntities = targetEntities.filter(item => {
-            if(item.hasComponent("Polygon")){
-                const {vertices} = item.getComponent("Polygon");
-                e2['vertices'] = vertices;
-                e2['pos'] = getCenterOfPoly(vertices);
-            }else if(item.hasComponent("Size")){
-                let {pos} = item.getComponent("Position");
-                let {size} = item.getComponent("Size");
-                let vertices = createVerticesFromSize(pos, item.getComponent("Size").size);
-                e2['pos'] = {x: pos.x + size.x/2, y: pos.y + size.y/2}
-                e2['vertices'] = vertices;
-            }
+            let e2 = convertToCollidable(item);
             if (SAT(e1, e2)) return item;
         })
 

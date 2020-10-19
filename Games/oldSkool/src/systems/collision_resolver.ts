@@ -23,14 +23,12 @@ class Collision_Resolver_System extends System_Base {
 
         
             if (e1.hasComponent('Collectible') && e2.hasComponent('Player')){
-                console.log(e1)
                 if(e1.hasComponent('Trigger')){
                     let {event, data} = e1.getComponent('Trigger');
                     Event.publish(event, {data, gameObject})
                 }
                 gameObject.removeGameObject(e1);
             }else if(e2.hasComponent('Collectible') && e1.hasComponent('Player')) {
-                console.log(e2)
                 if(e2.hasComponent('Trigger')){
                     let {event, data} = e2.getComponent('Trigger');
                     Event.publish(event, {data, gameObject})

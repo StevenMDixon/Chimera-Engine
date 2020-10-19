@@ -27,3 +27,21 @@ export function partition(array, isValid) {
       return isValid(elem) ? [[...pass, elem], fail] : [pass, [...fail, elem]];
     }, [[], []]);
 }
+
+export function convertToCollidable(gameObject){
+    let newE = {};
+
+    if(gameObject.hasComponent("Polygon")){
+        const {vertices} = gameObject.getComponent("Polygon");
+        newE['vertices'] = vertices;
+        newE['pos'] = getCenterOfPoly(vertices);
+    }else if(gameObject.hasComponent("Size")){
+        let {pos} = gameObject.getComponent("Position");
+        let {size} = gameObject.getComponent("Size");
+        let vertices = createVerticesFromSize(pos, gameObject.getComponent("Size").size);
+        newE['pos'] = {x: pos.x + size.x/2, y: pos.y + size.y/2}
+        newE['vertices'] = vertices;
+    }
+
+    return newE;
+}

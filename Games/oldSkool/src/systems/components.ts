@@ -3,18 +3,18 @@ import {Component} from 'GameLib';
 const Components = [
     class Door extends Component {
         door: number;
-        constructor(door){
+        constructor({Door}){
             super()
-            this.door = door
+            this.door = Door
         }
     },
     class Trigger extends Component {
         event: number;
         data: number | string;
-        constructor(ev, data){
+        constructor({event, data}){
             super()
-            this.event = ev;
-            this.data = data;
+            this.event = event
+            this.data = data
         }
     }
 ]

@@ -18,6 +18,10 @@ class Particle_System extends System_Base{
 
     }
 
+    destroy(data){
+
+    }
+
     update({deltaTime, entities}){
        const {camera, scale} = Store.getStore('engine').access('camera', 'scale');
 
