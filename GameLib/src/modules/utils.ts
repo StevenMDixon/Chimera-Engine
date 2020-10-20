@@ -45,3 +45,11 @@ export function convertToCollidable(gameObject){
 
     return newE;
 }
+
+export function createCollidable(x,y,w,h){
+    let pos = new Vector2D(x, y), size = new Vector2D(w,h)
+   return {
+       pos: {x: x + w/2, y: y + h/2},
+       vertices: createVerticesFromSize(pos, size)
+   }
+}

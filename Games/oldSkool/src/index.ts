@@ -26,6 +26,7 @@ myGame.setup(
         size: {w: 400, h: 400},
         useController: true,
         debug: true,
+        scale: 1,
         scenes: {
            //StartScreen,
            GameScreen
