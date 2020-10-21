@@ -25,7 +25,6 @@ class Controller_System extends System_Base{
     }
 
     update({deltaTime, entities}){
-        //@Todo find all gameObjects listening for inputs give them the inputs
         entities.query(...this.targetComponents).forEach(e => {
             if(e.hasComponent('Inputs')){
                 e.getComponent('Inputs').inputs = this.inputs

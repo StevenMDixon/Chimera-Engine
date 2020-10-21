@@ -5,12 +5,12 @@ import {loadMap} from '../modules/loadMap';
 import Renderer from '../modules/renderer';
 import Composer from '../modules/composer';
 
-import inputSystem from '../component_systems/input_system';
-import renderSystem from '../component_systems/render_system';
-import colissionSystem from '../component_systems/collision_system';
-import System_Base from '../component_systems/system_base';
-import cameraSystem from '../component_systems/camera_system';
-import ParticleSystem from '../component_systems/particle_system';
+import inputSystem from '../systems/input_system';
+import renderSystem from '../systems/render_system';
+import colissionSystem from '../systems/collision_system';
+import System_Base from '../systems/system_base';
+import cameraSystem from '../systems/camera_system';
+import ParticleSystem from '../systems/particle_system';
 
 import event from './event_system';
 

@@ -4,7 +4,7 @@ import Scene from './classes/scene';
 import Menu from './classes/menu';
 import Vector from './modules/vector';
 
-import System_Base from './component_systems/system_base';
+import System_Base from './systems/system_base';
 
 import Event from './core/event_system';
 

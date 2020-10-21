@@ -17,16 +17,16 @@ class Movement_System extends System_Base {
                 const newVec = new Vector(0, 0);
 
                 if(inputs[38] === true){
-                   newVec.add(new Vector(0, -1))
+                   newVec.add(new Vector(0, -3))
                 }
                 if(inputs[40] === true){
-                    newVec.add(new Vector(0, 1));
+                    newVec.add(new Vector(0, 3));
                 }
                 if(inputs[39] === true){
-                    newVec.add(new Vector(1, 0))
+                    newVec.add(new Vector(3, 0))
                 }
                 if(inputs[37] === true){
-                    newVec.add(new Vector(-1, 0))
+                    newVec.add(new Vector(-3, 0))
                 }
                 if(!inputs[37] && !inputs[38] && !inputs[39] && !inputs[40]){
                     if(state){

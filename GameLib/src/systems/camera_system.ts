@@ -1,8 +1,9 @@
 import System_Base from './system_base';
 import Store from '../core/store';
 import Vector from "../modules/vector";
-import {createCollidable, convertToCollidable} from '../modules/utils';
+import {createCollidable, convertToCollidable, round} from '../modules/utils';
 import {SAT} from '../modules/collider';
+
 
 
 class Camera_System extends System_Base{
@@ -23,8 +24,8 @@ class Camera_System extends System_Base{
            if(e.hasComponent('Size', 'Position')){
             const {pos} = e.getComponent("Position");
             const {size} = e.getComponent("Size");
-           
-                camera.offSets.set(new Vector(-camera.size.x/2 / scale + pos.x + size.x/2  , -camera.size.y/2 / scale + pos.y + size.y/2 ));
+            let newOffsets = new Vector(round((-camera.size.x/(2*scale)) + pos.x + size.x/2)  , round(-camera.size.y/(2*scale) + pos.y + size.y/2))
+                camera.offSets.set(newOffsets);
            }
 
        })
@@ -32,3 +33,4 @@ class Camera_System extends System_Base{
 }
 
 export default Camera_System;
+

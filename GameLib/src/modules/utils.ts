@@ -53,3 +53,7 @@ export function createCollidable(x,y,w,h){
        vertices: createVerticesFromSize(pos, size)
    }
 }
+
+export function round(number){
+    return Math.round(number);
+}
