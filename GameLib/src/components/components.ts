@@ -15,6 +15,8 @@ class Solid extends Component{};
 
 class Renderable extends Component{};
 
+class Viewable extends Component{;}
+
 class Movable extends Component{};
 
 class Bounce extends Component{
@@ -86,7 +88,7 @@ class State extends Component{
 class Entity extends Component{
     entityType: number | string;
     sheetType: string;
-    constructor(entityType: string, sheetType: string){
+    constructor(entityType: string | number, sheetType: string){
         super();
         this.entityType = entityType;
         this.sheetType = sheetType;
@@ -138,7 +140,7 @@ class Physics extends Component{
     constructor(){
         super();
         this.velocity = new Vector2D(0,0);
-        this.friction = new Vector2D(.8,.8);
+        this.friction = new Vector2D(.9,.9);
         this.acceleration = new Vector2D(0,0);
         this.mass = 1;
         this.collided = false;
@@ -162,44 +164,52 @@ class Emitter extends Component{
 
 class Particle extends Component{}
 
-function Components(){
-    const comp = {
-        Player,
-        Solid,
-        Renderable,
-        Movable,
-        Gravity,
-        Inputs,
-        Killable,
-        zIndex,
-        Sprite,
-        Animate,
-        State,
-        Tile,
-        Position,
-        Size,
-        Polygon,
-        Physics,
-        Entity,
-        CameraFocus,
-        Bounce,
-        Collectible,
-        Emitter,
-        Particle 
+
+class Components{
+    comp: any;
+    constructor(){
+        this.comp =  {
+            Player,
+            Solid,
+            Renderable,
+            Viewable,
+            Movable,
+            Gravity,
+            Inputs,
+            Killable,
+            zIndex,
+            Sprite,
+            Animate,
+            State,
+            Tile,
+            Position,
+            Size,
+            Polygon,
+            Physics,
+            Entity,
+            CameraFocus,
+            Bounce,
+            Collectible,
+            Emitter,
+            Particle 
+        }
     }
 
-    return {
-        getComponents(){
-            return comp;
-        },
-        addComponents(components){
-            components.forEach(com =>{
-                let temp = new com({});
-                comp[temp.constructor.name] = com;
-            })
-        }
+    get components(){
+        return this.comp;
+    }
+
+    getComponents(){
+        return this.comp;
+    }
+
+    addComponents(components){
+        components.forEach(com =>{
+            let temp = new com({});
+            this.comp[temp.constructor.name] = com;
+        })
     }
 }
 
 
-export default Components()
+export default new Components()

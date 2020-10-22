@@ -3,7 +3,6 @@ import SpriteSheet from '../modules/spriteSheet';
 import Store from '../core/store';
 import Renderer from '../modules/renderer';
 import {partition, getCenterOfPoly, createVerticesFromSize, convertToCollidable} from '../modules/utils';
-import {SAT} from '../modules/collider';
 
 
 class Render_System extends System_Base{
@@ -13,7 +12,7 @@ class Render_System extends System_Base{
     constructor(){
         super();
         this.order = 99;
-        this.targetComponents = ['Position', 'Renderable'];
+        this.targetComponents = ['Position', 'Renderable', 'Viewable'];
         this.spriteSheets = SpriteSheet;
         this.renderer = null
     }
@@ -29,33 +28,9 @@ class Render_System extends System_Base{
         //@Todo filter out every tile not inside of the cameras view so it is not rendered.
         const {camera, totalTime, debug} = Store.getStore('engine').access('camera', 'totalTime', 'debug');
         const {images} = Store.getStore('asset').access('images');
+        //console.log(entities.gameObjects)
 
-        let e1 = {};
-
-        e1['pos'] = {x: camera.offSets.x + camera.size.x/2, y: camera.offSets.y + camera.size.y/2}
-        e1['vertices'] = createVerticesFromSize(camera.offSets, camera.size);
-
-        let targetEntities = entities.query(...this.targetComponents).filter(item => {
-            let e2 = convertToCollidable(item);
-            if (SAT(e1, e2)) return item;
-        })
-
-        //const [tiles, sprites] = partition(targetEntities, (e) => e.hasComponent('Tile'));
-
-        // tiles.forEach(t => {
-        //     const {pos} = t.getComponent('Position');
-        //     const {spriteSheetName} = t.getComponent('Sprite')
-        //     const {size} = t.getComponent('Size');
-        //     const {tileType} = t.getComponent('Tile');
-        //     const ss = this.spriteSheets.resolve(spriteSheetName)
-        //     const {tile, imageName} = (ss.resolveTileData(tileType, totalTime));
-        //     const image = images[imageName];
-        //     if(image && tile){
-        //         this.renderer.drawTile(image, tile,  pos.x - camera.offSets.x ,  pos.y - camera.offSets.y, size.x, size.y)
-        //     }
-        // })
-
-        targetEntities.forEach(t => {
+        entities.query(...this.targetComponents).forEach(t => {
             if(t.hasComponent('Tile')){
                 const {pos} = t.getComponent('Position');
                 const {spriteSheetName} = t.getComponent('Sprite')

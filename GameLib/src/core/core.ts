@@ -1,5 +1,3 @@
-// cores job is to setup the environment and implement the built in systems
-
 import {config} from './config';
 import {manageDPI} from '../modules/resizer';
 
@@ -90,28 +88,29 @@ function core(){
             manageDPI(ctx, scale);       
         },
         
-        async start(){
+        start(){
             // grab the loaded image 
             const {imageP} = assetStore.access('imageP');
             Promise.all(imageP)
             .catch((error) => console.log(error))
             .then(()=>{
                 system.init();
-                requestAnimationFrame(() => this._update());
+                this._update();
             })
         },
 
-        _update(time: number = 0): void{
-            const {totalTime} = engineStore.access();
-
-            const now = performance.now();
-            const deltaTime =  now - time;
-
+        _update(ts = 0, time: number = 0): void{
+            const {totalTime} = engineStore.access('totalTime');
+            // set dt = new time - old time
+            const deltaTime =  ts - time;
+            // set time = to new time
+            time = ts;
+            // tell the store there is a new total time
             engineStore.update('totalTime',  totalTime + deltaTime);
-    
+            // run the engine
             system.update(deltaTime);
-    
-            requestAnimationFrame(() => this._update(now));
+            // request a new animation frame
+            requestAnimationFrame((timeStamp) => this._update(timeStamp, time));
         },
 
          setOption(key, value){

@@ -24,8 +24,8 @@ class Vector2D {
     y: number;
 
     constructor(x, y){
-        this.x = parseFloat(x);
-        this.y = parseFloat(y);
+        this.x = x;
+        this.y = y;
     }
 
     set(vector: Vector2D){
@@ -93,6 +93,12 @@ class Vector2D {
         return this;
     }
 
+    vLinearInt(v, a){
+        this.x += (v.x - this.x) * a || 0;
+        this.y += (v.y - this.y) * a || 0;
+        return this;
+    }
+
     perp(){
         let tmp = this.x;
         this.x = -this.y;
@@ -126,6 +132,10 @@ class Vector2D {
 
     static subtract(v1, v2){
         return new Vector(v1.x - v2.x, v1.y - v2.y);
+    }
+
+    static divide(v1, amount){
+        return new Vector(v1.x / amount, v1.y / amount);
     }
 }
 

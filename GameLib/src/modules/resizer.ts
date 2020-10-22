@@ -20,16 +20,16 @@ function resize(ctx, scale, event?) {
     // ctx.canvas.style.width  = width  + 'px';
 
     // get current size of the canvas
-let rect = ctx.canvas.getBoundingClientRect();
+    const rect = ctx.canvas.getBoundingClientRect();
 
-// increase the actual size of our canvas
-ctx.canvas.width = Math.floor(rect.width * devicePixelRatio);
-ctx.canvas.height = Math.floor(rect.height * devicePixelRatio);
+    // increase the actual size of our canvas
+    ctx.canvas.width = Math.floor(rect.width * devicePixelRatio);
+    ctx.canvas.height = Math.floor(rect.height * devicePixelRatio);
 
-// ensure all drawing operations are scaled
-ctx.scale(devicePixelRatio * scale, devicePixelRatio * scale);
+    // ensure all drawing operations are scaled
+    ctx.scale(devicePixelRatio * scale, devicePixelRatio * scale);
 
-// scale everything down using CSS
-ctx.canvas.style.width = rect.width + 'px';
-ctx.canvas.style.height = rect.height + 'px';
+    // scale everything down using CSS
+    ctx.canvas.style.width = rect.width + 'px';
+    ctx.canvas.style.height = rect.height + 'px';
 }

@@ -22,16 +22,9 @@ class Object_Handler {
 
     // grabs all components with the listed components
     query(...names:  string[]): GameObject[]{
-         let items = [];
-         this.gameObjects.forEach(go => {
-            let r = true;
-            for(let i = 0; i < names.length; ++i){
-                if(go.hasComponent(names[i]) == false){
-                    r = false;
-                    break;
-                }
-            }
-            if(r) items.push(go)
+        let items = [];
+        this.gameObjects.forEach(go => {
+            if(go.hasComponent(...names)) {items.push(go)}
         })
         return items;
     }

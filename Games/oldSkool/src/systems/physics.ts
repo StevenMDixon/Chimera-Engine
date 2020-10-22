@@ -33,7 +33,3 @@ class Physics_System extends System_Base {
 }
 
 export default Physics_System;
-
-function round(number){
-    return Math.round(number);
-}

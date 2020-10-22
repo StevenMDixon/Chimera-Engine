@@ -1,25 +1,25 @@
 import Vector2D from './vector';
 
 export function getCenterOfPoly(vertices: Vector2D[]){
-    let center = new Vector2D(0,0);
-    vertices.forEach(vertice => center.add(vertice));
-    return center.divide(vertices.length);
+    return vertices.reduce((acc, cur)=>{
+        acc.add(cur);
+        return acc;
+    }, new Vector2D(0,0)).divide(vertices.length)
 }
 
 export function createVertices(v: any[]){
     return v.map(vertice => {
             return new Vector2D(vertice.x, vertice.y)
-        })
+    })
 }
 
 export function createVerticesFromSize(Position: Vector2D, Size: Vector2D){
-    let vectors = [
+    return [
         new Vector2D(Position.x, Position.y), 
         new Vector2D(Position.x + Size.x, Position.y),
         new Vector2D(Position.x + Size.x, Position.y + Size.y),
-        new Vector2D(Position.x , Position.y + Size.y),
+        new Vector2D(Position.x , Position.y + Size.y)
     ];
-    return vectors
 }
 
 export function partition(array, isValid) {
@@ -29,7 +29,7 @@ export function partition(array, isValid) {
 }
 
 export function convertToCollidable(gameObject){
-    let newE = {};
+    const newE = {};
 
     if(gameObject.hasComponent("Polygon")){
         const {vertices} = gameObject.getComponent("Polygon");
@@ -38,8 +38,9 @@ export function convertToCollidable(gameObject){
     }else if(gameObject.hasComponent("Size")){
         let {pos} = gameObject.getComponent("Position");
         let {size} = gameObject.getComponent("Size");
-        let vertices = createVerticesFromSize(pos, gameObject.getComponent("Size").size);
-        newE['pos'] = {x: pos.x + size.x/2, y: pos.y + size.y/2}
+        let vertices = createVerticesFromSize(pos, size);
+        newE['og'] = new Vector2D(pos.x, pos.y);
+        newE['pos'] = new Vector2D(pos.x + size.x/2,pos.y + size.y/2)
         newE['vertices'] = vertices;
     }
 
@@ -47,9 +48,10 @@ export function convertToCollidable(gameObject){
 }
 
 export function createCollidable(x,y,w,h){
-    let pos = new Vector2D(x, y), size = new Vector2D(w,h)
+   const pos = new Vector2D(x, y), size = new Vector2D(w,h);
    return {
-       pos: {x: x + w/2, y: y + h/2},
+       og: new Vector2D(x, y),
+       pos: new Vector2D( x + w/2, y + h/2),
        vertices: createVerticesFromSize(pos, size)
    }
 }

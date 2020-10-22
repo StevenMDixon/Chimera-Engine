@@ -11,6 +11,7 @@ import colissionSystem from '../systems/collision_system';
 import System_Base from '../systems/system_base';
 import cameraSystem from '../systems/camera_system';
 import ParticleSystem from '../systems/particle_system';
+import ViewSystem from '../systems/view_system';
 
 import event from './event_system';
 
@@ -23,23 +24,23 @@ class System_Handler{
         [key: string]: Object_Handler
     }
 
-    //systems: System_Base[];
-
-    api: any;
     renderer: any;
+    averageFPS: number;
+    frame: number;
 
     constructor(){
         //this.systems = [];
         this.scenes = {};
         this.gameObject = {};
-        this.api = null,
-        this.renderer = null
+        this.renderer = null;
+        this.averageFPS = 0.00;
+        this.frame = 1;
     }
 
     init(){
         const {systems, scenes, ctx} = store.getStore('engine').access('systems', 'scenes', 'ctx');
         //create systems with user defined systems
-        createSystemsList([renderSystem, inputSystem, colissionSystem, cameraSystem, ParticleSystem] ,systems);
+        createSystemsList([renderSystem, inputSystem, colissionSystem, ViewSystem, cameraSystem, ParticleSystem] ,systems);
         
         //initialize renderer
         this.renderer = Renderer(ctx);
@@ -91,17 +92,20 @@ class System_Handler{
         scene.draw(dt);
         
         if (debug){
-            let f = 20/scale;
-            ctx.font = `${f}px Arial'`;
+            ctx.font = `${20/scale}px Arial'`;
             ctx.fillStyle = 'red';
-            let t = `FPS: ${Math.floor(1/( dt/1000))}`
-            ctx.fillText(t, ((ctx.canvas.clientWidth/scale - ctx.measureText(t).width - 1)), 10);
+            
+            ctx.fillText(`FPS: ${Math.floor(1/(dt/1000))}`, ((ctx.canvas.clientWidth/scale - 80 - 1)), 10);
         }
     }
 
     addGameObjects(go){
         const {currentScene} = store.getStore('engine').access('currentScene');
-        this.gameObject[currentScene].addGameObject(go);
+        if(Array.isArray(go)){
+            this.gameObject[currentScene].addGameObject(go);
+        } else {
+            this.gameObject[currentScene].addGameObject([go]);
+        }
     }
 
     createAPI(renderer){
@@ -118,19 +122,18 @@ class System_Handler{
                 return store.getStore('engine').access('camera');
             },
             nextScene: (scene: string) => store.getStore('engine').update('currentScene', scene),
-            ...renderer('user')
+            ...renderer()
         }
     }
 }
 
 function createSystemsList(systems: any, userSystems: any): System_Base[]{
-    let list = [...systems, ...userSystems].map(system =>{
+    return [...systems, ...userSystems].map(system =>{
         let s = new system();
         event.subscribe('init_sys', s.init.bind(s));
         event.subscribe('update_sys', s.update.bind(s));
         return s;
-    });
-    return list.sort((a,b) => a.order < b.order ? -1 : 1);
+    }).sort((a,b) => a.order < b.order ? -1 : 1);
 }
 
 
