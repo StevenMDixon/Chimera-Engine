@@ -1,8 +1,9 @@
-import {partition, getCenterOfPoly, createVerticesFromSize, convertToCollidable} from '../modules/utils';
+import {partition, getCenterOfPoly, createVerticesFromSize, convertToCollidable, createCollidable} from '../modules/utils';
 import {SAT} from '../modules/collider';
 import Store from '../core/store';
 import System_Base from './system_base';
 import Components from '../components/components';
+import Vector from "../modules/vector";
 
 class Render_System extends System_Base{
     camera: any
@@ -14,20 +15,14 @@ class Render_System extends System_Base{
     }
 
     init(){
-        const {camera} = Store.getStore('engine').access('camera', 'totalTime', 'debug');
-        this.camera['og'] = camera.offSets;
-        this.camera['pos'] = {x: camera.offSets.x + camera.size.x/2, y: camera.offSets.y + camera.size.y/2};
-        this.camera['vertices'] = createVerticesFromSize(camera.offSets, camera.size);
+        const {camera, scale} = Store.getStore('engine').access('camera', 'totalTime', 'debug');
+        
     }
 
     update({deltaTime, entities}){
-        const {camera} = Store.getStore('engine').access('camera', 'totalTime', 'debug');
-
-        if(this.camera.og.x !== camera.offSets.x || this.camera.og.y !== camera.offSets.y){
-            this.camera['og'] = camera.offSets;
-            this.camera['pos'] = {x: camera.offSets.x + camera.size.x/2, y: camera.offSets.y + camera.size.y/2}
-            this.camera['vertices'] = createVerticesFromSize(camera.offSets, camera.size);
-        }
+        const {camera, scale, ctx} = Store.getStore('engine').access('camera', 'debug', 'scale', 'ctx');
+        
+        this.camera = createCollidable(camera.offSets.x, camera.offSets.y, camera.size.x / scale, camera.size.y / scale)
 
         entities.query(...this.targetComponents).forEach(item => {
             let e2 = convertToCollidable(item);
@@ -41,8 +36,7 @@ class Render_System extends System_Base{
                 }
             }
         })
-
-        //console.log(entities.query('Viewable'))
+    
     }
 }
 

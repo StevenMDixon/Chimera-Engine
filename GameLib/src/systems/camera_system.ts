@@ -2,7 +2,6 @@ import System_Base from './system_base';
 import Store from '../core/store';
 import Vector from "../modules/vector";
 import {createCollidable, convertToCollidable, round} from '../modules/utils';
-import {SAT} from '../modules/collider';
 
 
 
@@ -29,7 +28,7 @@ class Camera_System extends System_Base{
         entities.query(...this.targetComponents).forEach(e => {
             if(e.hasComponent('Size', 'Position')){
                 let p = convertToCollidable(e);
-                camera.offSets.set(Vector.subtract(nc.pos.vLinearInt(p.pos, .1), Vector.divide(camera.size, 2 * scale))
+                camera.offSets.set(Vector.subtract(nc.pos.vLinearInt(p.pos, .1), Vector.divide(camera.size, 2 * scale)))
             }
        })
 
