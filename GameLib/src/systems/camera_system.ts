@@ -25,37 +25,36 @@ class Camera_System extends System_Base{
     constructor(){
         super();
         this.targetComponents = ['CameraFocus'];
-        //this.center = {};
     }
 
-    init(){
-        const {cameraBorder, ctx, scale} = Store.getStore('engine').access('cameraBorder', 'ctx', 'scale');
-        if(cameraBorder > 0){
-            //this.center = createCollidable((ctx.canvas.clientWidth/(2*scale) - cameraBorder/2), (ctx.canvas.clientHeight/(2*scale) - cameraBorder/2) ,cameraBorder,cameraBorder);
-        }
-    }
-
-
-    
+    init(){}
 
     update({deltaTime, entities}){
        const {camera, scale, ctx, cameraBorder, debug} = Store.getStore('engine').access('camera', 'scale', 'ctx', 'cameraBorder', 'debug');
        ctx.strokeStyle = 'red'
-       let nc = createCollidable(camera.offSets.x, camera.offSets.y, camera.size.x / scale, camera.size.y / scale); 
-        
+       let nc = createCollidable(camera.offSets.x, camera.offSets.y, camera.size.x / scale, camera.size.y / scale);
+
         entities.query(...this.targetComponents).forEach(e => {
             if(e.hasComponent('Size', 'Position')){
-               
+               // this.x = this.x - (this.x - (this.target.x - this.game.width / 2)) *  this.lerp;
+               // this.y = this.y - (this.y - (this.target.y - this.game.height / 2)) *  this.lerp;
 
                 let p = convertToCollidable(e);
 
-                let distance = Vector.subtract(p.pos, nc.pos);
-                //console.log(distance)
-                if((Math.abs(distance.x) >= cameraBorder || Math.abs(distance.y) >= cameraBorder) || cameraBorder == 0){
-                    let diffVec = Vector.subtract(nc.pos.vLinearInt(p['pos'], .1), Vector.divide(camera.size, 2 * scale));
-                    camera.offSets.set(diffVec)
-                }
-                
+                let distance = Vector.subtract(p['pos'], nc.pos);
+                let diffVec = Vector.subtract(nc.pos.vLinearInt(p['pos'], (deltaTime/ 100) / 1.3), Vector.divide(camera.size, 2 * scale));
+                let calcVec = diffVec//nc.og;
+
+                // if (cameraBorder == 0 || (Math.abs(distance.x) > cameraBorder && Math.abs(distance.y) > cameraBorder)){
+                //    calcVec = diffVec;
+                // } else if (Math.abs(distance.x) > cameraBorder){
+                //     calcVec = new Vector(diffVec.x, nc.og.y);
+                // } else if (Math.abs(distance.y) > cameraBorder){
+                //     calcVec = new Vector(nc.og.x, diffVec.y);
+                // }
+
+
+                camera.offSets.set(calcVec);
             }
        })
 
@@ -65,12 +64,8 @@ class Camera_System extends System_Base{
         ctx.arc(200/ scale, 200/ scale, cameraBorder, 0, 2 * Math.PI);
         ctx.stroke();
        }
-      
+
     }
 }
 
 export default Camera_System;
-
-function lerp(start, end, t) {
-    return start * (1 - t) + end * t
-  }

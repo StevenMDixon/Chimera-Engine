@@ -18,5 +18,5 @@ export const config = {
         systems: [],
         components: [],
         scale: 1,
-        cameraBorder: 20
+        cameraBorder: 10.5
 }
