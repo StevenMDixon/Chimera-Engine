@@ -1,23 +1,27 @@
 import System_Base from './system_base';
 import Store from '../core/store';
 import Vector from "../modules/vector";
-import {createCollidable, convertToCollidable, round} from '../modules/utils';
+import {createCollidable, convertToCollidable} from '../modules/utils';
 
 interface iCameraOptions {
-        deadZone: { // replaces camera border
+        deadZone?: { // replaces camera border
             x: number,
             y: number
         },
-        damping: { // how fast the camera moves
+        damping?: { // how fast the camera moves
             x: number,
             y: number
         },
-        lookAhead: {
-            time: number,
-            smoothing: number,
+        lookAhead?: {
+            distance: number,
             ignoreY: boolean
+        },
+        bounds?: {
+            left?: number,
+            right?: number,
+            top?: number,
+            bottom?: number
         }
-
 }
 
 class Camera_System extends System_Base{
@@ -25,52 +29,76 @@ class Camera_System extends System_Base{
     constructor(){
         super();
         this.targetComponents = ['CameraFocus'];
-        //this.center = {};
     }
 
-    init(){
-        const {cameraBorder, ctx, scale} = Store.getStore('engine').access('cameraBorder', 'ctx', 'scale');
-        if(cameraBorder > 0){
-            //this.center = createCollidable((ctx.canvas.clientWidth/(2*scale) - cameraBorder/2), (ctx.canvas.clientHeight/(2*scale) - cameraBorder/2) ,cameraBorder,cameraBorder);
-        }
-    }
-
-
-    
+    init(){}
 
     update({deltaTime, entities}){
        const {camera, scale, ctx, cameraBorder, debug} = Store.getStore('engine').access('camera', 'scale', 'ctx', 'cameraBorder', 'debug');
        ctx.strokeStyle = 'red'
-       let nc = createCollidable(camera.offSets.x, camera.offSets.y, camera.size.x / scale, camera.size.y / scale); 
-        
+       let nc = createCollidable(camera.offSets.x, camera.offSets.y, camera.size.x / scale, camera.size.y / scale);
+
+       let options = camera.options;
+       console.log(options)
+
         entities.query(...this.targetComponents).forEach(e => {
             if(e.hasComponent('Size', 'Position')){
-               
-
+               // this.x = this.x - (this.x - (this.target.x - this.game.width / 2)) *  this.lerp;
+               // this.y = this.y - (this.y - (this.target.y - this.game.height / 2)) *  this.lerp;
+                
                 let p = convertToCollidable(e);
 
-                let distance = Vector.subtract(p.pos, nc.pos);
-                //console.log(distance)
-                if((Math.abs(distance.x) >= cameraBorder || Math.abs(distance.y) >= cameraBorder) || cameraBorder == 0){
-                    let diffVec = Vector.subtract(nc.pos.vLinearInt(p['pos'], .1), Vector.divide(camera.size, 2 * scale));
-                    camera.offSets.set(diffVec)
+                //@todo implement lookahead
+                if(options.lookAhead > 0){
+                    const {velocity} = e.getComponent('Physics');
+                    p['pos'].add({x: Math.sign(velocity.x) * 0, y: Math.sign(velocity.y) * 0});
                 }
                 
+
+                const distance = Vector.subtract(p['pos'], nc.pos);
+                const n = nc.pos.vLinearInt(p['pos'], (deltaTime/ (100 * camera.options.smoothing)) * camera.options.damping )
+                const diffVec = Vector.subtract(n, Vector.divide(camera.size, 2 * scale));
+                let calcVec = nc.og;
+
+                if ((options.deadZone.x == 0 && options.deadZone.y == 0) || (Math.abs(distance.x) > options.deadZone.x && Math.abs(distance.y) > options.deadZone.y)){
+                   calcVec = diffVec;
+                } 
+                else if (Math.abs(distance.x) > options.deadZone.x){
+                    calcVec = new Vector(diffVec.x, nc.og.y);
+                } else if (Math.abs(distance.y) > options.deadZone.y){
+                    calcVec = new Vector(nc.og.x, diffVec.y);
+                }
+
+                if(options.bounds){
+                    if(calcVec.x < options.bounds.left){
+                        calcVec.x = 0;
+                    }
+
+                    if(calcVec.x + camera.size.x / scale > options.bounds.right ){
+                        calcVec.x = options.bounds.right - camera.size.x / scale;
+                    }
+
+                    if(calcVec.y < options.bounds.top){
+                        calcVec.y = 0;
+                    }
+
+                    if(calcVec.y + camera.size.y / scale > options.bounds.bottom ){
+                        calcVec.y = options.bounds.bottom - camera.size.y / scale;
+                    }
+                }
+
+                camera.offSets.set(calcVec);
             }
        })
 
        if(debug){
         ctx.strokeRect(200/ scale, 200/ scale, 1, 1);
-        ctx.beginPath();
-        ctx.arc(200/ scale, 200/ scale, cameraBorder, 0, 2 * Math.PI);
-        ctx.stroke();
+        // @todo fix at different scales
+        ctx.strokeRect((200 - options.deadZone.x *2)/ scale , (200- options.deadZone.y *2)/ scale  , options.deadZone.x * 2, options.deadZone.y * 2);
+        
        }
-      
+
     }
 }
 
 export default Camera_System;
-
-function lerp(start, end, t) {
-    return start * (1 - t) + end * t
-  }
