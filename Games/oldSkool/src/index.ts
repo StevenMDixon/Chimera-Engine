@@ -33,7 +33,22 @@ myGame.setup(
         },
         controllerMap: {},
         components: Components,
-        systems: [Movement_System, Physics_System, Collision_Resolver_System, Door]
+        systems: [Movement_System, Physics_System, Collision_Resolver_System, Door],
+        cameraOptions: {
+            bounds: {
+                top: 0,
+                bottom: 63 * 8,
+                left: 0,
+                right: 80 * 8
+            },
+            deadZone: {
+                    x: 50,
+                    y: 50
+            },
+            lookAhead: 0,
+            damping: .5,
+            smoothing: 3.5
+       }
 });
 
 

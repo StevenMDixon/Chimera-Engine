@@ -140,7 +140,7 @@ class Physics extends Component{
     constructor(){
         super();
         this.velocity = new Vector2D(0,0);
-        this.friction = new Vector2D(.8,.8);
+        this.friction = new Vector2D(.6,.6);
         this.acceleration = new Vector2D(0,0);
         this.mass = 1
     };

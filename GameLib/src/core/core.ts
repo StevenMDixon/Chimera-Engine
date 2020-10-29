@@ -30,7 +30,8 @@ interface gameData {
         [key: string]: any
     },
     components?: any,
-    systems?: any
+    systems?: any,
+    cameraOptions?: any
 }
 
 
@@ -81,7 +82,7 @@ function core(){
             ctx.imageSmoothingEnabled = false;
 
             // create camera, we only need one?
-            engineStore.set({'camera': new Camera(0, 0, ctx.canvas.width, ctx.canvas.height)})
+            engineStore.set({'camera': new Camera(0, 0, ctx.canvas.width, ctx.canvas.height, gamedata.cameraOptions || config.cameraOptions)})
 
             // fix issues with resizing screens
             window.addEventListener('resize', (e) => manageDPI(ctx, scale));
