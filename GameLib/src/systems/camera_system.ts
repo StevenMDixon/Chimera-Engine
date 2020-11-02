@@ -39,8 +39,7 @@ class Camera_System extends System_Base{
        let nc = createCollidable(camera.offSets.x, camera.offSets.y, camera.size.x / scale, camera.size.y / scale);
 
        let options = camera.options;
-       console.log(options)
-
+       
         entities.query(...this.targetComponents).forEach(e => {
             if(e.hasComponent('Size', 'Position')){
                // this.x = this.x - (this.x - (this.target.x - this.game.width / 2)) *  this.lerp;

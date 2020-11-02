@@ -42,6 +42,7 @@ class Render_System extends System_Base{
                 if(image && tile){
                     this.renderer.drawTile(image, tile,  pos.x - camera.offSets.x ,  pos.y - camera.offSets.y, size.x, size.y)
                 }
+                //logger.log(t)
             }else if(t.hasComponent('Particle')){
                 //@todo create render for particles
             }

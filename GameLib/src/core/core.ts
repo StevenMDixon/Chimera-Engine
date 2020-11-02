@@ -10,6 +10,10 @@ import Camera from '../classes/camera';
 
 import Components from '../components/components';
 
+//import TestWorker from 'worker-loader?filename=[name].[hash].js&inline=fallback!../workers/test.worker.js';
+
+
+
 
 interface gameData {
     target: string,
@@ -86,7 +90,16 @@ function core(){
 
             // fix issues with resizing screens
             window.addEventListener('resize', (e) => manageDPI(ctx, scale));
-            manageDPI(ctx, scale);       
+            manageDPI(ctx, scale);     
+            
+            
+            // const worker = new (TestWorker as any)();
+
+            // worker.onmessage = function(e) {
+            //     console.log(e.data);
+            // }
+
+            // worker.postMessage('test');
         },
         
         start(){

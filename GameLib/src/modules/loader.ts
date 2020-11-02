@@ -44,7 +44,8 @@ function handleImages(store, imageSrc, name, isJustimg){
 
         image.src = imageSource;
 
-        images[name] = image
+        images[name] = image;
+        console.log(images)
 
         store.update('images', {...images});
 

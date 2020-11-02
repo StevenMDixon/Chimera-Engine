@@ -7,9 +7,10 @@ module.exports = {
   entry: './src/index.ts',
   mode: 'development',
   devtool: "source-map",
-  
+
   module: {
     rules: [
+      
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
@@ -31,11 +32,27 @@ module.exports = {
       {
         test: /\.(jpg|png|svg)$/,
         loader: 'file-loader'
-      }
-    
+      },
+      // {
+      //   test: /\_worker\.js$/,
+      //   use: [
+      //     {
+      //       loader: 'worker-loader',
+      //       options: { 
+      //         filename: '[name].[hash].js'
+      //       }
+      //     },
+      //     {
+      //       loader: 'babel-loader',
+      //       options: {
+      //         cacheDirectory: true
+      //       }
+      //     }
+      //   ]
+      // },
     ]
   },
-  resolve: { 
+  resolve: {
       extensions: ["*", ".js", ".jsx", '.ts']
   },
   output: {
