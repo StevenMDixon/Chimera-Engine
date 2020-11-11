@@ -1,6 +1,5 @@
 import {System_Base, Event} from 'GameLib';
 
-
 class Collision_Resolver_System extends System_Base {
     constructor(){
         super();
@@ -16,12 +15,12 @@ class Collision_Resolver_System extends System_Base {
     }
 
     handle({e1, e2, resolution, gameObject}){
-
         if(e1.hasComponent('Movable', 'Physics') && e2.hasComponent('Solid')){
             let {pos} = e1.getComponent("Position");
             let {velocity} = e1.getComponent("Physics");
 
-        
+            Event.publish('create_particle', {pos: pos, sprite: 113, velocity: {x: random(-3, 3), y: random(-3, 3)}, life: 100})
+
             if (e1.hasComponent('Collectible') && e2.hasComponent('Player')){
                 if(e1.hasComponent('Trigger')){
                     let {event, data} = e1.getComponent('Trigger');
@@ -33,7 +32,7 @@ class Collision_Resolver_System extends System_Base {
                     let {event, data} = e2.getComponent('Trigger');
                     Event.publish(event, {data, gameObject})
                 }
-                gameObject.removeGameObject(e2);
+               gameObject.removeGameObject(e2);
             }
         
         //@Todo bounce on axis
@@ -55,3 +54,8 @@ class Collision_Resolver_System extends System_Base {
 }
 
 export default Collision_Resolver_System;
+
+
+function random(min, max) {
+    return Math.random() * (max - min) + min;
+}

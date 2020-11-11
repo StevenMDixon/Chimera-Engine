@@ -5,7 +5,7 @@ export function getCenterOfPoly(vertices: Vector2D[]){
         acc.add(cur);
         return acc;
     }, new Vector2D(0,0)).divide(vertices.length)
-}
+}  
 
 export function createVertices(v: any[]){
     return v.map(vertice => {
@@ -54,4 +54,8 @@ export function createCollidable(x,y,w,h){
        pos: new Vector2D( x + w/2, y + h/2),
        vertices: createVerticesFromSize(pos, size)
    }
+}
+
+export function random(min, max) {
+    return Math.random() * (max - min) + min;
 }

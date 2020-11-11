@@ -12,9 +12,6 @@ import Components from '../components/components';
 
 //import TestWorker from 'worker-loader?filename=[name].[hash].js&inline=fallback!../workers/test.worker.js';
 
-
-
-
 interface gameData {
     target: string,
     scale?: number,
@@ -123,7 +120,9 @@ function core(){
             engineStore.update('totalTime',  totalTime + deltaTime);
             // run the engine
             system.update(deltaTime);
-            // request a new animation frame
+            // request a new animation frame]
+
+
             requestAnimationFrame((timeStamp) => this._update(timeStamp, time));
         },
 

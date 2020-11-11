@@ -5,23 +5,14 @@ class GameObject{
     components: any;
     children: GameObject[];
     UUID: number;
-    constructor(){
+    isActive: boolean;
+
+    constructor(uuid?){
         this.components = new Map();
-        this.UUID = null;
+        this.UUID = uuid;
+        this.isActive = false;
         // @Todo implement children
         //this.children = [] as GameObject[];
-    }
-
-    start(): void{
-        this.components.forEach((component, name) => {
-            component.start();
-        })
-    }
-
-    update(dt: number): void{
-        this.components.forEach((component, name) => {
-            component.update(dt);
-        })
     }
 
     addComponent(component: any): void{
@@ -49,7 +40,12 @@ class GameObject{
                 break;
             }
         }
+        if(this.components.length == 0) return false;
         return has;
+    }
+
+    clearComponents(){
+        this.components.clear();
     }
 }
 

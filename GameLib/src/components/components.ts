@@ -137,31 +137,31 @@ class Physics extends Component{
     friction: Vector2D;
     acceleration: Vector2D;
     resolve: any;
-    constructor(){
+    constructor(v?, f?, a?){
         super();
-        this.velocity = new Vector2D(0,0);
-        this.friction = new Vector2D(.6,.6);
+        this.velocity = v ? new Vector2D(v.x, v.y) : new Vector2D(0,0);
+        this.friction = f ?  new Vector2D(f.x, f.y) : new Vector2D(.6,.6);
         this.acceleration = new Vector2D(0,0);
-        this.mass = 1
+        this.mass = a || 1
     };
 };
 
 class Collectible extends Component{}
 
 class Emitter extends Component{
-    spriteSheet: string;
-    entity: number;
-    lifeTime: number;
-    constructor(){
-        super();
-        this.spriteSheet;
-        this.entity = 0;
-        this.lifeTime = 0;
-
-    }
+    
 }
 
-class Particle extends Component{}
+class Particle extends Component{
+    life: number;
+    lifeTime: number;
+    currentLife: number;
+    constructor(lifeTime){
+        super();
+        this.lifeTime = lifeTime;
+        this.currentLife = 0;
+    }
+}
 
 
 class Components{

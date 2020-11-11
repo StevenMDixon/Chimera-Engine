@@ -43,9 +43,10 @@ class Render_System extends System_Base{
                     this.renderer.drawTile(image, tile,  pos.x - camera.offSets.x ,  pos.y - camera.offSets.y, size.x, size.y)
                 }
                 //logger.log(t)
-            }else if(t.hasComponent('Particle')){
-                //@todo create render for particles
             }
+            //else if(t.hasComponent('Particle')){
+                //@todo create render for particles
+            //}
             else if(t.hasComponent('Sprite'))  {
                 const {pos} = t.getComponent('Position');
                 const {spriteSheetName} = t.getComponent('Sprite')
@@ -58,6 +59,11 @@ class Render_System extends System_Base{
                     const {state} = t.getComponent('State');
                     anim = map[state];
                 }
+
+                if(t.hasComponent("Particel")){
+                    console.log(t)
+                }
+               
                 const {sprite, imageName} = (ss.resolveSpriteData(anim, totalTime));
                 const image = images[imageName];
                 if(image && sprite){

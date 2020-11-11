@@ -9,9 +9,10 @@ import inputSystem from '../systems/input_system';
 import renderSystem from '../systems/render_system';
 import colissionSystem from '../systems/collision_system';
 import System_Base from '../systems/system_base';
-import cameraSystem from '../systems/camera_system';
+import CameraSystem from '../systems/camera_system';
 import ParticleSystem from '../systems/particle_system';
 import ViewSystem from '../systems/view_system';
+
 
 import event from './event_system';
 
@@ -40,7 +41,7 @@ class System_Handler{
     init(){
         const {systems, scenes, ctx} = store.getStore('engine').access('systems', 'scenes', 'ctx');
         //create systems with user defined systems
-        createSystemsList([renderSystem, inputSystem, colissionSystem, ViewSystem, cameraSystem, ParticleSystem] ,systems);
+        createSystemsList([renderSystem, inputSystem, colissionSystem, ViewSystem, CameraSystem, ParticleSystem] ,systems);
         
         //initialize renderer
         this.renderer = Renderer(ctx);
@@ -49,7 +50,7 @@ class System_Handler{
 
         store.getStore('engine').update('currentScene', Object.keys(scenes)[0]);
 
-        event.publish('init_sys');
+        event.publishImmediate('init_sys');
 
         Object.keys(scenes).forEach(scene => {
             this.scenes[scene] = new scenes[scene](this.createAPI(this.renderer));
@@ -87,9 +88,11 @@ class System_Handler{
 
         scene.update(dt);
 
-        event.publish('update_sys', {deltaTime: dt, entities: this.gameObject[currentScene]});
+        event.publishImmediate('update_sys', {deltaTime: dt, entities: this.gameObject[currentScene]});
         
         scene.draw(dt);
+
+        event.finalize();
         
         if (debug){
             ctx.font = `${20/scale}px Arial'`;
@@ -112,7 +115,7 @@ class System_Handler{
         return {
             addMap: (map, spriteSheet)=> { this.addGameObjects(loadMap(map, spriteSheet))},
             createEntity: (componentsList) => {
-                this.addGameObjects(Composer.compose(componentsList));
+                this.addGameObjects([componentsList]);
             },
             addGameObject: (data)=>this.addGameObjects(data),
             getStore: (key?: string) => {

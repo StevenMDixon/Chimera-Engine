@@ -16,11 +16,12 @@ export function loadMap(map, ss = 'player'): GameObject[]{
         let c = Components.getComponents();
         map.forEach((row, y) => {
             row.forEach((tile, x) => {
-                let t = new GameObject();
-                t.addComponent(new c.Renderable());
-                t.addComponent(new c.Position(x*this.mapData.size[0], y*this.mapData.size[1]));
-                t.addComponent(new c.Size(this.mapData.size[0], this.mapData.size[1]));
-                t.addComponent(new c.Tile(tile, 'custom'));
+                let t = [
+                    new c.Renderable(),
+                    new c.Position(x*this.mapData.size[0], y*this.mapData.size[1]),
+                    new c.Size(this.mapData.size[0], this.mapData.size[1]),
+                    new c.Tile(tile, 'custom'),
+                ]
                 //this.tileLayers['Ground'].push(new Tile(x*this.mapData.size[0], y*this.mapData.size[1], this.mapData.size[0], this.mapData.size[1], tile, 'custom'))
                 items.push(t);
             })
@@ -66,17 +67,18 @@ function loadTileChunk(chunk, tilew, tileh, c, ss){
     for (let i = 0; i <= data.length; i++){
         iy = Math.floor(i/width)
         if(data[i] -1 >= 0){
-            let t = new GameObject();
-            t.addComponent(new c.Renderable());
-            t.addComponent(new c.Position(i%width*tilew + (x*tilew), iy*tileh + (y*tileh)));
-            t.addComponent(new c.Size(tilew, tileh));
-            t.addComponent(new c.Tile(data[i] -1, 'tiled'));
-            t.addComponent(new c.Sprite(ss));
-            t.addComponent(new c.zIndex(1));
+            let t = [
+                new c.Renderable(),
+                new c.Position(i%width*tilew + (x*tilew), iy*tileh + (y*tileh)),
+                new c.Size(tilew, tileh),
+                new c.Tile(data[i] -1, 'tiled'),
+                new c.Sprite(ss),
+                new c.zIndex(1)
+            ]
             let cd = SpriteSheet.getCustomProperties(ss, data[i] -1);
             cd.forEach(component => {
                 if(c[component.name]){
-                    t.addComponent(new c[component.name](parseJsonInput(component.value)));
+                    t.push(new c[component.name](parseJsonInput(component.value)));
                 }
             }) 
             tiles.push(t);
@@ -92,20 +94,20 @@ function LoadEntityChunk(chunk, w, h, c, ss?){
     for (let i = 0; i <= data.length; i++){
         iy = Math.floor(i/width)
         if(data[i] -1 >= 0){
-            let t = new GameObject();
-            t.addComponent(new c.Renderable());
-            t.addComponent(new c.Position(i%width*w + (x*w),iy*h + (y*h)));
-            t.addComponent(new c.Size(w, h));
-            t.addComponent(new c.Sprite(ss));
-            t.addComponent( new c.Entity(data[i] -1, 'tiled'));
-            t.addComponent(new c.zIndex(2));
+            let t = [
+                new c.Renderable(),
+                new c.Position(i%width*w + (x*w),iy*h + (y*h)),
+                new c.Size(w, h),
+                new c.Sprite(ss),
+                new c.Entity(data[i] -1, 'tiled'),
+                new c.zIndex(2),
+            ]
             let cd = SpriteSheet.getCustomProperties(ss, data[i] -1);
             cd.forEach(component => {
                 if(c[component.name]){ 
-                    t.addComponent(new c[component.name](parseJsonInput(component.value)));
+                    t.push(new c[component.name](parseJsonInput(component.value)));
                 }else{}
             })
-
             tiles.push(t);
         }
     }
@@ -114,26 +116,26 @@ function LoadEntityChunk(chunk, w, h, c, ss?){
 
 function loadObjects(objects, type, components){
     return objects.map(object => {
-        let t = new GameObject();   
+        let t = [];   
         if(object.polygon){
             object.polygon = object.polygon.map(poly => {
                 return {x: poly.x + object.x, y: poly.y + object.y}
             })
 
-            t.addComponent(new components.Polygon(object.polygon));
-            t.addComponent(new components.Renderable());
-            t.addComponent(new components.Position(object.x, object.y));
-            t.addComponent(new components.zIndex(3));
+            t.push(new components.Polygon(object.polygon));
+            t.push(new components.Renderable());
+            t.push(new components.Position(object.x, object.y));
+            t.push(new components.zIndex(3));
         }else {
-            t.addComponent(new components.Renderable());
-            t.addComponent( new components.Position(object.x, object.y));
-            t.addComponent(new components.Size(object.width, object.height));
-            t.addComponent(new components.zIndex(3));
+            t.push(new components.Renderable());
+            t.push( new components.Position(object.x, object.y));
+            t.push(new components.Size(object.width, object.height));
+            t.push(new components.zIndex(3));
         }
         if(object.properties){
             object.properties.forEach(prop => {
                 if(components[prop.name]){
-                    t.addComponent(new components[prop.name](parseJsonInput(prop.value)));
+                    t.push(new components[prop.name](parseJsonInput(prop.value)));
                 }
             })
         }
@@ -144,18 +146,18 @@ function loadObjects(objects, type, components){
 
 function LoadEntityObjects(objects, type, components, ss){
     return objects.map(object => {
-        let t = new GameObject(); 
+        let t = []; 
         if(object.gid >= 0){
-            t.addComponent(new components.Sprite(ss));
-            t.addComponent( new components.Entity(object.gid - 1, 'tiled'));
+            t.push(new components.Sprite(ss));
+            t.push( new components.Entity(object.gid - 1, 'tiled'));
         }
-        t.addComponent(new components.Position(object.x, object.y - object.height));
-        t.addComponent(new components.Size(object.width, object.height));
-        t.addComponent(new components.zIndex(2));
+        t.push(new components.Position(object.x, object.y - object.height));
+        t.push(new components.Size(object.width, object.height));
+        t.push(new components.zIndex(2));
         if(object.properties){
             object.properties.forEach(prop => {
                 if(components[prop.name]){  
-                    t.addComponent(new components[prop.name](parseJsonInput(prop.value)));
+                    t.push(new components[prop.name](parseJsonInput(prop.value)));
                 }
             })
         }
@@ -171,7 +173,5 @@ function parseJsonInput(input){
     } catch(e){
         //console.log(e)
     }
-    //console.log(v)
-    
     return v
 }
