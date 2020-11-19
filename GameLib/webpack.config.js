@@ -17,11 +17,6 @@ module.exports = {
         loader: 'babel-loader'
       },
       {
-        test: /\.ts$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'ts-loader'
-      },
-      {
         test: /\.s?css$/,
         use: ["style-loader", "css-loader"]
       },
@@ -33,27 +28,10 @@ module.exports = {
         test: /\.(jpg|png|svg)$/,
         loader: 'file-loader'
       },
-      // {
-      //   test: /\_worker\.js$/,
-      //   use: [
-      //     {
-      //       loader: 'worker-loader',
-      //       options: { 
-      //         filename: '[name].[hash].js'
-      //       }
-      //     },
-      //     {
-      //       loader: 'babel-loader',
-      //       options: {
-      //         cacheDirectory: true
-      //       }
-      //     }
-      //   ]
-      // },
     ]
   },
   resolve: {
-      extensions: ["*", ".js", ".jsx", '.ts']
+      extensions: ["*", ".js", ".jsx"]
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),
