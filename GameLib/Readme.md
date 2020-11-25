@@ -1,6 +1,6 @@
-# GameLib
+# Chimera Engine
 
-This is my crappy attempt at builind a game library for the HTML canvas api.
+Chimera Engine has become a learning ground for building out a set of tools for game developement in the web browser.
 
 
 ## Setup

@@ -4,7 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  entry: './src/index.ts',
+  entry: './src/index.js',
   mode: 'development',
   module: {
     rules: [
@@ -12,11 +12,6 @@ module.exports = {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
         loader: 'babel-loader'
-      },
-      {
-        test: /\.ts$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'ts-loader'
       },
       {
         test: /\.s?css$/,
@@ -34,7 +29,7 @@ module.exports = {
     ]
   },
   resolve: { 
-      extensions: ["*", ".js", ".jsx", '.ts']
+      extensions: ["*", ".js", ".jsx"]
   },
   output: {
     path: path.resolve(__dirname, 'dist/'),

@@ -24,7 +24,11 @@ map['Xbox 360 Controller (XInput STANDARD GAMEPAD)'] = {
     26: 'LA',
     29: 'CAPTURE',
     30: 'L',
-    31: 'LT'
+    31: 'LT',
+    40: 40,
+    39: 39,
+    37: 37,
+    38: 38
   }
 }
 

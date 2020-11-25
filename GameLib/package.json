@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "rmdir dist /s /q && webpack --watch --progress",
     "start": "webpack-dev-server --mode development --open",

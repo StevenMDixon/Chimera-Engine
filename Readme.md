@@ -1,7 +1,9 @@
 # Chimera Engine
 
 This has evolved into a full fledged project:
-I remember really wanting to learn how to make games when I was younger. This repo chronicles my expereince with game developement in JS. I wanted to start out with simple concepts and work my way into some fully functioning games. I also wanted to learn these concepts without using any game development libraries. 
+I remember really wanting to learn how to make games when I was younger. This repo chronicles my expereince with game developement in JS. I wanted to start out with simple concepts and work my way into some fully functioning games. I also wanted to learn these concepts without using any game development libraries.
+
+
 
 ## Things I expect to learn
 

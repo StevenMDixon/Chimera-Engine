@@ -2,7 +2,7 @@
   "name": "Template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "index.js",
   "scripts": {
     "dev": "webpack --mode development",
     "start": "webpack-dev-server --mode development --open",
@@ -21,7 +21,6 @@
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "file-loader": "^6.1.0",
-    "ts-loader": "^8.0.3",
     "typescript": "^4.0.2"
   },
   "dependencies": {
