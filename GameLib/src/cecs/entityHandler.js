@@ -42,7 +42,6 @@ class EntityHandler {
 
     addEntity(go) {
 
-        // CREATE LOGIC TO SET AN EXISTIC OBJECT 
         let available = this.available();
         if (go.length >= available){
             this.expand(go.length - available);
