@@ -1,12 +1,13 @@
 {
-  "name": "GameLib",
+  "name": "ChimeraEngine",
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
   "scripts": {
     "dev": "rmdir dist /s /q && webpack --watch --progress",
     "start": "webpack-dev-server --mode development --open",
-    "build": "webpack --mode production"
+    "build": "webpack --mode production",
+    "tt": "webpack --watch --progress"
   },
   "author": "",
   "license": "ISC",
@@ -16,15 +17,14 @@
     "@babel/preset-env": "^7.11.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.2.1",
-    "file-loader": "^6.1.0",
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
     "worker-loader": "^3.0.5"
   },
-  "dependencies": {},
   "files": [
     "./lib"
-  ]
+  ],
+  "dependencies": {}
 }

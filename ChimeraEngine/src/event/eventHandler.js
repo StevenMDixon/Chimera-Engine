@@ -30,9 +30,8 @@ class Event {
 
     finalize(){
         let t = [...this.q];
-       
+        if(t.length == 0) return;
         t.forEach(fn => fn());
-       // console.log(this.q)
         this.q = this.q.slice(t.length, this.q.length)
     }
 }

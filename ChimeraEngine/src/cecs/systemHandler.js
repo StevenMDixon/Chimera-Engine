@@ -11,7 +11,7 @@ class SystemHandler {
 
     next(entities){
         this.currentIndex += 1;
-        let e = enitites.query(this.systems[this.currentIndex].targetComponents);
+        let e = entities.query(this.systems[this.currentIndex].targetComponents);
         if(this.currentIndex == this.systems.length){
             this.systems[this.currentIndex].update(e, this.done.bind(this, entities));
         }else {
@@ -24,7 +24,7 @@ class SystemHandler {
         this.isRunning = false;
     }
 
-    run(enitites){
+    run(entities){
         if(!this.isRunning){
             this.isRunning = true;
             this.systems[this.currentIndex].update(entities, this.next.bind(this, entities))

@@ -9,8 +9,7 @@ module.exports = {
   devtool: "source-map",
 
   module: {
-    rules: [
-      
+    rules: [ 
       {
         test: /\.(js|jsx)$/,
         exclude: /(node_modules|bower_components)/,
@@ -19,15 +18,7 @@ module.exports = {
       {
         test: /\.s?css$/,
         use: ["style-loader", "css-loader"]
-      },
-      {
-        test: /\.wav$/,
-        loader: 'file-loader'
-      },
-      {
-        test: /\.(jpg|png|svg)$/,
-        loader: 'file-loader'
-      },
+      }
     ]
   },
   resolve: {
@@ -37,7 +28,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist/'),
     publicPath: '/dist/',
     filename: 'index.js',
-    library: 'GameLib',
+    library: 'ChimeraEngine',
     libraryTarget: 'umd',
     umdNamedDefine: true
   },
