@@ -12,7 +12,7 @@ class GameEngine {
     init(){
 
         // register built in systems?
-        cec.systemHandler.registerSystem();
+        //cec.systemHandler.registerSystem();
     }
 
     setConfig(configObject){
@@ -42,7 +42,7 @@ function core(){
 
     // create a store for the engine to use
     storeFactory.createStore('engine', config);
-
+    cecs.systemHandler.registerSystem(new cecs.built_in());
     return {
         engine: new GameEngine(),
         ecs: cec,
