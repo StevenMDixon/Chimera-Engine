@@ -1,9 +1,9 @@
-import events from './event/eventHandler.js';
+
 import {config} from './config/config.js';
 import storeFactory from './store/storeFactory.js';
+import ecsFactory from './cecs';
 
-import cec from './cecs';
-import cecs from './cecs';
+// import events from './event/eventHandler.js';
 
 
 import {PixiScene, PixiRenderer} from './pixi_templates/index';
@@ -67,9 +67,11 @@ class GameEngine {
             this.debugTarget.innerText = 'FPS: ' + Math.floor(1/(deltaTime/1000))
         }
         //events.finalize();
+        this.currenScene.update(deltaTime);
 
         if(this.renderer.type == 'PIXI' && this.currenScene){
-            this.renderer.render(this.currenScene.getStage());
+            
+            this.renderer.render(this.currenScene._getStage());
         }
         requestAnimationFrame((timeStamp) => this._run(timeStamp, time));
     }
@@ -77,9 +79,14 @@ class GameEngine {
     _createScenes(){
         if(this.renderer.type == 'PIXI'){
             this.config.scenes.forEach(scene => {
+                // create new scene and pass in needed engine items
                 let tempScene = null;
-                console.log(this.config)
-                tempScene = new scene({PIXI: this.config.pixiSettings.PIXI, GlobalStore: storeFactory});
+                tempScene = new scene({PIXI: this.config.pixiSettings.PIXI, GlobalStore: storeFactory, Entities: ecsFactory.h});
+                // register pixi systems
+                tempScene._entities.registerSystems(
+                    ecsFactory.built_in.PIXI
+                )
+                // add new scene to scenes
                 this.scenes[tempScene.name] = tempScene;
             })
         }
@@ -97,13 +104,11 @@ class GameEngine {
 function core(){
     // create a store for the engine to use
     storeFactory.createStore('engine', config);
-    //cecs.systemHandler.registerSystem(new cecs.built_in());
+    // expose needed functionality
     return {
         engine: new GameEngine(),
-       // ecs: cec,
-       // store: storeFactory,
-       // events: events,
-        sceneTemplates: {PixiScene}
+        sceneTemplates: {PixiScene},
+        systemTemplate: ecsFactory.system
     }
 }
 

@@ -1,7 +1,8 @@
 //instanceof might help
 class Entity{
 
-    constructor(uuid){
+    constructor(uuid, parent){
+        this.parent = parent;
         this.components = new Map();
         this.UUID = uuid;
         this.isActive = false;
@@ -15,10 +16,12 @@ class Entity{
     }
 
     removeComponent(name){
+        // needs to signal that component was added?
         this.components.delete(name);
     }
 
     getComponent(name){
+        // needs to signal that component was removed?
         return this.components.get(name);
     }
 
@@ -40,6 +43,7 @@ class Entity{
 
     clearComponents(){
         this.components.clear();
+        // needs to signal that component was removed?
     }
 }
 

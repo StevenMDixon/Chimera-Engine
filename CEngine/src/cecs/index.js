@@ -1,6 +1,11 @@
-import entityHandler from './entityHandler';
-import systemHandler from './systemHandler';
+import h from './h';
 import system from './system'
-import built_in from './built_in/mp_system';
+import Pixi_System from './built_in/pixi_system';
 
-export default {entityHandler, systemHandler, system, built_in}
+const built_in = {
+    PIXI: [
+        Pixi_System
+    ]
+}
+
+export default {h, system, built_in}

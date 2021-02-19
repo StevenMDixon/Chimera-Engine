@@ -1,44 +1,53 @@
 class Scene {
-    constructor(name, {PIXI, GlobalStore}){
+    constructor(name, {PIXI, GlobalStore, EventSystem, Entities}){
         // built in PIXI related items
-        this.stage = new PIXI.Container();
-        this.loader = new PIXI.Loader();
+        this._stage = new PIXI.Container();
+        this._loader = new PIXI.Loader();
+        //this.events = EventSystem.create(name);
         this.PIXI = PIXI;
-        this.sprites = {};
-        this.name = name;
-        this.GlobalStore = GlobalStore;
-        this.GlobalLoader = PIXI.Loader;
+        this._name = name;
+        this._entities = Entities.createContext(name);
+        this.global = {
+            Store: GlobalStore,
+            Loader: PIXI.Loader,
+            Events: EventSystem
+        };
+
         this.layers = {
             'transition': new PIXI.Container(),
             'effect': new PIXI.Container(),
+            'particle2': new PIXI.ParticleContainer(),
             'sprite2': new PIXI.Container(),
+            'particle1': new PIXI.ParticleContainer(),
             'sprite1': new PIXI.Container(),
             'bg2': new PIXI.Container(),
             'bg1': new PIXI.Container(),
-        }
+        };
     }
 
     _load() {
         // create a store for this instance
-        this.store = this.GlobalStore.createStore(this.name, {});
+        this.store = this.global.Store.createStore(this.name, {});
         // preload user defined data
         this.preload();
         // create onload to listen for onload event
-        this.loader.load((loader, resources) => this.setup(loader, resources));
+        this._loader.load((loader, resources) => this.setup(loader, resources));
         // make this scenes stage able to sort child containers
-        this.stage.sortableChildren = true;
+        this._stage.sortableChildren = true;
         // loop through children and add them to the stage
         Object.keys(this.layers).forEach((item, i) => {
             this.layers[item].zIndex = -i;
-            this.stage.addChild(this.layers[item]);
+            this._stage.addChild(this.layers[item]);
         })
     }
 
-    preload(){}
+    _getStage(){return this._stage};
 
-    setup(loader, resources){}
+    preload(){} // user defined
 
-    getStage(){return this.stage};
+    setup(loader, resources){} // user defined
+
+    update(dt){} // user defined
 
     createLayer(name, zIndex, toAdd){
         if(this.layers[name]){
@@ -49,7 +58,7 @@ class Scene {
         this.layers[name].zIndex = zIndex;
         this.layers[name].addChild(toAdd);
         //add the new layer to the stage
-        this.stage.addChild(this.layers[name]);
+        this._stage.addChild(this.layers[name]);
     } 
 }
 

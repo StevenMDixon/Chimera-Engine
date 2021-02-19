@@ -10,6 +10,10 @@ class EntityHandler {
         this.populate();
     }
 
+    get size(){
+        return this.entities.size;
+    }
+
     populate() {
         for(let i = 0; i < this.qCount; i++){
             this.entities.set(this.UUIDTrack, new Entity(this.UUIDTrack));
@@ -79,4 +83,4 @@ class EntityHandler {
     }
 }
 
-export default new EntityHandler();
+export default EntityHandler;

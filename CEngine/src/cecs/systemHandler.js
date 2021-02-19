@@ -33,4 +33,4 @@ class SystemHandler {
 }
 
 
-export default new SystemHandler();
+export default SystemHandler;
