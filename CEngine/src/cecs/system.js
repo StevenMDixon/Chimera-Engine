@@ -15,7 +15,7 @@ class System_Base {
     }
 
     _unregisterEntity(entityId){
-        this._cacheList = this._cacheList.filter(entity => entity.id != entityId)
+        this._cacheList = this._cacheList.filter(entity => entity.UUID != entityId)
     }
 
 }

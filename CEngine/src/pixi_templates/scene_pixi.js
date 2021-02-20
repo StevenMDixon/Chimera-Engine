@@ -12,7 +12,7 @@ class Scene {
             Loader: PIXI.Loader,
             Events: EventSystem
         };
-
+        this.store = null;
         this.layers = {
             'transition': new PIXI.Container(),
             'effect': new PIXI.Container(),
@@ -27,7 +27,7 @@ class Scene {
 
     _load() {
         // create a store for this instance
-        this.store = this.global.Store.createStore(this.name, {});
+        this.store = this.global.Store.createStore(this._name, {});
         // preload user defined data
         this.preload();
         // create onload to listen for onload event
@@ -45,7 +45,7 @@ class Scene {
 
     preload(){} // user defined
 
-    setup(loader, resources){} // user defined
+    setup(loader, resources){} // user defined, create
 
     update(dt){} // user defined
 

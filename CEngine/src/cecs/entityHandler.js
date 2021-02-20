@@ -63,7 +63,7 @@ class EntityHandler {
             // item.UUID = this.UUIDTrack;
             // item.isActive = true;
             // this.gameObjects.set(this.UUIDTrack, item);
-            index++
+            index++;
         });
     }
 
@@ -71,6 +71,7 @@ class EntityHandler {
         let component = this.entities.get(go.UUID);
         component.clearComponents();
         component.isActive = false;
+        return go.UUID;
     }
 
     // grabs all components with the listed components

@@ -57,6 +57,8 @@ class GameEngine {
         this.currenScene = this.scenes[sceneName];
     }
 
+
+
     _run(ts = 0, time = 0){
         const deltaTime =  ts - time;
 
@@ -82,7 +84,7 @@ class GameEngine {
                 // create new scene and pass in needed engine items
                 let tempScene = null;
                 tempScene = new scene({PIXI: this.config.pixiSettings.PIXI, GlobalStore: storeFactory, Entities: ecsFactory.h});
-                // register pixi systems
+                // register built in pixi systems
                 tempScene._entities.registerSystems(
                     ecsFactory.built_in.PIXI
                 )

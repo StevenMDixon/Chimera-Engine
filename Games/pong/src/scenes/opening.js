@@ -12,7 +12,7 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
         //this.loader.add("player", "images/animationphases.png");
     }
 
-    setup(){
+    setup(loader, resources){
         let sheet = new this.PIXI.BaseTexture.from(this.global.Loader.shared.resources["player"].url);
         this.ssheets.player = {}
         let h = 259;
@@ -25,6 +25,8 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
 
 
         let player = new this.PIXI.AnimatedSprite(this.ssheets.player.one);
+
+
         player.x = 200;
         player.y = 200;
         player.loop = true;

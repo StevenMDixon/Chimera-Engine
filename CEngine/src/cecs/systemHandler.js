@@ -9,6 +9,12 @@ class SystemHandler {
         this.systems.push(system);
     }
 
+    registerEntity(entity_ptr){
+        this.systems.forEach(sys => {
+
+        });
+    }
+
     next(entities){
         this.currentIndex += 1;
         let e = entities.query(this.systems[this.currentIndex].targetComponents);

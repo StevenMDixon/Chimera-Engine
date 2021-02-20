@@ -8,15 +8,28 @@ class MContext {
         this.parent = parent;
         this.systems = new SystemHandler();
         this.entities = new EntityHandler();
+        this.components  = [];
     }
 
     registerSystems(systems){
-        console.log(systems)
         // take in built in systems like pixi_system and create them then move references to entities
         systems.forEach(sys => this.systems.registerSystem(new sys()))
     }
 
+    composeEntity(){
+
+    }
+
+    freeEntity(Entity){
+        const removed = this.entities.removeEntity(Entity);
+        // @todo deregister entity from all systems
+
+    }
+
     // build a bridge! 
+    runUpdate(){
+
+    }
 }
 
 class Manager {
@@ -30,6 +43,8 @@ class Manager {
        // return that context for the scene to consume
        return this.ECS[contextName];
     }
+
+
 }
 
 
