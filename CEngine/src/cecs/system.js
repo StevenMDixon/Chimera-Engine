@@ -41,9 +41,6 @@ class System_Base {
     _checkfortaggedEntity(entityID){
         this._taggedEntityList.has(entityID)
     }
-
-
-
 }
 
 export default System_Base;

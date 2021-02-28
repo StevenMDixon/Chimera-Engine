@@ -21,8 +21,8 @@ class Input_System extends System {
       next();
     }
 
-    handleEvent(event){
-        console.log('its happening people', event)
+    handleEvent(inputs){
+        this._inputs = inputs;
     }
 }
 
