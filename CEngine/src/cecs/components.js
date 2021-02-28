@@ -1,7 +1,7 @@
 
 export class Component{
     constructor(){
-        this.gameObject = null;
+        this.parent = null;
     }
 }
 
@@ -16,7 +16,22 @@ class Inputs extends Component{
     }
 };
 
-class CameraFocus extends Component{};
+class Transform extends Component{
+    constructor(x, y, r = 0, s= 1){
+        super();
+        this.x = x;
+        this.y = y;
+        this.rotation = r,
+        this.scale = s
+    }
+};
+
+class CameraFocusAble extends Component{
+    constructor(isPrimary = false){
+        super();
+        this.primary = isPrimary;
+    }
+};
 
 class State extends Component{
     constructor(currentState){
@@ -37,6 +52,23 @@ class Particle extends Component{
     }
 }
 
+class Pixi extends Component{
+    constructor(data){
+        super();
+        this.pixi = data
+    }
+}
+
+class PixiAnimations extends Component{
+    constructor(data){
+        super();
+        this.PixiAnimations = data
+    }
+}
+
+class PixiStage extends Component{
+
+}
 
 class Components{
     constructor(){
@@ -45,9 +77,12 @@ class Components{
             Movable,
             Inputs,
             State,
-            CameraFocus,
+            CameraFocusAble,
             Emitter,
-            Particle
+            Particle,
+            Transform,
+            Pixi,
+            PixiAnimations
         }
     }
 

@@ -36,7 +36,5 @@ class Event {
     }
 }
 
-const instance = new Event();
-Object.freeze(instance);
 
-export default instance;
+export default Event;

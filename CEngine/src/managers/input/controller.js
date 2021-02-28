@@ -1,4 +1,4 @@
-import Mapping from '../config/default_controller_map';
+import Mapping from './default_controller_map';
 
 class Controller {
     constructor() {

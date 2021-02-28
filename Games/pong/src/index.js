@@ -6,7 +6,7 @@ import Opening from './scenes/opening';
 const gameConfig = {
     pixiSettings: {
         options: {
-            size: {w: 400, h: 400},
+            size: {w: 600, h: 600},
             target: "game",
             autoResize: false,
             DPI: true

@@ -1,11 +1,9 @@
 function store(intitialProps){
 
-    const  _store =  new Map();
-
+    const _store =  new Map();
     Object.keys(intitialProps).map(key => _store.set(key, intitialProps[key]))
 
     return {
-       
         update: function(key, data){
             _store.set(key, data);
         },

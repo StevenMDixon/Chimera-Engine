@@ -1,27 +1,25 @@
 //instanceof might help
-class Entity{
-
+class Entity {
     constructor(uuid, parent){
-        this.parent = parent;
+        this._parent = parent; // parent entityhandler instance
         this.components = new Map();
         this.UUID = uuid;
         this.isActive = false;
-        // @Todo implement children
+        // @Todo implement children?
         //this.children = [] as GameObject[];
     }
 
     addComponent(component){
-        component.gameObject = this;
+        component.parent = this;
         this.components.set(component.__proto__.constructor.name, component);
     }
 
     removeComponent(name){
-        // needs to signal that component was added?
         this.components.delete(name);
+        this.parent._reassignEntity(this);
     }
 
     getComponent(name){
-        // needs to signal that component was removed?
         return this.components.get(name);
     }
 
@@ -29,21 +27,25 @@ class Entity{
         return this.components.entries;
     }
 
-    hasComponent(...names){
+    hasComponents(names){
         let has = true;
         for(let i = 0; i < names.length; i++){
+            //console.log(names[i], this.components.has(names[i]))
+
             if (!this.components.has(names[i])){
                 has = false;
                 break;
             }
         }
-        if(this.components.length == 0) return false;
+        if(this.components.length == 0) has = false;
+        else if(names.length == 0) has = false;
         return has;
     }
 
     clearComponents(){
         this.components.clear();
         // needs to signal that component was removed?
+        this._parent._triggerEntityReassignment(this);
     }
 }
 
