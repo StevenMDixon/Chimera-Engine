@@ -24,7 +24,7 @@ c.engine.setConfig(gameConfig);
 
 //loading globally needed items this will be passed into PIXI loader.
 c.engine.load(
-    {name: 'player', file: "images/animationphases.png"}
+    {name: 'player', file: "./images/player.png"}
 );
 
 c.engine.start();

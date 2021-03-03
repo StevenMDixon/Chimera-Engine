@@ -14,14 +14,14 @@ class Input_System extends System {
 
     update(next, dt){
       this.cachedEntities.forEach((entity) => {
-        //console.log(entity)
         const inputComponent = entity.getComponent('Inputs');
-        inputComponent.inputs = this.inputs;
+        inputComponent.inputs = this._inputs;
       })
       next();
     }
 
     handleEvent(inputs){
+        //console.log(inputs)
         this._inputs = inputs;
     }
 }

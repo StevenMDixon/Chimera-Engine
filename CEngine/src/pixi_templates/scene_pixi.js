@@ -1,19 +1,14 @@
-class PixiScene {
+import Scene from '../utils/Scene';
+
+class PixiScene extends Scene{
     constructor(name, {PIXI, GlobalStore, Event, Entities}){
-        this._global = {
-            Store: GlobalStore,
-            Loader: PIXI.Loader,
-            Event: Event,
-            PIXI: PIXI
-        };
+        super(name, {GlobalStore, Event, Entities});
         // built in PIXI related items
+        this._global.Loader = PIXI.Loader
+        this._global.PIXI = PIXI;
         this._stage = new PIXI.Container();
         this._loader = new PIXI.Loader();
-        //this.events = EventSystem.create(name);
-        this._name = name;
-        this._world = Entities.createContext(name, this);
-        this._store = this._global.Store.createStore(name, {});
-        this._event = this._global.Event.createEventHandler(name);
+
         this.layers = {
             transition: new PIXI.Container(),
             effect: new PIXI.Container(),
@@ -30,20 +25,9 @@ class PixiScene {
         this.currentMap = null;
     }
 
-    get store(){
-        return this._store;
-    } 
-
-    get world() {
-        return this._world;
-    }
 
     get stage() {
         return this._stage;
-    }
-
-    get global(){
-        return this._global;
     }
 
     get PIXI(){
@@ -63,12 +47,6 @@ class PixiScene {
             this._stage.addChild(this.layers[item]);
         })
     }
-
-    preload(){} // user defined
-
-    setup(loader, resources){} // user defined
-
-    update(dt){} // user defined
 
     createLayer(name, zIndex, toAdd){
         if(this.layers[name]){

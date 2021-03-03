@@ -1,9 +1,10 @@
 import Chimera from 'ChimeraEngine';
 import * as filters from 'pixi-filters';
+import MovementSystem from '../movement_sys';
 // console.log(Chimera.components)
 
 class Opening extends Chimera.sceneTemplates.PixiScene {
-    constructor(EngineItems){
+    constructor(EngineItems)    {
         super('Opening', EngineItems);
         this.player = null;
     }
@@ -11,17 +12,18 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     preload(){
         //console.log('Global', this.global)
         //this.loader.add("player", "images/animationphases.png");
+        this.world.registerSystem(MovementSystem)
     }
 
     setup(loader, resources){
         let sheet = new this.PIXI.BaseTexture.from(this.global.Loader.shared.resources["player"].url);
         let playerSheet = {}
-        let h = 259;
-        let w = 130;
+        let h = 8;
+        let w = 8;
 
         playerSheet.one = [
-            new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(0 + 10, 0, w, h)),
-            new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(w + 10 + 30, 0, w, h))
+            new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(0, 0, w, h)),
+            //new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(w + 10 + 30, 0, w, h))
         ];
 
         playerSheet.two = [
@@ -32,22 +34,20 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
             let player = new this.PIXI.AnimatedSprite(playerSheet.one);
             player.x = 100 //Math.random() * 200;
             player.y = 100 //Math.random() * 200;
-            player.loop = true;
+            player.loop = false;
             player.anchor.set(0.5);
-            player.animationSpeed = .01;
-            player.rotation = .2;
-
+            player.animationSpeed = .1;
+            player.rotation = 0;
+            //player.scale.set(4,4)
            this.world.composeEntity(
                 [
-                //new Chimera.components.Player(),
+                new Chimera.components.Player(),
                 new Chimera.components.Pixi(player),
                 new Chimera.components.PixiAnimations(playerSheet),
-                new Chimera.components.Transform(player.x, player.y, player.rotation, 1),
+                new Chimera.components.Transform(player.x, player.y, player.rotation, 4, 4),
                 new Chimera.components.Inputs()
             ])
-            if(i%2){
-                //player.visible = false
-            }
+            
             this.layers.bg1.addChild(player);
         }
  

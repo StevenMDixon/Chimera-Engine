@@ -73,7 +73,7 @@ class SystemHandler {
         if(this.currentIndex == this.systems.length){
             this.done();
         }else {
-            this.systems[this.currentIndex].update(this.next.bind(this), dt);
+            this.systems[this.currentIndex].update(this.next.bind(this, dt), dt);
         }
     }
 
@@ -86,7 +86,7 @@ class SystemHandler {
     run(dt){
         if(!this.isRunning){
             this.isRunning = true;
-            this.systems[this.currentIndex].update(this.next.bind(this), dt)
+            this.systems[this.currentIndex].update(this.next.bind(this, dt), dt)
         }
     }
 

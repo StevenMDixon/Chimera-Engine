@@ -14,10 +14,7 @@ class Pixi_Transform_System extends System {
         pixi.x = transform.x;
         pixi.y = transform.y;
         pixi.rotation = transform.rotation;
-
-
-        pixi.update(dt);
-
+        pixi.scale.set(transform.scale.x, transform.scale.y)
       })
 
       //this.publish('&sys_error', 'hi');

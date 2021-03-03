@@ -17,12 +17,16 @@ class Inputs extends Component{
 };
 
 class Transform extends Component{
-    constructor(x, y, r = 0, s= 1){
+    constructor(x, y, r = 0, sx = 1, sy = 1){
         super();
         this.x = x;
         this.y = y;
         this.rotation = r,
-        this.scale = s
+        this.scale = {
+            x: sx,
+            y: sy
+        }
+    
     }
 };
 

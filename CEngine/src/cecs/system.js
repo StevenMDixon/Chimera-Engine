@@ -7,6 +7,10 @@ class System_Base {
         this._parent = null;
     }
 
+    get cachedEntities(){
+        return this._taggedEntityList;
+    }
+
     subscribe(event, payload){
         this._parent.event.subscribe(event, payload.bind(this));
     }
@@ -22,11 +26,8 @@ class System_Base {
     init(){}
 
     // called once per loop
-    update({}, next){ next();}
+    update(next, dt){ next(dt);}
 
-    get cachedEntities(){
-        return this._taggedEntityList;
-    }
 
     onCreate(){}
 

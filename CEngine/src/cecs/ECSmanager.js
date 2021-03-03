@@ -16,6 +16,10 @@ class ECSContext {
         systems.forEach(sys => this.systemHandler.registerSystem(new sys()));
     }
 
+    registerSystem(system){
+        this.systemHandler.registerSystem(new system());
+    }
+
     composeEntity(componentsList){
         let e = this.entityHandler.addEntity(componentsList);
         this.systemHandler.registerEntity(e);
@@ -29,10 +33,6 @@ class ECSContext {
     getEntitybyUUID(UUID){
         return this.entityHandler.getEntity(UUID);
     }
-
-    addEntity(){
-        
-    } 
 
     freeEntity(Entity){
         const removed = this.entityHandler.removeEntity(Entity);
@@ -76,7 +76,7 @@ class ECSManager {
     }
 
     getComponentsList(){
-        return Components.components
+        return Components.components;
     }
 }
 
