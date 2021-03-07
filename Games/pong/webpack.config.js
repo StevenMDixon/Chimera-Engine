@@ -34,14 +34,14 @@ module.exports = {
           outputPath: 'images',
         },
       },
-      {
-        test: /\.json$/,
-        // We could restrict using json-loader only on .json files in the
-        // node_modules/pixi.js directory, but the ability to load .json files
-        // could be useful elsewhere in our app, so I usually don't.
-        //include: path.resolve(__dirname, 'node_modules/pixi.js'),
-        loader: 'json'
-      },
+      // {
+      //   test: /\.json$/,
+      //   // We could restrict using json-loader only on .json files in the
+      //   // node_modules/pixi.js directory, but the ability to load .json files
+      //   // could be useful elsewhere in our app, so I usually don't.
+      //   //include: path.resolve(__dirname, 'node_modules/pixi.js'),
+      //   loader: 'json-loader'
+      // },
     ]
     
   },

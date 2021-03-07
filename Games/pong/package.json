@@ -28,6 +28,7 @@
     "ChimeraEngine": "file:..\\..\\cengine",
     "json-loader": "^0.5.7",
     "pixi-filters": "^3.2.2",
+    "pixi-sound": "^3.0.5",
     "pixi.js": "^5.3.7",
     "transform-loader": "^0.2.4"
   }

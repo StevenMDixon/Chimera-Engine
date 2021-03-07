@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"..\/..\/public\/images\/player.png",
+ "imageheight":48,
+ "imagewidth":64,
+ "margin":0,
+ "name":"player",
+ "spacing":0,
+ "tilecount":48,
+ "tiledversion":"1.4.3",
+ "tileheight":8,
+ "tilewidth":8,
+ "transparentcolor":"#c2c2d1",
+ "type":"tileset",
+ "version":1.4
+}

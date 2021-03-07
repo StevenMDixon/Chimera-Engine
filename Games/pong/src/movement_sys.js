@@ -9,21 +9,26 @@ class MovementSystem extends Chimera.systemTemplate{
     }
 
     update(next, dt){
+       // console.log(this.cachedEntities)
         this.cachedEntities.forEach(item =>{
-            const {inputs} = item.components.get('Inputs');
-            const transform = item.components.get('Transform')
-            //console.log(inputs);
+            let {inputs} = item.components.get('Inputs');
+            const transform = item.components.get('Transform');
+            const state = item.components.get('State');
+
             if(inputs[87]){
-                console.log((dt))
+                state.currentState = 'walking'
                 transform.y -= 1;
             }
             if(inputs[68]){
+                state.currentState = 'walking'
                 transform.x += 1;
             }
             if(inputs[65]){
+                state.currentState = 'walking'
                 transform.x -= 1;
             }
             if(inputs[83]){
+                state.currentState = 'walking'
                 transform.y += 1;
             }
             if(inputs[90]){

@@ -1,0 +1,15 @@
+{ "columns":14,
+ "image":"..\/..\/public\/images\/colored_tilemap.png",
+ "imageheight":89,
+ "imagewidth":125,
+ "margin":0,
+ "name":"colored_tilemap",
+ "spacing":1,
+ "tilecount":140,
+ "tiledversion":"1.4.3",
+ "tileheight":8,
+ "tilewidth":8,
+ "transparentcolor":"#003039",
+ "type":"tileset",
+ "version":1.4
+}
