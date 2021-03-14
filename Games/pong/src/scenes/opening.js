@@ -1,18 +1,20 @@
 import Chimera from 'ChimeraEngine';
 
+import * as particles from 'pixi-particles';
 
 import MovementSystem from '../movement_sys';
 import StateSystem from '../state_sys';
-
+import myParticles from './particles';
 
 class Opening extends Chimera.sceneTemplates.PixiScene {
-    constructor(EngineItems)    {
-        super('Opening', EngineItems);
+    constructor()    {
+        super('Opening');
         this.player = null;
+        this.p = null;
     }
 
     preload(){
-        this.loader.add('bird', './main.wav');
+        //this.loader.add('bird', './main.wav');
         //this.loader.add("song", "images/animationphases.png");
         this.world.registerSystem(MovementSystem);
         this.world.registerSystem(StateSystem);
@@ -20,7 +22,9 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     }
 
     setup(loader, resources){
-        let sheet = new this.PIXI.BaseTexture.from(this.global.Loader.shared.resources["player"].url);
+        const {PIXI, global, world, stage} = this.store.data;
+        
+        let sheet = new PIXI.BaseTexture.from(global.loader.resources["player"].url);
         let playerSheet = {}
         let h = 8;
         let w = 8;
@@ -30,29 +34,30 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
         //this.loader.resources.bird.sound.play();
         //resources.bird.sound.play();
         playerSheet.one = [
-            new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(0, 0, w, h)),
-            new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(w, 0, w, h))
+            new PIXI.Texture(sheet, new PIXI.Rectangle(0, 0, w, h)),
+            new PIXI.Texture(sheet, new PIXI.Rectangle(w, 0, w, h))
         ];
 
         playerSheet.two = [
-            new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(w * 5, 0, w, h)),
-            new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(w * 6, 0, w, h))
+            new PIXI.Texture(sheet, new PIXI.Rectangle(w * 5, 0, w, h)),
+            new PIXI.Texture(sheet, new  PIXI.Rectangle(w * 6, 0, w, h))
         ];
 
-        for(let i = 0; i < 1; i++){
-            let player = new this.PIXI.AnimatedSprite(playerSheet.one);
+        this.createLayer('bg1', 0);
+       // for(let i = 0; i < 1; i++){
+            let player = new PIXI.AnimatedSprite(playerSheet.one);
             player.x = 100; //Math.random() * 200;
             player.y = 100; //Math.random() * 200;
             player.loop = false;
             player.anchor.set(0.5);
             player.animationSpeed = .1;
             player.rotation = 0;
-            player.play();
+            //player.play();
             player.scale.set(1, 1)
-
+            //player.filters = [new this.PIXI.filters.BlurFilter()];
             //console.log(player.playing)
             //player.scale.set(4,4)
-           this.world.composeEntity(
+            world.composeEntity(
                 [
                 new Chimera.components.Player(),
                 new Chimera.components.Pixi(player),
@@ -62,34 +67,46 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
                 new Chimera.components.State('idle')
             ])
             
-            this.createLayer('bg1', 0);
+            
             this.addToLayer('bg1', player)
-        }
- 
-       
-
-        // this.createLayer('Test', 1, player4);
-
-        // document.addEventListener('keydown', (e)=> {
-        //     let t = this.player.getComponent('Transform')
-        //     console.log(t)
-        //     t.x += 20;
-        // }
-        // )
-
+        //}
+        this.player = player;
+        
+    //     // let p = new particles.Emitter(
+    //     //     this._layers['bg1'],
+    //     //     playerSheet.one,
+    //     //     myParticles[1]
+    //     // )
+    //     // p.emit = true;
+    //     // this.p = p
+    //     // document.addEventListener('keydown', (e)=> {
+    //     //     let t = this.player.getComponent('Transform')
+    //     //     console.log(t)
+    //     //     t.x += 20;
+    //     // }
+    //     // )
         
 
-        // setTimeout(()=>{
-        //     let {pixi} = this.player.components.get("Pixi");
-        //     let {PixiAnimations} = this.player.components.get("PixiAnimations")
-        //     //pixi.rotation = .5;
-        //     pixi.textures = PixiAnimations.two
-        // }, 1000)
-
+    //     // setTimeout(()=>{
+    //     //     let {pixi} = this.player.components.get("Pixi");
+    //     //     let {PixiAnimations} = this.player.components.get("PixiAnimations")
+    //     //     //pixi.rotation = .5;
+    //     //     pixi.textures = PixiAnimations.two
+    //     // }, 1000)
+    stage.position.set(600/2, 600/2);
+    //     this._stage.pivot.set(this.player.x, this.player.y)
     }
 
     update(dt){
-       
+        const {stage} = this.store.data
+        if(this.p){
+            //console.log(this.p)
+            this.p.update(dt)
+
+        }
+        if(this.player){
+            stage.pivot.set(this.player.x, this.player.y)
+        }
     }
 }
 

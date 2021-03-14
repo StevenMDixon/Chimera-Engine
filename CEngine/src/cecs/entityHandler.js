@@ -90,18 +90,14 @@ class EntityHandler {
         targetEntity.clearComponents();
     }
 
-    // grabs all components with the listed components
-    query(...names) {
-        let items = [];
-        for (let [key, value] of this.entities){
-            if(value.isActive && value.hasComponent(...names)) {items.push(value)}
-        }
-        return items;
-    }
-
-    _triggerEntityReassignment(Entity){
-        this._parent._reassignEntityBridge(Entity);
-    }
+    // -legacy- grabs all components with the listed components
+    // query(...names) {
+    //     let items = [];
+    //     for (let [key, value] of this.entities){
+    //         if(value.isActive && value.hasComponent(...names)) {items.push(value)}
+    //     }
+    //     return items;
+    // }
 }
 
 export default EntityHandler;

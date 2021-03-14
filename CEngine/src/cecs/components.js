@@ -26,7 +26,6 @@ class Transform extends Component{
             x: sx,
             y: sy
         }
-    
     }
 };
 
@@ -41,6 +40,7 @@ class State extends Component{
     constructor(currentState){
         super();
         this.state = currentState;
+        this.currentState = currentState;
     }
 };
 
@@ -66,12 +66,8 @@ class Pixi extends Component{
 class PixiAnimations extends Component{
     constructor(data){
         super();
-        this.PixiAnimations = data
+        this.animations = data
     }
-}
-
-class PixiStage extends Component{
-
 }
 
 class Components{

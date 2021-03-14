@@ -29,16 +29,17 @@ class Entity {
 
     hasComponents(names){
         let has = true;
-        for(let i = 0; i < names.length; i++){
-            //console.log(names[i], this.components.has(names[i]))
+        if(!names) return false;
+        if(this.components.length == 0) return false;
+        if(names.length == 0) return false;
 
+        for(let i = 0; i < names.length; i++){
             if (!this.components.has(names[i])){
                 has = false;
                 break;
             }
         }
-        if(this.components.length == 0) has = false;
-        else if(names.length == 0) has = false;
+
         return has;
     }
 

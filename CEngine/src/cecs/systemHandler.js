@@ -1,96 +1,93 @@
+'use strict'
+
 class SystemHandler {
     constructor(parent){
         this._parent = parent;
         this.systems = [];
-        this.currentIndex = 0;
         this.isRunning = false;
     }
 
-    get event(){
-        return this._parent._parent._event;
-    }
-
     // triggered when a component is added or removed
-    _reassignEntity(Entity){
+    _reassignEntity(entity){
         if(this.systems.length == 0) return
         this.systems.forEach(system => {
-            let systemHas = system._checkfortaggedEntity(Entity.UUID);
+            let systemHas = system._checkfortaggedEntity(entity.UUID);
             // check if system needs to add
             if(!systemHas){
-                this._assignEntitytoSystem(Entity, system);
+                this._assignEntitytoSystem(entity, system);
             } else {
-                this._removeEntityfromSystem(Entity, System);
+                this._removeEntityfromSystem(entity, system);
             }
         })
+    }
+
+    _checkSystemCritera(Entity, System){
+        // list of criteria for an entity to be registed to a system
+        return (Entity.hasComponents(System.targetComponents) && !Entity.hasComponents(System.excludeComponents));
     }
 
     // initial registration of entity when entity is added
-    _assignEntity(Entity){
-        //console.log(Entity, 'e')
-        if(this.systems.length == 0) return
+    _assignEntity(entity){
+        if(this.systems.length == 0) return false;
         this.systems.forEach(system => {
-            // list of criteria for an entity to be registed to a system
-            let criteria = system.targetComponents;
-            let xCriteria = system.excludeComponents;
-            if(Entity.hasComponents(...criteria) && !Entity.hasComponents(...xCriteria)){
-                system._registerEntityTag(Entity);
+            if(this._checkSystemCritera(entity, system)){
+                system._registerEntityTag(entity);
             }
-        })
+        });
     }
 
-    _assignEntitytoSystem(Entity, System){
-        let criteria = System.targetComponents || [];
-        let xCriteria = System.excludeComponents || [];
-       //console.log(Entity.hasComponents(criteria))
-        if(Entity.hasComponents(criteria) && !Entity.hasComponents(xCriteria)){
-            System._registerEntityTag(Entity);
+    _assignEntitytoSystem(entity, system){
+        if(this._checkSystemCritera(entity, system)){
+            system._registerEntityTag(entity);
             return true;
         }else {
             return false;
         }
     }
 
-    _removeEntityfromSystem(Entity, System){
-        System._unregisterEntity(Entity.UUID);
+    _removeEntityfromSystem(entity, system){
+        system._unregisterEntity(entity.UUID);
     }
 
-    registerSystem(system){
-        system._parent = this;
-
-        system.onCreate();
-        this.systems.push(system);
-
-    }
-
-    registerEntity(entity_ptr){
-        this.systems.forEach(sys => {
-            this._assignEntitytoSystem(entity_ptr, sys);
-        });
-    }
-
-    next(dt){
+    _next(dt){
         this.currentIndex += 1;
         if(this.currentIndex == this.systems.length){
-            this.done();
+            this._done();
         }else {
-            this.systems[this.currentIndex].update(this.next.bind(this, dt), dt);
+            this.systems[this.currentIndex].update(this._next.bind(this, dt), dt);
         }
     }
 
-    done(){
+    _done(){
         this.currentIndex = 0;
         this.isRunning = false;
-        this.event.finalize();
+    }
+
+    registerEntity(entity){
+        this._assignEntity(entity);
+    }
+
+    registerSystem(system, context){
+        // the system is already instantiated so parent needs to be assigned here
+        system._parent = this;
+        system._sceneContext = context;
+        // call on create from system
+        system.onCreate();
+        // add the system to the list
+        this.systems.push(system);
     }
 
     run(dt){
-        if(!this.isRunning){
-            this.isRunning = true;
-            this.systems[this.currentIndex].update(this.next.bind(this, dt), dt)
+        // if(!this.isRunning){
+        //     this.isRunning = true;
+        //     this.systems[this.currentIndex].update(this._next.bind(this, dt), dt)
+        // }
+        let c = (dt)=> {}
+        for(const system of this.systems){
+            system.update(c, dt)
         }
+        this._done();
     }
-
-
 }
 
 

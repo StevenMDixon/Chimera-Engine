@@ -20,16 +20,15 @@
     "style-loader": "^1.2.1",
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
-    "webpack-dev-server": "^3.11.0"
+    "webpack-dev-server": "^3.11.0",
+    "json-loader": "^0.5.7",
+    "transform-loader": "^0.2.4"
   },
   "dependencies": {
-    "brfs": "^2.0.2",
-    "cengine": "file:..\\..\\..\\..\\..\\AppData\\Roaming\\npm\\node_modules\\cengine",
     "ChimeraEngine": "file:..\\..\\cengine",
-    "json-loader": "^0.5.7",
     "pixi-filters": "^3.2.2",
+    "pixi-particles": "^4.3.0",
     "pixi-sound": "^3.0.5",
-    "pixi.js": "^5.3.7",
-    "transform-loader": "^0.2.4"
+    "pixi.js": "^5.3.7"
   }
 }

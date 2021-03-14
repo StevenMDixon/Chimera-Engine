@@ -9,19 +9,17 @@ class Input_System extends System {
     }
 
     onCreate(){
-        this.subscribe('&inputs_updated', (e)=>this.handleEvent(e));
+        this.subscribe('&inputs_updated', (e, i)=>this.handleEvent(e, i));
     }
 
     update(next, dt){
-      this.cachedEntities.forEach((entity) => {
-        const inputComponent = entity.getComponent('Inputs');
-        inputComponent.inputs = this._inputs;
-      })
+      for(const [i, entity] of this.cachedEntities){
+        entity.getComponent('Inputs').inputs = this._inputs;
+      }
       next();
     }
 
-    handleEvent(inputs){
-        //console.log(inputs)
+    handleEvent(event, inputs){
         this._inputs = inputs;
     }
 }

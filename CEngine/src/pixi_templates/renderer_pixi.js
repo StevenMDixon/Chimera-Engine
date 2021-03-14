@@ -32,7 +32,7 @@ class Renderer {
                 resolution: resolution || window.devicePixelRatio,
                 autoDensity: DPI || false
             }
-        )
+        );
 
         // add event listener
         if(autoResize){
@@ -41,7 +41,6 @@ class Renderer {
 
     }
 
-    // TODO: should this call getstage?
     render(scene){
         this.renderer.render(scene);
     }

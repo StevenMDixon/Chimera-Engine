@@ -1,14 +1,18 @@
 class Scene{
-    constructor(name, {GlobalStore, Event, Entities}){
-        this._global = {
-            Store: GlobalStore,
-            Loader: null,
-            Event: Event
-        };
+    constructor(name){
         this._name = name;
-        this._world = Entities.createContext(name, this);
-        this._store = this._global.Store.createStore(name, {});
-        this._event = this._global.Event.createEventHandler(name);
+        this._store = null;
+        // this._global = {
+        //     Store: GlobalStore,
+        //     Loader: null,
+        //     Event: Event, 
+        //     Map: Map,
+        //     Entities
+        // };
+        
+        // this._world = Entities.createContext(name, this);
+        //  = this._global.Store.createStore(name, {});
+        // this._event = this._global.Event.createEventHandler(name);
     }
 
     get store(){
@@ -16,11 +20,32 @@ class Scene{
     } 
 
     get world() {
-        return this._world;
+        const {world} = this._store.data;
+        return world;
     }
 
     get global(){
-        return this._global;
+        const {global} = this._store.data;
+        return global;
+    }
+
+    get loader(){
+        const {loader} = this._store.data;
+        return loader;
+    }
+
+    get event(){
+        const {event} = this._store.data;
+        return event;
+    }
+
+    get map(){
+        const {mapManager} = this._store.data.global.managers;
+        return mapManager;
+    }
+
+    get name(){
+        return this._name;
     }
     
     _load(){}
@@ -30,6 +55,33 @@ class Scene{
     setup(loader, resources){} // user defined
 
     update(dt){} // user defined
+
+    loadMap(mapName, ...fn){
+        const map = this.map.maps.get(mapName);
+        const components = this.global.Entities.getComponentsList();
+        map.forEach(layer => {
+            const {name, properties} = layer;
+            // create layer if it does not exits
+            if(!this._layers[name]){
+                this.createLayer(name, properties.zindex || 0);
+            }
+            for(const item of layer.data) {
+                const {position} = item
+                const composed = [];
+                // add new transform location
+                composed.push(new components.Transform(position.x, position.y, position.rotation, position.scale));
+                // let user define functions needed when loading map
+                fn.forEach(mappedFunction => composed.push(mappedFunction(item, components))); 
+                //
+                if(PIXItem){
+                    this.addToLayer(name, PIXItem);
+                }
+                this.world.composeEntity(composed);
+            }
+        })
+    }
+
+    
 }
 
 export default Scene;

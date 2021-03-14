@@ -5,29 +5,31 @@ class System_Base {
         this._order = 1;
         this._taggedEntityList = new Map();
         this._parent = null;
+        this._sceneContext = null;
     }
 
     get cachedEntities(){
         return this._taggedEntityList;
     }
 
-    subscribe(event, payload){
-        this._parent.event.subscribe(event, payload.bind(this));
+    subscribe(eventData, payload){
+        const {event} = this._sceneContext.store.data;
+        event.subscribe(eventData, payload.bind(this));
     }
 
-    publish(event, payload){
-        this._parent.event.publish(event, payload);
+    publish(eventData, payload){
+        const {event} = this._sceneContext.store.data;
+        event.publish(eventData, payload);
     }
 
-    publishImmediate(event, payload){
-        this._parent.event.publishImmediate(event, payload);
+    publishImmediate(eventData, payload){
+        const {event} = this._sceneContext.store.data;
+        event.publishImmediate(eventData, payload);
     }
 
     init(){}
-
     // called once per loop
-    update(next, dt){ next(dt);}
-
+    update(dt){}
 
     onCreate(){}
 

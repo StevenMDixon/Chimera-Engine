@@ -2,12 +2,14 @@ import EventHander from './eventHandler';
 
 const _engineEvents = [
     '&sys_error',
-    '&sys_message'
+    '&sys_message',
+    '_controlSound'
 ]
 
 class EventManager {
     constructor(){
         this.eventHandlers = new Map();
+        this.subscribers = {};
     }
     
     createEventHandler(name){
@@ -22,14 +24,35 @@ class EventManager {
         return handler;
     }
 
-    handleSystemMessages(message){
-        //@todo add in handling for event messages
-        console.log(message)
+    handleSystemMessages(message, payload){
+        // @todo add in handling for event messages
+        // console.log(message)
+        this.publish(message, payload);
     }
 
     publishEventtoChild(event, payload, childName){
-        let h = this.eventHandlers.get(childName);
+        const h = this.eventHandlers.get(childName);
         h.publish(event, payload);
+    }
+
+    subscribe(event, fn){
+        if(this.subscribers[event]){
+            this.subscribers[event].push(fn);
+        }else{
+            this.subscribers[event] = [fn];
+        }
+    }
+
+    publish(event, payload){
+        if(this.subscribers[event]){
+            this.subscribers[event].forEach(subscriber => {
+                subscriber(payload);
+            })
+        }
+    }
+
+    finalize(name){
+        this.eventHandlers.get(name).finalize();
     }
 }
 

@@ -31,9 +31,7 @@ class InputManager {
              this.inputs[item] = pressed;
            })
         }
-
-        // need to register a component to call when this is called.
-        //console.log(this.inputs, this.sendTarget)
+        
         this.sendTarget(this.inputs);
     }
 

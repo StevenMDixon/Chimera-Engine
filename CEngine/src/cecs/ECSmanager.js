@@ -1,5 +1,3 @@
-// @todo rename this file and classes
-
 import SystemHandler from './systemHandler';
 import EntityHandler from './entityHandler';
 import Components from './components';
@@ -13,11 +11,12 @@ class ECSContext {
 
     registerSystems(systems){
         // take in built in systems like pixi_system and create them then move references to entities
-        systems.forEach(sys => this.systemHandler.registerSystem(new sys()));
+        systems.forEach(sys => this.systemHandler.registerSystem(new sys(), this._parent));
     }
 
     registerSystem(system){
-        this.systemHandler.registerSystem(new system());
+        // allows user to register their own systems
+        this.systemHandler.registerSystem(new system(),this._parent);
     }
 
     composeEntity(componentsList){
@@ -45,17 +44,17 @@ class ECSContext {
         this.systemHandler.run(dt);
     }
 
-    _reassignEntityBridge(e){
-        this.systemHandler._reassignEntity(e);
-    }
+    // _reassignEntityBridge(e){
+    //     this.systemHandler._reassignEntity(e);
+    // }
 
-    _assignEntityBridge(e){
-        this.systemHandler._assignEntity(e);
-    }
+    // _assignEntityBridge(e){
+    //     this.systemHandler._assignEntity(e);
+    // }
 
-    _assignEntitytoSystemBridge(e,s){
-        this.systemHandler._assignEntitytoSystem(e,s);
-    }
+    // _assignEntitytoSystemBridge(e,s){
+    //     this.systemHandler._assignEntitytoSystem(e,s);
+    // }
 
 }
 

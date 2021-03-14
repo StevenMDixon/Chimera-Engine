@@ -1,11 +1,14 @@
 import * as PIXI from 'Pixi.js';
 import * as sound from 'pixi-sound';
 import * as filters from 'pixi-filters';
+import * as particles from 'pixi-particles';
 import c from 'ChimeraEngine';
 import Opening from './scenes/opening';
 
-import spriteSheet from './resources/colored_tilemap.json';
+//import spriteSheet from './resources/colored_tilemap.json';
 import myMap from './resources/map.json';
+
+PIXI.particles = particles;
 
 //create game config
 const gameConfig = {

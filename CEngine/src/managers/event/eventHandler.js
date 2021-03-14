@@ -15,7 +15,7 @@ class Event {
     publish(event, payload){
         if(this.subscribers[event]){
             this.subscribers[event].forEach(subscriber => {
-                this.q.push(()=>subscriber(payload));
+                this.q.push(()=>subscriber(event, payload));
             })
         }
     }
@@ -23,7 +23,7 @@ class Event {
     publishImmediate(event, payload){
         if(this.subscribers[event]){
             this.subscribers[event].forEach(subscriber => {
-                subscriber(payload);
+                subscriber(event, payload);
             })
         }
     }

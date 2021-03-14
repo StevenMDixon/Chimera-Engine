@@ -8,8 +8,8 @@ class Pixi_Animate extends System {
     }
     update(next, dt){
       this.cachedEntities.forEach((entity) => {
-        const {pixi} = entity.components.get('Pixi');
-        pixi.update(dt);
+        //const {pixi} = entity.components.get('Pixi');
+        //pixi.update(dt);
       })
       next();
     }

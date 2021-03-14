@@ -1,4 +1,12 @@
 { "columns":14,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"",
+         "target":"."
+        }
+    },
  "image":"..\/..\/public\/images\/colored_tilemap.png",
  "imageheight":89,
  "imagewidth":125,
@@ -8,6 +16,19 @@
  "tilecount":140,
  "tiledversion":"1.4.3",
  "tileheight":8,
+ "tiles":[
+        {
+         "animation":[
+                {
+                 "duration":100,
+                 "tileid":0
+                }, 
+                {
+                 "duration":100,
+                 "tileid":1
+                }],
+         "id":0
+        }],
  "tilewidth":8,
  "transparentcolor":"#003039",
  "type":"tileset",

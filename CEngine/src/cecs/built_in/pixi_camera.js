@@ -1,17 +1,19 @@
 import System from '../system';
 
-class PixiCamera {
+class PixiCamera extends System {
     constructor(){
         super();
-        this.targetComponents = ["Camera"];
+        this.targetComponents = ["CameraFocusable"];
         this.excludeComponents = [];
     }
 
-    update(next, dt){
+    onCreate(){}
+
+    update(dt){
         
-        next();
     }
 
+    
 }
 
 export default PixiCamera;

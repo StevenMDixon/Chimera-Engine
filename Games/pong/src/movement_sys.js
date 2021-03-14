@@ -31,6 +31,9 @@ class MovementSystem extends Chimera.systemTemplate{
                 state.currentState = 'walking'
                 transform.y += 1;
             }
+            if(!inputs[87] && !inputs[68] && !inputs[65] && !inputs[83]){
+                state.currentState = 'idle'
+            }
             if(inputs[90]){
                 transform.scale.x += 1;
                 transform.scale.y += 1;
