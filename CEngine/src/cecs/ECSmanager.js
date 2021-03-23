@@ -43,19 +43,6 @@ class ECSContext {
     _runUpdate(dt){
         this.systemHandler.run(dt);
     }
-
-    // _reassignEntityBridge(e){
-    //     this.systemHandler._reassignEntity(e);
-    // }
-
-    // _assignEntityBridge(e){
-    //     this.systemHandler._assignEntity(e);
-    // }
-
-    // _assignEntitytoSystemBridge(e,s){
-    //     this.systemHandler._assignEntitytoSystem(e,s);
-    // }
-
 }
 
 class ECSManager {

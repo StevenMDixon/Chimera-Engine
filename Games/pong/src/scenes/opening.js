@@ -64,11 +64,13 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
                 new Chimera.components.PixiAnimations(playerSheet),
                 new Chimera.components.Transform(player.x, player.y, player.rotation, 1, 1),
                 new Chimera.components.Inputs(),
-                new Chimera.components.State('idle')
+                new Chimera.components.State('idle'),
+                new Chimera.components.Movable(),
+                //new Chimera.components.Movable()
             ])
             
             
-            this.addToLayer('bg1', player)
+            this.addToLayer('bg1', player);
         //}
         this.player = player;
         

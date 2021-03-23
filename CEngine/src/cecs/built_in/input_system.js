@@ -16,7 +16,6 @@ class Input_System extends System {
       for(const [i, entity] of this.cachedEntities){
         entity.getComponent('Inputs').inputs = this._inputs;
       }
-      next();
     }
 
     handleEvent(event, inputs){

@@ -11,4 +11,4 @@ const built_in = [
     Pixi_Animate
 ]
 
-export {ECSManager, system, built_in, components}
+export {ECSManager, system, built_in, components};

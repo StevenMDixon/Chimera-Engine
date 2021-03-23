@@ -5,6 +5,8 @@ export class Component{
     }
 }
 
+
+
 class Player extends Component{};
 
 class Movable extends Component{};
@@ -82,7 +84,8 @@ class Components{
             Particle,
             Transform,
             Pixi,
-            PixiAnimations
+            PixiAnimations,
+            Movable
         }
     }
 

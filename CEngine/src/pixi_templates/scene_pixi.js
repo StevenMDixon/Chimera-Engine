@@ -106,8 +106,8 @@ class PixiScene extends Scene{
             const animatedSheet = animation.map(anim => new PIXI.Texture(pSheet, new PIXI.Rectangle(anim.location.x, anim.location.y, anim.location.w, anim.location.h)));
             PIXItem = new PIXI.AnimatedSprite(animatedSheet);
             PIXItem.animationSpeed = .1;
-            PIXItem.loop = true;
-            PIXItem.play();
+            //PIXItem.loop = true;
+            //PIXItem.play();
 
             composedComponents.push(new components.PixiAnimations(animatedSheet));
         }else {

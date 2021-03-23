@@ -9,11 +9,11 @@ class StateSystem extends Chimera.systemTemplate{
     }
 
     update(next, dt){
-        this.cachedEntities.forEach(item =>{
+        for(const [i, item] of this.cachedEntities){
             const state = item.components.get('State');
             const {pixi} = item.components.get('Pixi');
             const {animations} = item.components.get('PixiAnimations');
-   
+
             if(state.currentState == 'idle'){
                 if(!pixi.playing){
                     pixi.textures = animations.one;
@@ -25,9 +25,7 @@ class StateSystem extends Chimera.systemTemplate{
                     pixi.play();
                 }
             }
-        })
-
-        next();
+        }
     }
 }
 

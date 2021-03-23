@@ -3,8 +3,8 @@
 class SystemHandler {
     constructor(parent){
         this._parent = parent;
+        // should systems be a map?
         this.systems = [];
-        this.isRunning = false;
     }
 
     // triggered when a component is added or removed
@@ -49,18 +49,17 @@ class SystemHandler {
         system._unregisterEntity(entity.UUID);
     }
 
-    _next(dt){
-        this.currentIndex += 1;
-        if(this.currentIndex == this.systems.length){
-            this._done();
-        }else {
-            this.systems[this.currentIndex].update(this._next.bind(this, dt), dt);
-        }
-    }
+    // _next(dt){
+    //     this.currentIndex += 1;
+    //     if(this.currentIndex == this.systems.length){
+    //         this._done();
+    //     }else {
+    //         this.systems[this.currentIndex].update(this._next.bind(this, dt), dt);
+    //     }
+    // }
 
     _done(){
         this.currentIndex = 0;
-        this.isRunning = false;
     }
 
     registerEntity(entity){
@@ -78,10 +77,6 @@ class SystemHandler {
     }
 
     run(dt){
-        // if(!this.isRunning){
-        //     this.isRunning = true;
-        //     this.systems[this.currentIndex].update(this._next.bind(this, dt), dt)
-        // }
         let c = (dt)=> {}
         for(const system of this.systems){
             system.update(c, dt)
