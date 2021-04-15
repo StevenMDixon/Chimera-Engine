@@ -14,23 +14,29 @@ class MovementSystem extends Chimera.systemTemplate{
             const transform = item.components.get('Transform');
             const state = item.components.get('State');
 
-            if(inputs[87]){
+            if(inputs[38]){
+                state.previousState = state.currentState;
                 state.currentState = 'walking'
-                transform.y -= 1 * (dt/100);
+                
+                transform.y -= 2 * (dt/100);
             }
-            if(inputs[68]){
+            if(inputs[39]){
+                state.previousState = state.currentState;
                 state.currentState = 'walking'
-                transform.x += 1 * (dt/100);
+                transform.x += 2 * (dt/100);
             }
-            if(inputs[65]){
+            if(inputs[37]){
+                state.previousState = state.currentState;
                 state.currentState = 'walking'
-                transform.x -= 1 * (dt/100);
+                transform.x -= 2 * (dt/100);
             }
-            if(inputs[83]){
+            if(inputs[40]){
+                state.previousState = state.currentState;
                 state.currentState = 'walking'
-                transform.y += 1 * (dt/100);
+                transform.y += 2 * (dt/100);
             }
-            if(!inputs[87] && !inputs[68] && !inputs[65] && !inputs[83]){
+            if(!inputs[38] && !inputs[40] && !inputs[39] && !inputs[37]){
+                state.previousState = state.currentState;
                 state.currentState = 'idle'
             }
             if(inputs[90]){

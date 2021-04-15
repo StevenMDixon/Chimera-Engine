@@ -73,9 +73,9 @@ class Scene{
                 // let user define functions needed when loading map
                 fn.forEach(mappedFunction => composed.push(mappedFunction(item, components))); 
                 //
-                if(PIXItem){
-                    this.addToLayer(name, PIXItem);
-                }
+                // if(PIXItem){
+                //     this.addToLayer(name, PIXItem);
+                // }
                 this.world.composeEntity(composed);
             }
         })

@@ -48,9 +48,9 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
             let player = new PIXI.AnimatedSprite(playerSheet.one);
             player.x = 100; //Math.random() * 200;
             player.y = 100; //Math.random() * 200;
-            player.loop = false;
+            player.loop = true;
             player.anchor.set(0.5);
-            player.animationSpeed = .1;
+            player.animationSpeed = .5;
             player.rotation = 0;
             //player.play();
             player.scale.set(1, 1)
@@ -73,7 +73,7 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
             this.addToLayer('bg1', player);
         //}
         this.player = player;
-        
+        console.log(player.currentFrame, player.totalFrames)
     //     // let p = new particles.Emitter(
     //     //     this._layers['bg1'],
     //     //     playerSheet.one,
@@ -108,6 +108,7 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
         }
         if(this.player){
             stage.pivot.set(this.player.x, this.player.y)
+            //console.log(this.player.currentFrame, this.player.totalFrames)
         }
     }
 }

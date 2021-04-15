@@ -41,7 +41,7 @@ class CameraFocusAble extends Component{
 class State extends Component{
     constructor(currentState){
         super();
-        this.state = currentState;
+        this.previousState = currentState;
         this.currentState = currentState;
     }
 };
@@ -72,6 +72,13 @@ class PixiAnimations extends Component{
     }
 }
 
+class PixiStaticAnimations extends Component{
+    constructor(data){
+        super();
+        this.animations = data
+    }
+}
+
 class Components{
     constructor(){
         this.comp =  {
@@ -85,6 +92,7 @@ class Components{
             Transform,
             Pixi,
             PixiAnimations,
+            PixiStaticAnimations,
             Movable
         }
     }

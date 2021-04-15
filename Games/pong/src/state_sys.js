@@ -14,17 +14,22 @@ class StateSystem extends Chimera.systemTemplate{
             const {pixi} = item.components.get('Pixi');
             const {animations} = item.components.get('PixiAnimations');
 
-            if(state.currentState == 'idle'){
-                if(!pixi.playing){
+            if(state.currentState == 'idle' && state.previousState != 'idle'){
+               //if(pixi.currentFrame == pixi.totalFrames){
                     pixi.textures = animations.one;
-                    pixi.play();
-                }
-            }else {
-                if(!pixi.playing){
+                //}
+            }else if(state.currentState == 'walking' && state.previousState != 'walking'){
+               // if(pixi.currentFrame == pixi.totalFrames){
                     pixi.textures = animations.two;
-                    pixi.play();
-                }
+               // }
             }
+
+            
+            if(pixi.currentFrame == (pixi.totalFrames -1)){
+             //   pixi.currentFrame = 0
+            }
+            pixi.update(dt/100);
+            
         }
     }
 }

@@ -2,7 +2,6 @@ import Controller from './controller';
 
 class InputManager {
     constructor(){
-        this.enablePad = false;
         this.gamePad = new Controller();
         this.inputs = {}
         this.init();
@@ -12,9 +11,6 @@ class InputManager {
     init(){
         document.addEventListener('keydown', (ev) => { return this.onKey(ev, ev.keyCode, true, 'keyboard');  }, false);
         document.addEventListener('keyup',   (ev) => { return this.onKey(ev, ev.keyCode, false, 'keyboard'); }, false);
-        if(this.enablePad){
-            this.gamePad.listenForGamePad((ev, v, action) => { return this.onKey(ev, v, action, 'pad'); })
-        }
     }
 
     sendTo(fn){
@@ -22,6 +18,7 @@ class InputManager {
     }
 
     onKey(event, key, pressed, type){
+        console.log(event, key, pressed, type)
         if(type === 'keyboard'){
             event.preventDefault();
              this.inputs[key] = pressed;
@@ -37,6 +34,10 @@ class InputManager {
 
     overrideControllerMapping(map){
        this.gamePad.overrideControllerMapping(map);
+    }
+
+    enableGamePad(){
+        this.gamePad.listenForGamePad((ev, v, action) => this.onKey(ev, v, action, 'pad'));
     }
 }
 

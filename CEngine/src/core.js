@@ -30,7 +30,6 @@ class GameEngine {
                 }
             }
         );
-
         this._stats = new Stats();
         this._lastTime = 0;
     }
@@ -53,7 +52,7 @@ class GameEngine {
             this._addDebugInfo();
             this.store.update({debug: true});
         }
-
+        InputManager.enableGamePad();
         InputManager.sendTo(this._routeInputs.bind(this));
     }
 
@@ -84,7 +83,12 @@ class GameEngine {
     }
 
     _run(ts = 0){
-        const {debug, currentScene, renderer} = this.store.data;
+        const {debug, currentScene, renderer, fps} = this.store.data;
+        console.log(this.store.data)
+        requestAnimationFrame(this._run.bind(this));
+
+
+        if(ts - this._lastTime < 1000 / fps ) return 
 
         if(debug){
             this._stats.begin();
@@ -104,8 +108,6 @@ class GameEngine {
         this._lastTime = ts;
 
         eventManager.finalize(currentScene.name);
-
-        requestAnimationFrame(this._run.bind(this));
     };
 
     _createScenes(){

@@ -11,7 +11,7 @@ class Controller {
     listenForGamePad(fx) {
         if (!('ongamepadconnected' in window)) {
             // No gamepad events available, poll instead.
-            this.interval = setInterval(() => this.pollGamepads(fx), 50);
+            this.interval = setInterval(this.pollGamepads.bind(this, fx), 50);
         }
     }
 
