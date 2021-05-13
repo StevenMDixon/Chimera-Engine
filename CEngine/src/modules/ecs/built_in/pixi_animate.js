@@ -11,7 +11,7 @@ class Pixi_Animate extends System {
         //const {pixi} = entity.components.get('Pixi');
         //pixi.update(dt);
       // })
-     for(const [i, entity] of this.cachedEntities){
+      for(const [i, entity] of this.cachedEntities){
         const {pixi} = entity.components.get('Pixi');
         // if(!pixi.playing){
         //   pixi.play();

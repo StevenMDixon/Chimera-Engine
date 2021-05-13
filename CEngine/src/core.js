@@ -1,14 +1,17 @@
 
 import {config} from './config/config.js';
-import storeFactory from './managers/store/storeFactory.js';
-import eventManager from  './managers/event/eventManager';
-import InputManager from './managers/input/inputManager';
-import mapManager from './managers/map/mapManager';
-import {ECSManager, built_in, components, system} from './cecs';
+import storeFactory from './modules/store/index.js';
+import eventManager from  './modules/event';
+import InputManager from './modules/input';
+import mapManager from './modules/map';
+import sceneManager from './modules/scene';
+import soundManager from './modules/sound/index.js';
+
+import {ECSManager, components, system} from './modules/ecs';
 import Stats from 'stats.js'
 
 import {PixiScene, PixiRenderer} from './pixi_templates/index';
-import soundManager from './managers/sound/soundManager.js';
+
 
 class GameEngine {
     constructor(){
@@ -17,16 +20,16 @@ class GameEngine {
         this.store.set(
             {
                 config: {},
-                scenes: {},
-                currentScene: null,
                 renderer: null,
                 loader: null,
                 debug: false,
                 managers: {
-                    eventManager,
-                    InputManager,
-                    mapManager,
-                    ECSManager
+                    event: eventManager,
+                    input: InputManager,
+                    map: mapManager,
+                    world: ECSManager,
+                    scene: sceneManager,
+                    store: storeFactory
                 }
             }
         );
@@ -44,7 +47,6 @@ class GameEngine {
                     loader: configObject.pixiSettings.PIXI.Loader.shared
                 }
             )
-        
             eventManager.subscribe('_controlSound', this._routePixiAudio.bind(this));
         };
 
@@ -65,28 +67,17 @@ class GameEngine {
     }
 
     start(){
-        const {loader} = this.store.data;
+        const {loader, config} = this.store.data;
         loader.onComplete.add(() => {
-           
-            let scenes = this._createScenes();
-            for(const [k, scene] of Object.entries(scenes)){
-                scene._load();
-            }
+            sceneManager.createScenes(config.scenes, this.store.data);
             this._run();
         })
     }
 
-    _gotoScene(sceneName){
-        // @todo add error handling here
-        const {scenes} = this.store.data;
-        this.store.update({currentScene: scenes[sceneName]});
-    }
-
     _run(ts = 0){
-        const {debug, currentScene, renderer, fps} = this.store.data;
-        console.log(this.store.data)
+        const {debug, renderer, fps} = this.store.data;
+        //console.log(this.store.data)
         requestAnimationFrame(this._run.bind(this));
-
 
         if(ts - this._lastTime < 1000 / fps ) return 
 
@@ -94,11 +85,11 @@ class GameEngine {
             this._stats.begin();
         }
         
-        currentScene.update(ts - this._lastTime);
-        currentScene.world._runUpdate(ts - this._lastTime);
+        sceneManager.currentScene.update(ts - this._lastTime);
+        sceneManager.currentScene.world._runUpdate(ts - this._lastTime);
 
-       if(renderer.type == 'PIXI' && currentScene){
-            renderer.render(currentScene.stage);
+       if(renderer.type == 'PIXI' && sceneManager.currentScene){
+            renderer.render(sceneManager.currentScene.stage);
         }
 
         if(debug){
@@ -107,31 +98,8 @@ class GameEngine {
 
         this._lastTime = ts;
 
-        eventManager.finalize(currentScene.name);
+        eventManager.finalize(sceneManager.currentScene._name);
     };
-
-    _createScenes(){
-        const {renderer, config} = this.store.data;
-        const scenes = {};
-        if(renderer.type == 'PIXI'){
-            for (const scene of config.scenes){
-                let tempScene = new scene();
-                tempScene._store = storeFactory.createStore(tempScene._name, {
-                    world: ECSManager.createContext(tempScene._name, tempScene),
-                    event: eventManager.createEventHandler(tempScene._name),
-                    global: this.store.data
-                });
-
-                tempScene._addPixiData(config.pixiSettings.PIXI);
-                // register built in pixi systems
-                tempScene.world.registerSystems(built_in);
-                // add new scene to scenes
-                scenes[tempScene._name] = tempScene;
-            }
-        }
-        this.store.update({scenes: {...scenes}, currentScene: Object.values(scenes)[0]});
-        return scenes;
-    }
 
     _addDebugInfo(){
         this._stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
@@ -139,19 +107,18 @@ class GameEngine {
     }
 
     _routeInputs(inputs){
-        const {currentScene} = this.store.data;
-        eventManager.publishEventtoChild('&inputs_updated', inputs, currentScene._name);
+        eventManager.publishEventtoChild('&inputs_updated', inputs, sceneManager.currentScene._name);
     }
 
     _routePixiAudio(command){
-        const {loader, currentScene} = this.store.data;
+        const {loader} = this.store.data;
         const audioFiles = {};
         for(const [k, property] of Object.entries(loader.resources)){
             if(property.sound){
                 audioFiles[k] = property;
             }
         }
-        for(const [k, property] of Object.entries(currentScene.loader.resources)){
+        for(const [k, property] of Object.entries(sceneManager.currentScene.loader.resources)){
             if(property.sound){
                 audioFiles[k] = property;
             }
@@ -174,7 +141,6 @@ class GameEngine {
 }
 
 function core(){
-
     // expose needed functionality
     return {
         engine: new GameEngine(),

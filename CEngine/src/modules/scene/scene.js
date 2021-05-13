@@ -40,8 +40,8 @@ class Scene{
     }
 
     get map(){
-        const {mapManager} = this._store.data.global.managers;
-        return mapManager;
+        const {map} = this._store.data.global.managers;
+        return map;
     }
 
     get name(){

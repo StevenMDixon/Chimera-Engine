@@ -1,4 +1,4 @@
-class Event {
+class EventContext {
     constructor() {
         this.subscribers = {};
         this.q = [];
@@ -37,4 +37,4 @@ class Event {
 }
 
 
-export default Event;
+export default EventContext;

@@ -1,10 +1,5 @@
-import EventHander from './eventHandler';
-
-const _engineEvents = [
-    '&sys_error',
-    '&sys_message',
-    '_controlSound'
-]
+import EventContext from './eventContext';
+import {_engineEvents} from './engineEvents';
 
 class EventManager {
     constructor(){
@@ -14,7 +9,7 @@ class EventManager {
     
     createEventHandler(name){
         // create a new event handler
-        const handler = new EventHander();
+        const handler = new EventContext();
         // register items deemed as system messages
         _engineEvents.forEach(eventName =>{
             handler.subscribe(eventName, this.handleSystemMessages.bind(this))

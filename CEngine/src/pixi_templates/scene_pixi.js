@@ -1,4 +1,4 @@
-import Scene from '../utils/Scene';
+import Scene from '../modules/scene/scene';
 
 class PixiScene extends Scene{
     constructor(name){
@@ -66,7 +66,7 @@ class PixiScene extends Scene{
     loadMap(mapName, ...fn){
         const {world} = this.store.data;
         const map = this.map.maps.get(mapName);
-        const components = this.store.data.global.managers.ECSManager.getComponentsList();
+        const components = this.store.data.global.managers.world.getComponentsList();
         map.forEach(layer => {
             const {name, properties} = layer;
             // create layer if it does not exits
