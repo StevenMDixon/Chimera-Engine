@@ -1,4 +1,4 @@
-import ECSManager from './ECSmanager';
+import ECSModule from './ECSmanager';
 import system from './system'
 import components from './components'
 import Pixi_Transform from './built_in/pixi_transform';
@@ -11,4 +11,4 @@ const built_in = [
     Pixi_Animate
 ]
 
-export {ECSManager, system, built_in, components};
+export {ECSModule, system, built_in, components};

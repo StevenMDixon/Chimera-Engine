@@ -1,13 +1,13 @@
 
 import {config} from './config/config.js';
-import storeFactory from './modules/store/index.js';
-import eventManager from  './modules/event';
-import InputManager from './modules/input';
-import mapManager from './modules/map';
-import sceneManager from './modules/scene';
-import soundManager from './modules/sound/index.js';
-
-import {ECSManager, components, system} from './modules/ecs';
+import storeModule from './modules/store';
+import eventModule from  './modules/event';
+import InputModule from './modules/input';
+import mapModule from './modules/loader/map_loader';
+import sceneModule from './modules/scene';
+import soundModule from './modules/sound';
+import debugStatsModule from './modules/debugStats';
+import {ECSModule, components, system} from './modules/ecs';
 import Stats from 'stats.js'
 
 import {PixiScene, PixiRenderer} from './pixi_templates/index';
@@ -16,20 +16,20 @@ import {PixiScene, PixiRenderer} from './pixi_templates/index';
 class GameEngine {
     constructor(){
         // create a store for the engine to use
-        this.store = storeFactory.createStore('engine', config);
+        this.store = storeModule.createStore('engine', config);
         this.store.set(
             {
                 config: {},
                 renderer: null,
                 loader: null,
                 debug: false,
-                managers: {
-                    event: eventManager,
-                    input: InputManager,
-                    map: mapManager,
-                    world: ECSManager,
-                    scene: sceneManager,
-                    store: storeFactory
+                modules: {
+                    event: eventModule,
+                    input: InputModule,
+                    map: mapModule,
+                    world: ECSModule,
+                    scene: sceneModule,
+                    store: storeModule 
                 }
             }
         );
@@ -47,15 +47,20 @@ class GameEngine {
                     loader: configObject.pixiSettings.PIXI.Loader.shared
                 }
             )
-            eventManager.subscribe('_controlSound', this._routePixiAudio.bind(this));
+            eventModule.subscribe('_controlSound', this._routePixiAudio.bind(this));
         };
 
         if(configObject.debug){
             this._addDebugInfo();
             this.store.update({debug: true});
+
+            if(configObject.pixiSettings){
+                debugStatsModule.setTarget(configObject.pixiSettings.options.target);
+            }
+            eventModule.subscribe('_updatedebug', (e) => debugStatsModule.update(e))
         }
-        InputManager.enableGamePad();
-        InputManager.sendTo(this._routeInputs.bind(this));
+        InputModule.enableGamePad();
+        InputModule.sendTo(this._routeInputs.bind(this));
     }
 
     load(...assets){
@@ -69,7 +74,7 @@ class GameEngine {
     start(){
         const {loader, config} = this.store.data;
         loader.onComplete.add(() => {
-            sceneManager.createScenes(config.scenes, this.store.data);
+            sceneModule.createScenes(config.scenes, this.store.data);
             this._run();
         })
     }
@@ -85,11 +90,11 @@ class GameEngine {
             this._stats.begin();
         }
         
-        sceneManager.currentScene.update(ts - this._lastTime);
-        sceneManager.currentScene.world._runUpdate(ts - this._lastTime);
+        sceneModule.currentScene.update(ts - this._lastTime);
+        sceneModule.currentScene.world._runUpdate(ts - this._lastTime);
 
-       if(renderer.type == 'PIXI' && sceneManager.currentScene){
-            renderer.render(sceneManager.currentScene.stage);
+       if(renderer.type == 'PIXI' && sceneModule.currentScene){
+          renderer.render(sceneModule.currentScene.stage);
         }
 
         if(debug){
@@ -97,8 +102,9 @@ class GameEngine {
         }
 
         this._lastTime = ts;
+        eventModule.finalize(sceneModule.currentScene._name);
 
-        eventManager.finalize(sceneManager.currentScene._name);
+        debugStatsModule.renderStats();
     };
 
     _addDebugInfo(){
@@ -107,7 +113,7 @@ class GameEngine {
     }
 
     _routeInputs(inputs){
-        eventManager.publishEventtoChild('&inputs_updated', inputs, sceneManager.currentScene._name);
+        eventModule.publishEventtoChild('&inputs_updated', inputs, sceneModule.currentScene._name);
     }
 
     _routePixiAudio(command){
@@ -118,25 +124,25 @@ class GameEngine {
                 audioFiles[k] = property;
             }
         }
-        for(const [k, property] of Object.entries(sceneManager.currentScene.loader.resources)){
+        for(const [k, property] of Object.entries(sceneModule.currentScene.loader.resources)){
             if(property.sound){
                 audioFiles[k] = property;
             }
         }
-        soundManager.pixiAudioControl(audioFiles, command);
+        soundModule.pixiAudioControl(audioFiles, command);
     }
 
     loadSpriteSheet(sheet, fileName){
         if(sheet.tiledversion){
-            mapManager.loadSpriteSheet(sheet, 'tiled', fileName);
+            mapModule.loadSpriteSheet(sheet, 'tiled', fileName);
         }else{
             // @todo other sheets?
         }
-        return mapManager.spriteSheets;
+        return mapModule.spriteSheets;
     }
 
     loadMap(mapData, name){
-        mapManager.loadMapFromJSON(mapData, name);
+        mapModule.loadMapFromJSON(mapData, name);
     }
 }
 

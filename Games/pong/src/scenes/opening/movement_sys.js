@@ -17,7 +17,6 @@ class MovementSystem extends Chimera.systemTemplate{
             if(inputs[38]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
-                
                 transform.y -= 2 * (dt/100);
             }
             if(inputs[39]){

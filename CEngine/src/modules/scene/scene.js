@@ -1,7 +1,18 @@
+import storeModule from '../store';
+import {ECSModule} from '../ecs';
+import MapModule from '../loader/map_loader'
+import eventModule from '../event';
+import actorLoader from '../loader/actor_loader';
+
 class Scene{
     constructor(name){
         this._name = name;
-        this._store = null;
+        this._store = storeModule.createStore(name, {});
+        this._world = ECSModule.createContext(name, this);
+        this._map = MapModule;
+        this._event =  eventModule.createEventHandler(name);
+        this._global = null;
+        this._actors = new actorLoader(this);
         // this._global = {
         //     Store: GlobalStore,
         //     Loader: null,
@@ -20,32 +31,27 @@ class Scene{
     } 
 
     get world() {
-        const {world} = this._store.data;
-        return world;
+        return this._world;
     }
 
     get global(){
-        const {global} = this._store.data;
-        return global;
-    }
-
-    get loader(){
-        const {loader} = this._store.data;
-        return loader;
+        return this._global;
     }
 
     get event(){
-        const {event} = this._store.data;
-        return event;
+        return this._event;
     }
 
     get map(){
-        const {map} = this._store.data.global.managers;
-        return map;
+        return this._map;
     }
 
     get name(){
         return this._name;
+    }
+
+    get actors(){
+        return this._actors;
     }
     
     _load(){}
@@ -55,6 +61,10 @@ class Scene{
     setup(loader, resources){} // user defined
 
     update(dt){} // user defined
+
+    loadActors(actorList){
+        this._actors.load(actorList);
+    }
 
     loadMap(mapName, ...fn){
         const map = this.map.maps.get(mapName);

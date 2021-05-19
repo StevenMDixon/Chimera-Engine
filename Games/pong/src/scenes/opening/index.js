@@ -1,10 +1,11 @@
 import Chimera from 'ChimeraEngine';
 
-import * as particles from 'pixi-particles';
+//import * as particles from 'pixi-particles';
 
-import MovementSystem from '../movement_sys';
-import StateSystem from '../state_sys';
-import myParticles from './particles';
+import MovementSystem from './movement_sys';
+import StateSystem from './state_sys';
+import actors from './actors';
+//import myParticles from './particles';
 
 class Opening extends Chimera.sceneTemplates.PixiScene {
     constructor()    {
@@ -14,18 +15,17 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     }
 
     preload(){
-        //this.loader.add('bird', './main.wav');
-        //this.loader.add("song", "images/animationphases.png");
-        this.world.registerSystem(MovementSystem);
-        this.world.registerSystem(StateSystem);
-        this.loadMap('map1');
+       this.world.registerSystem(MovementSystem);
+       this.world.registerSystem(StateSystem);
+       this.loadMap('map1');
+       this.loadActors(actors);
     }
 
     setup(loader, resources){
-        const {PIXI, global, world, stage} = this.store.data;
-        console.log('test')
-        let sheet = new PIXI.BaseTexture.from(global.loader.resources["player"].url);
-        let playerSheet = {}
+        const {PIXI, global, world, stage} = this;
+
+        let sheet = new PIXI.BaseTexture.from(resources["player"].url);
+        let playerSheet = {};
         let h = 8;
         let w = 8;
         //this.loader.resources.bird.sound.loop = true;
@@ -72,7 +72,6 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
             this.addToLayer('bg1', player);
         //}
         this.player = player;
-        console.log(player.currentFrame, player.totalFrames)
     //     // let p = new particles.Emitter(
     //     //     this._layers['bg1'],
     //     //     playerSheet.one,
@@ -99,14 +98,15 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     }
 
     update(dt){
-        const {stage} = this.store.data
-        if(this.p){
-            //console.log(this.p)
-            this.p.update(dt)
-
-        }
+        // const {stage} = this.store.data;
+        this.event.publish('_updatedebug', {x: this.player.position.x, y: this.player.position.y})
+        // if(this.p){
+        //     //console.log(this.p)
+        //     this.p.update(dt)
+           
+        // }
         if(this.player){
-            stage.pivot.set(this.player.x, this.player.y)
+            this.stage.pivot.set(this.player.x, this.player.y)
             //console.log(this.player.currentFrame, this.player.totalFrames)
         }
     }

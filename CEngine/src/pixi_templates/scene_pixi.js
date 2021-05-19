@@ -1,4 +1,5 @@
 import Scene from '../modules/scene/scene';
+import {components} from '../modules/ecs/index';
 
 class PixiScene extends Scene{
     constructor(name){
@@ -6,46 +7,46 @@ class PixiScene extends Scene{
         // built in PIXI related items
         // this._global.Loader = PIXI.Loader
         // this._global.PIXI = PIXI;
-        // this._stage = new PIXI.Container();
-        // this._loader = new PIXI.Loader();
-
+        this._stage = null;
+        this.PIXI = null;
         this._layers = {}; // define layers for pixi
+    }
+    
+    get stage(){
+        return this._stage;
     }
 
     get loader(){
-        const {loader} = this._store.data;
+        const {loader} = this.global;
         return loader;
     }
 
-    get stage() {
-        const {stage} = this._store.data;
-        return stage;
-    }
-
-    get PIXI(){
-        const {PIXI} = this._store.data;
-        return PIXI;
-    }
-
     _addPixiData(PIXI){
-        this._store.set({
-            PIXI,
-            stage: new PIXI.Container(),
-            loader: new PIXI.Loader()
-        });
+        this.PIXI = PIXI,
+        this._stage = new PIXI.Container()
     }
 
     _load() {
         // preload user defined data
-        this.preload();
+        this.preload(); 
         // create onload to listen for onload event
-        this.loader.load((loader, resources) => this.setup(loader, resources));
+        this.setup(this.loader, this.loader.resources);
         // make this scenes stage able to sort child containers
         this.stage.sortableChildren = true;
     }
 
+    loadActors(actorList, userDefined = []){
+        const fns = [
+            (data) => this._actorPixiLoader(data),
+            ...userDefined
+        ]
+        if(!actorList) return;
+        this.createLayer('actor', 2);
+        this._actors.load(actorList, fns);
+    }
+
     createLayer(name, zIndex, toAdd){
-        const {stage} = this.store.data;
+       
         if(this._layers[name]){
             //@todo add error handling for layers that already exist
             return
@@ -56,7 +57,7 @@ class PixiScene extends Scene{
             this._layers[name].addChild(toAdd);
         }
         //add the new layer to the stage
-        stage.addChild(this._layers[name]);
+        this.stage.addChild(this._layers[name]);
     } 
 
     addToLayer(name, object){
@@ -64,9 +65,8 @@ class PixiScene extends Scene{
     }
 
     loadMap(mapName, ...fn){
-        const {world} = this.store.data;
         const map = this.map.maps.get(mapName);
-        const components = this.store.data.global.managers.world.getComponentsList();
+        const comp = components.getComponents();
         map.forEach(layer => {
             const {name, properties} = layer;
             // create layer if it does not exits
@@ -77,10 +77,10 @@ class PixiScene extends Scene{
                 const {position} = item;
                 const composed = [];
                 // add new transform location
-                composed.push(new components.Transform(position.x, position.y, position.rotation, position.scale));
+                composed.push(new comp.Transform(position.x, position.y, position.rotation, position.scale));
                 // this is the pixi instance so we know we have access to pixi
                 // check if there any animations on the tile
-                const mappedPixiItems = this._mapPixiLoader(item, components);
+                const mappedPixiItems = this._mapPixiLoader(item, comp);
                 composed.push(...mappedPixiItems);
                 //check if pixi exist at the end of the mapped pixi components
                 if(mappedPixiItems[mappedPixiItems.length - 1].pixi){
@@ -89,9 +89,9 @@ class PixiScene extends Scene{
                 }
 
                 // let user define functions needed when loading map
-                fn.forEach(mappedFunction => composed.push(mappedFunction(item, components))); 
-
-                world.composeEntity(composed);
+                fn.forEach(mappedFunction => composed.push(mappedFunction(item, comp))); 
+                
+                this.world.composeEntity(composed);
             }
         })
     }
@@ -99,12 +99,11 @@ class PixiScene extends Scene{
     _mapPixiLoader({animation, location, position, spriteSheet}, components){
         const composedComponents = [];
         let PIXItem = null;
-        const {PIXI, global} = this.store.data;
-        const pSheet = new PIXI.BaseTexture.from(global.loader.resources[spriteSheet].url);
+        const pSheet = new this.PIXI.BaseTexture.from(this.global.loader.resources[spriteSheet].url);
         if(animation){
             // handle animated pixi items 
-            const animatedSheet = animation.map(anim => new PIXI.Texture(pSheet, new PIXI.Rectangle(anim.location.x, anim.location.y, anim.location.w, anim.location.h)));
-            PIXItem = new PIXI.AnimatedSprite(animatedSheet);
+            const animatedSheet = animation.map(anim => new this.PIXI.Texture(pSheet, new this.PIXI.Rectangle(anim.location.x, anim.location.y, anim.location.w, anim.location.h)));
+            PIXItem = new this.PIXI.AnimatedSprite(animatedSheet);
             PIXItem.animationSpeed = .1;
             PIXItem.loop = true;
             //PIXItem.play();
@@ -112,7 +111,7 @@ class PixiScene extends Scene{
             composedComponents.push(new components.PixiStaticAnimations(animatedSheet));
         }else {
             // handle nonAnimated pixi items
-           PIXItem = new this.PIXI.Sprite(new PIXI.Texture(pSheet, new PIXI.Rectangle(location.x, location.y, location.w, location.h)));
+           PIXItem = new this.PIXI.Sprite(new this.PIXI.Texture(pSheet, new this.PIXI.Rectangle(location.x, location.y, location.w, location.h)));
         }
         if(PIXItem){
             PIXItem.x = position.x;
@@ -121,6 +120,85 @@ class PixiScene extends Scene{
 
             composedComponents.push(new components.Pixi(PIXItem));
         }
+        //const 
+        return composedComponents;
+    }
+
+    _actorPixiLoader(data, layer){
+        const composedComponents = [];
+        const componentList = components.getComponents();
+        let PIXItem = null;
+
+        const {animation} = data;
+
+        // handle animated sprites
+        if(animation){
+            const {resource, loop, speed, sheets, anchor} = animation;
+
+            const sheet = new this.PIXI.BaseTexture.from(this.global.loader.resources[resource].url);
+
+            let animations = {};
+
+            for(const sheetName in sheets){
+                animations[sheetName] = sheets[sheetName].map(({x, y, w, h}) => new this.PIXI.Texture(sheet, new this.PIXI.Rectangle(x, y, w, h)))
+            }
+
+            let actorSheet = {
+                ...animations,
+                _sheet: sheet,
+            };
+
+            composedComponents.push(new componentList.PixiAnimations(actorSheet));
+
+            const {position, scale, size, rotation} = data.transform;
+
+            PIXItem = new this.PIXI.AnimatedSprite(actorSheet[Object.keys(actorSheet)[0]]);
+            PIXItem.x = position.x;
+            PIXItem.y = position.y;
+            PIXItem.loop = loop;
+            PIXItem.anchor.set(anchor|| 1);
+            PIXItem.animationSpeed = speed || .5;
+            PIXItem.rotation = rotation || 0;
+            //player.play();
+            PIXItem.scale.set(scale.x || 1, scale.y || 1);
+
+            composedComponents.push(new componentList.Pixi(PIXItem));
+
+            this.addToLayer('actor', PIXItem);
+        }
+        
+
+        
+        
+
+
+
+        //new Chimera.components.Pixi(player),
+        //new Chimera.components.PixiAnimations(playerSheet),
+        
+
+
+        // const pSheet = new this.PIXI.BaseTexture.from(this.global.loader.resources[spriteSheet].url);
+        // if(animation){
+        //     // handle animated pixi items 
+        //     const animatedSheet = animation.map(anim => new this.PIXI.Texture(pSheet, new this.PIXI.Rectangle(anim.location.x, anim.location.y, anim.location.w, anim.location.h)));
+        //     PIXItem = new this.PIXI.AnimatedSprite(animatedSheet);
+        //     PIXItem.animationSpeed = .1;
+        //     PIXItem.loop = true;
+        //     //PIXItem.play();
+
+        //     composedComponents.push(new components.PixiStaticAnimations(animatedSheet));
+        // }else {
+        //     // handle nonAnimated pixi items
+        //    PIXItem = new this.PIXI.Sprite(new this.PIXI.Texture(pSheet, new this.PIXI.Rectangle(location.x, location.y, location.w, location.h)));
+        // }
+        // if(PIXItem){
+        //     PIXItem.x = position.x;
+        //     PIXItem.y = position.y;
+        //     PIXItem.rotation = position.rotation;
+
+        //     composedComponents.push(new components.Pixi(PIXItem));
+        // }
         //const 
         return composedComponents;
     }

@@ -1,4 +1,4 @@
-class MapManager{
+class MapModule {
     constructor(){
         this.spriteSheets = new Map();
         this.maps = new Map();
@@ -196,7 +196,7 @@ class MapManager{
 }
 
 
-export default new MapManager();
+export default new MapModule();
 
 // const flags = {
 //     diagonal: 0x20000000,

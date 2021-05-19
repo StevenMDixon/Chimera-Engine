@@ -13,17 +13,17 @@ class System_Base {
     }
 
     subscribe(eventData, payload){
-        const {event} = this._sceneContext.store.data;
+        const event = this._sceneContext.event;
         event.subscribe(eventData, payload.bind(this));
     }
 
     publish(eventData, payload){
-        const {event} = this._sceneContext.store.data;
+        const event = this._sceneContext.event;
         event.publish(eventData, payload);
     }
 
     publishImmediate(eventData, payload){
-        const {event} = this._sceneContext.store.data;
+        const event = this._sceneContext.event;
         event.publishImmediate(eventData, payload);
     }
 

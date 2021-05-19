@@ -1,6 +1,6 @@
 import {built_in} from '../ecs';
 
-class SceneManager {
+class SceneModule {
     constructor(){
         this.sceneClass = {};
         this.scenes = {};
@@ -8,15 +8,14 @@ class SceneManager {
     }
 
     createScenes(scenes, data){
-        console.log(scenes)
-         for(const Scene of scenes){
-             let scene = sceneFactory(Scene, data);
-             if(scene){
+        for(const Scene of scenes){
+            let scene = sceneFactory(Scene, data);
+            if(scene){
                 this.sceneClass[scene._name] = Scene;
                 this.scenes[scene._name] = scene;
                 scene._load();
-             }  
-         }
+            }  
+        }
         this.currentScene = Object.values(this.scenes)[0];
     }
 
@@ -25,11 +24,11 @@ class SceneManager {
     }
 
     resetScene(sceneName){
-
+        //@todo
     }
 
     resetCurrentScene(){
-
+        //@todo
     }
 
 }
@@ -37,12 +36,10 @@ class SceneManager {
 
 function sceneFactory(Scene, data){
     const scene = new Scene();
-    const {config, managers} = data;
-    scene._store = managers.store.createStore(scene._name, {
-        world: managers.world.createContext(scene._name, scene),
-        event: managers.event.createEventHandler(scene._name),
-        global: data
-    });
+    //set scenes global data
+    scene._global = data;
+
+    const {config} = data;
 
     if(config.pixiSettings){
         scene._addPixiData(config.pixiSettings.PIXI);
@@ -53,4 +50,4 @@ function sceneFactory(Scene, data){
     return scene;
 }
 
-export default new SceneManager()
+export default new SceneModule()
