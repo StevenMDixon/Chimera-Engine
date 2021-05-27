@@ -24,7 +24,7 @@ class EntityHandler {
 
     expand(by = this.qSteps) {
         for(let i = 0; i < by; i++){
-            this.entities.set(this.UUIDTrack, new Entity(this.UUIDTrack));
+            this.entities.set(this.UUIDTrack, new Entity(this.UUIDTrack, this));
             this.UUIDTrack += 1;
         }
     }

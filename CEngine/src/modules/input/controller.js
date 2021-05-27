@@ -77,7 +77,6 @@ class Controller {
             let buttonMap = {...Mapping[controllerID].buttons, ...this.controllerOverride};
 
             let current = pressed.map(key => (buttonMap[key]));
-            console.log(current)
             fx({}, this.previousKeys, false);
 
             this.previousKeys = current;

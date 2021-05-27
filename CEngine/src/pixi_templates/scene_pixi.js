@@ -45,8 +45,11 @@ class PixiScene extends Scene{
         this._actors.load(actorList, fns);
     }
 
+    loadScripts(scriptLists, userDefined = []){
+
+    }
+
     createLayer(name, zIndex, toAdd){
-       
         if(this._layers[name]){
             //@todo add error handling for layers that already exist
             return

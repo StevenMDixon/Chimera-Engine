@@ -7,8 +7,8 @@ class ActorLoader {
         this._actors = new Map();
     }
 
-    get actors(){
-        return this._actors();
+    get list(){
+        return Object.fromEntries(this._actors);
     }
 
     load(actorList, fn){
@@ -51,6 +51,9 @@ class ActorLoader {
            }
        }
 
+       // add built-in components
+       actor.push(new availableComponents.Commands());
+
        // allow for user defined functions like pixi related animations
        if(userFN) {
         for(const fn of userFN){
@@ -59,6 +62,10 @@ class ActorLoader {
        }
        
        return actor;
+    }
+
+    getActor(actorName){
+        return this._actors.get(actorName);
     }
 }
 

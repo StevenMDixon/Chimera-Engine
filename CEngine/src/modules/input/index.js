@@ -18,7 +18,7 @@ class InputManager {
     }
 
     onKey(event, key, pressed, type){
-        console.log(event, key, pressed, type)
+        // console.log(event, key, pressed, type)
         if(type === 'keyboard'){
             event.preventDefault();
              this.inputs[key] = pressed;

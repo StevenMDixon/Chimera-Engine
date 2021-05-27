@@ -47,7 +47,7 @@ class GameEngine {
                     loader: configObject.pixiSettings.PIXI.Loader.shared
                 }
             )
-            eventModule.subscribe('_controlSound', this._routePixiAudio.bind(this));
+            eventModule.subscribe('&controlSound', this._routePixiAudio.bind(this));
         };
 
         if(configObject.debug){
@@ -57,7 +57,7 @@ class GameEngine {
             if(configObject.pixiSettings){
                 debugStatsModule.setTarget(configObject.pixiSettings.options.target);
             }
-            eventModule.subscribe('_updatedebug', (e) => debugStatsModule.update(e))
+            eventModule.subscribe('&updatedebug', (e) => debugStatsModule.update(e))
         }
         InputModule.enableGamePad();
         InputModule.sendTo(this._routeInputs.bind(this));

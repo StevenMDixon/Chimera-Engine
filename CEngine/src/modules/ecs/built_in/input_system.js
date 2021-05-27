@@ -14,7 +14,10 @@ class Input_System extends System {
 
     update(next, dt){
       for(const [i, entity] of this.cachedEntities){
-        entity.getComponent('Inputs').inputs = this._inputs;
+        let InputData = entity.getComponent('Inputs');
+        if(InputData.enabled == true){
+          InputData.inputs = this._inputs;
+        }
       }
     }
 

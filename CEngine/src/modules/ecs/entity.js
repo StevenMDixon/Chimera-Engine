@@ -1,4 +1,3 @@
-//instanceof might help
 class Entity {
     constructor(uuid, parent){
         this._parent = parent; // parent entityhandler instance

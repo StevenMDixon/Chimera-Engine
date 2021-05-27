@@ -8,8 +8,9 @@
         },
         components: {
             State: "idle",
+            Inputs: true
         },
-        tags: ["Inputs", "Movable", "Player"],
+        tags: ["Movable", "Player"],
         animation: {
             resource: "player",
             loop: true,

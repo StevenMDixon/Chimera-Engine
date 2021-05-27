@@ -12,9 +12,10 @@ class Player extends Component{};
 class Movable extends Component{};
 
 class Inputs extends Component{
-    constructor(){
+    constructor(enabled){
         super();
         this.inputs = {};
+        this.enabled = enabled;
     }
 };
 
@@ -79,6 +80,13 @@ class PixiStaticAnimations extends Component{
     }
 }
 
+class Commands extends Component{
+    constructor(){
+        super();
+        this.commandList = [];
+    }
+}
+
 class Components{
     constructor(){
         this.comp =  {
@@ -93,7 +101,8 @@ class Components{
             Pixi,
             PixiAnimations,
             PixiStaticAnimations,
-            Movable
+            Movable,
+            Commands
         }
     }
 
