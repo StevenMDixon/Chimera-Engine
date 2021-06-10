@@ -24,7 +24,7 @@ class Collision_System extends System_Base{
                 const collision = SAT(e1, e2);
 
                 if(collision){
-                    let resolveVector = Vector.multiply(collision.MTVAxis, {x: collision.smallestOverlap, y: collision.smallestOverlap})
+                    let resolveVector = Vector.multiply(collision.MTVAxis, new Vector(collision.smallestOverlap, collision.smallestOverlap));
                     Event.publish('collision', {e1: targetEntities[n], e2: targetEntities[m], resolution: resolveVector, gameObject: entities})
                 }    
             }

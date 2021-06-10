@@ -1,5 +1,6 @@
-import {ECSModule, components} from '../ecs';
-
+import {components} from '../ecs';
+import Vector from '../../libs/vectors';
+import {createVertices, createVerticesFromSize} from '../../libs/utils';
 
 class ActorLoader {
     constructor(parent){
@@ -29,7 +30,12 @@ class ActorLoader {
        //check for transform
        if(transform){
            const {position, size, scale, rotation} = transform;
-           actor.push(new availableComponents['Transform'](position.x, position.y, rotation || 0, scale.x || 1, scale.y || 1));
+           actor.push(new availableComponents['Transform'](new Vector(position.x, position.y), rotation || 0, new Vector(scale.x || 1, scale.y || 1)));
+
+           if(componentList && !componentList.System_bounding_box){
+                let vertices = createVerticesFromSize(0, 0, size.w, size.h);
+                actor.push(new availableComponents['System_bounding_box'](vertices));
+            } 
        }
 
        // check for tag components and add them
@@ -43,7 +49,7 @@ class ActorLoader {
 
        if (componentList){
            for(const componentName in componentList){
-               if(typeof componentList[componentName] == 'Array') {
+               if(Array.isArray(componentList[componentName])) {
                     actor.push(new availableComponents[componentName](...componentList[componentName]));
                } else {
                     actor.push(new availableComponents[componentName](componentList[componentName]));

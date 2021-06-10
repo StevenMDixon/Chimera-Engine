@@ -1,5 +1,4 @@
-
-class Vector2D {
+class Vector {
     constructor(x, y){
         this.x = x;
         this.y = y;
@@ -114,6 +113,10 @@ class Vector2D {
     static divide(v1, amount){
         return new Vector(v1.x / amount, v1.y / amount);
     }
+
+    static multiplybyInt(v, i){
+        return new Vector(v.x * i, v.y * i)
+    }
 }
 
-export default Vector2D;
+export default Vector;

@@ -4,7 +4,7 @@ import Chimera from 'ChimeraEngine';
 class StateSystem extends Chimera.systemTemplate{
     constructor(e){
         super();
-        this.targetComponents = ["State", "PixiAnimations", "Pixi"];
+        this.targetComponents = ["State", "PixiAnimations", "Pixi", 'Player'];
         this.excludeComponents = [];
     }
 

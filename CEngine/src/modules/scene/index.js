@@ -18,7 +18,7 @@ class SceneModule {
         }
         this.currentScene = Object.values(this.scenes)[0];
     }
-
+    
     gotoScene(sceneName){
         this.currentScene = this.scenes[sceneName];
     }

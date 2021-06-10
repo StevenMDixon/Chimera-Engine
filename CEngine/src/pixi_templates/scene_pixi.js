@@ -1,5 +1,7 @@
 import Scene from '../modules/scene/scene';
 import {components} from '../modules/ecs/index';
+import {createVertices, createVerticesFromSize} from '../libs/utils';
+import Vector from '../libs/vectors';
 
 class PixiScene extends Scene{
     constructor(name){
@@ -80,7 +82,7 @@ class PixiScene extends Scene{
                 const {position} = item;
                 const composed = [];
                 // add new transform location
-                composed.push(new comp.Transform(position.x, position.y, position.rotation, position.scale));
+                composed.push(new comp.Transform(new Vector(position.x, position.y), position.rotation, new Vector(position.scale, position.scale)));
                 // this is the pixi instance so we know we have access to pixi
                 // check if there any animations on the tile
                 const mappedPixiItems = this._mapPixiLoader(item, comp);
@@ -90,7 +92,21 @@ class PixiScene extends Scene{
                     // add the pixi item to the world
                     this.addToLayer(name, mappedPixiItems[mappedPixiItems.length - 1].pixi);
                 }
-
+                if(item.collisionBoxes){
+                    let vertices = null;
+                    for(let i = 0; i < item.collisionBoxes.length; i++){
+                        if(item.collisionBoxes[i].polygon){
+                            vertices = createVertices(item.collisionBoxes[i].polygon)
+                        }else if(vertices == null){
+                            const {x, y, width, height} = item.collisionBoxes[i]; 
+                            vertices = createVerticesFromSize(x, y, width, height);
+                        }
+                    }
+                    if(vertices){
+                        composed.push(new comp.System_bounding_box(vertices));
+                    }
+                    
+                }
                 // let user define functions needed when loading map
                 fn.forEach(mappedFunction => composed.push(mappedFunction(item, comp))); 
                 
@@ -110,7 +126,6 @@ class PixiScene extends Scene{
             PIXItem.animationSpeed = .1;
             PIXItem.loop = true;
             //PIXItem.play();
-
             composedComponents.push(new components.PixiStaticAnimations(animatedSheet));
         }else {
             // handle nonAnimated pixi items
@@ -120,7 +135,7 @@ class PixiScene extends Scene{
             PIXItem.x = position.x;
             PIXItem.y = position.y;
             PIXItem.rotation = position.rotation;
-
+            PIXItem.anchor.set(0.5);
             composedComponents.push(new components.Pixi(PIXItem));
         }
         //const 
@@ -153,13 +168,13 @@ class PixiScene extends Scene{
 
             composedComponents.push(new componentList.PixiAnimations(actorSheet));
 
-            const {position, scale, size, rotation} = data.transform;
+            const {position, scale, rotation} = data.transform;
 
             PIXItem = new this.PIXI.AnimatedSprite(actorSheet[Object.keys(actorSheet)[0]]);
             PIXItem.x = position.x;
             PIXItem.y = position.y;
             PIXItem.loop = loop;
-            PIXItem.anchor.set(anchor|| 1);
+            PIXItem.anchor.set(anchor|| .5);
             PIXItem.animationSpeed = speed || .5;
             PIXItem.rotation = rotation || 0;
             //player.play();

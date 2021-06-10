@@ -42,7 +42,10 @@ class Renderer {
     }
 
     render(scene){
-        this.renderer.render(scene);
+        if(scene.stage){
+            this.renderer.render(scene.stage);
+        }
+        
     }
 }
 

@@ -4,7 +4,7 @@ const path = require('path')
 const webpack = require('webpack')
 
 module.exports = {
-  entry: './src/core.js',
+  entry: './src/index.js',
   mode: 'development',
   devtool: "source-map",
 

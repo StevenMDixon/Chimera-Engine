@@ -10,8 +10,8 @@ import debugStatsModule from './modules/debugStats';
 import {ECSModule, components, system} from './modules/ecs';
 import Stats from 'stats.js'
 
-import {PixiScene, PixiRenderer} from './pixi_templates/index';
 
+import {PixiScene, PixiRenderer} from './pixi_templates/index';
 
 class GameEngine {
     constructor(){
@@ -81,28 +81,28 @@ class GameEngine {
 
     _run(ts = 0){
         const {debug, renderer, fps} = this.store.data;
+        const {currentScene} = sceneModule
         //console.log(this.store.data)
         requestAnimationFrame(this._run.bind(this));
-
-        if(ts - this._lastTime < 1000 / fps ) return 
+        
+       // if(ts - this._lastTime < (1000 / fps) ) return 
 
         if(debug){
             this._stats.begin();
         }
         
-        sceneModule.currentScene.update(ts - this._lastTime);
-        sceneModule.currentScene.world._runUpdate(ts - this._lastTime);
-
-       if(renderer.type == 'PIXI' && sceneModule.currentScene){
-          renderer.render(sceneModule.currentScene.stage);
+        if(currentScene){
+            currentScene.update(ts - this._lastTime);
+            currentScene.world._runUpdate(ts - this._lastTime);
+            renderer.render(sceneModule.currentScene);
+            eventModule.finalize(currentScene._name);
         }
-
+    
         if(debug){
             this._stats.end();
         }
 
         this._lastTime = ts;
-        eventModule.finalize(sceneModule.currentScene._name);
 
         debugStatsModule.renderStats();
     };
@@ -146,16 +146,17 @@ class GameEngine {
     }
 }
 
-function core(){
-    // expose needed functionality
-    return {
-        engine: new GameEngine(),
-        sceneTemplates: {PixiScene},
-        systemTemplate: system,
-        components: components.comp
-    }
-}
+// function core(){
+//     // expose needed functionality
+//     return {
+//         engine: ,
+//         sceneTemplates: {PixiScene},
+//         systemTemplate: system,
+//         components: components.comp,
+//         Vector
+//     }
+// }
 
 
-export default core();
+export default new GameEngine();
 

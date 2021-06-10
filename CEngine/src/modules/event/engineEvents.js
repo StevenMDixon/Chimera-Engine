@@ -3,5 +3,6 @@ export const _engineEvents = [
     '&sys_message',
     '&controlSound',
     '&updatedebug',
-    '&assignCommand'
+    '&assignCommand',
+    '&collisionEvent'
 ]

@@ -2,10 +2,10 @@ import Chimera from 'ChimeraEngine';
 
 //import * as particles from 'pixi-particles';
 
-import MovementSystem from './movement_sys';
-import StateSystem from './state_sys';
-import PlayerCollides from './player_collides';
-import HandlePlayerCollides from './player_handle_col';
+import MovementSystem from './systems/movement_sys';
+import StateSystem from './systems/state_sys';
+import HandleCollides from './systems/handle_col';
+import PhysicSystem from './systems/physics_sys';
 import actors from './actors';
 //import myParticles from './particles';
 
@@ -19,8 +19,8 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     preload(){
        this.world.registerSystem(MovementSystem);
        this.world.registerSystem(StateSystem);
-       this.world.registerSystem(PlayerCollides);
-       this.world.registerSystem(HandlePlayerCollides);
+       this.world.registerSystem(HandleCollides);
+       this.world.registerSystem(PhysicSystem);
        this.loadMap('map1');
        this.loadActors(actors);
     }
@@ -103,6 +103,7 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     // //     // }, 1000)
     stage.position.set(600/2, 600/2);
     //     this._stage.pivot.set(this.player.x, this.player.y)
+    console.log(this.actors.list.player.components.get('Physics'));
     }
 
     update(dt){

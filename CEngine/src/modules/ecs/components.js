@@ -1,11 +1,10 @@
+import Vector from '../../libs/vectors';
 
 export class Component{
     constructor(){
         this.parent = null;
     }
 }
-
-
 
 class Player extends Component{};
 
@@ -20,19 +19,15 @@ class Inputs extends Component{
 };
 
 class Transform extends Component{
-    constructor(x, y, r = 0, sx = 1, sy = 1){
+    constructor(pos, r = 0, scale){
         super();
-        this.x = x;
-        this.y = y;
+        this.pos = pos;
         this.rotation = r,
-        this.scale = {
-            x: sx,
-            y: sy
-        }
+        this.scale = scale;
     }
 };
 
-class CameraFocusAble extends Component{
+class CameraFocusable extends Component{
     constructor(isPrimary = false){
         super();
         this.primary = isPrimary;
@@ -87,6 +82,26 @@ class Commands extends Component{
     }
 }
 
+class System_bounding_box extends Component{
+    constructor(vertices){
+        super()
+        this.vertices = vertices;
+    }
+}
+
+class Physics extends Component{
+    constructor(vel, mass, gravity){
+        super();
+        this.velocity = new Vector(vel.x, vel.y);
+        this.mass = mass || 0;
+        this.gravity = gravity || 0;
+        this.acceleration = new Vector(0,0);
+        this.friction = new Vector(0,0);
+    }
+}
+
+class System_solid extends Component{}
+
 class Components{
     constructor(){
         this.comp =  {
@@ -94,7 +109,7 @@ class Components{
             Movable,
             Inputs,
             State,
-            CameraFocusAble,
+            CameraFocusable,
             Emitter,
             Particle,
             Transform,
@@ -102,7 +117,10 @@ class Components{
             PixiAnimations,
             PixiStaticAnimations,
             Movable,
-            Commands
+            Commands,
+            Physics,
+            System_bounding_box,
+            System_solid
         }
     }
 

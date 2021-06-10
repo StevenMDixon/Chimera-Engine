@@ -5,7 +5,7 @@ class MapModule {
     }
 
     getMap(mapName){
-        return this.maps.get(mapName)
+        return this.maps.get(mapName);
     }
 
     loadSpriteSheet(spriteSheetData, type, fileName){
@@ -30,6 +30,7 @@ class MapModule {
 
             //check for animations and other features
             if(spriteSheetData.tiles){
+                
                 spriteSheetData.tiles.forEach(tile => {
                     if(tile.animation){
                         spriteSheet[tile.id].animation = tile.animation.reduce((acc, cur) => {
@@ -43,7 +44,7 @@ class MapModule {
                     }
                     if(tile.objectgroup){
                         // @todo
-                        spriteSheet[tile.id].collisionBox = tile.objectgroup.objects;
+                        spriteSheet[tile.id].collisionBoxes = tile.objectgroup.objects;
                     }
                     if(tile.properties){
                         tile.properties.forEach(property =>{
@@ -113,7 +114,6 @@ class MapModule {
 
     _loadTiledLayer(layer, width, height, sheetMapping){
         let data = [];
-
         if(layer.type == 'tilelayer' && layer.chunk){
             // @todo write chunk loader for infinite maps
             // data = layerData.chunks.reduce((tiles, chunk)=> {
@@ -139,6 +139,7 @@ class MapModule {
     }
 
     loadTile(tileData, x, y, sheetMapping){
+        
         const {sheet, id} = this._mapTileDataToSheet(tileData & 0x0fffffff, sheetMapping);
         const spriteSheet = this.spriteSheets.get(sheet);
         const tile = {...spriteSheet[id]};

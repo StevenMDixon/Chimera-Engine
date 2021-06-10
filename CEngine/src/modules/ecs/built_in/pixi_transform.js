@@ -1,4 +1,5 @@
 import System from '../system';
+import Vector from '../../../libs/vectors';
 
 class Pixi_Transform_System extends System {
     constructor(){
@@ -13,8 +14,8 @@ class Pixi_Transform_System extends System {
         const transform = entity.components.get('Transform');
         const {pixi} = entity.components.get('Pixi');
 
-        pixi.x = transform.x;
-        pixi.y = transform.y;
+        pixi.x = transform.pos.x;
+        pixi.y = transform.pos.y;
         pixi.rotation = transform.rotation;
         pixi.scale.set(transform.scale.x, transform.scale.y);
       }
