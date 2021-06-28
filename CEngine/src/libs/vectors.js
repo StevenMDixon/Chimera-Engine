@@ -7,7 +7,7 @@ class Vector {
     set(vector){
         this.x = vector.x;
         this.y = vector.y;
-        return this
+        return this;
     }
 
     add(vector){

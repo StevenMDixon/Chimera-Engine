@@ -19,11 +19,12 @@ class Inputs extends Component{
 };
 
 class Transform extends Component{
-    constructor(pos, r = 0, scale){
+    constructor(pos, r = 0, scale, size){
         super();
         this.pos = pos;
         this.rotation = r,
         this.scale = scale;
+        this.size = size;
     }
 };
 
@@ -83,9 +84,11 @@ class Commands extends Component{
 }
 
 class System_bounding_box extends Component{
-    constructor(vertices){
+    constructor(vertices, center){
         super()
         this.vertices = vertices;
+        this.position = new Vector(0,0);
+        this.center = center;
     }
 }
 
@@ -95,8 +98,8 @@ class Physics extends Component{
         this.velocity = new Vector(vel.x, vel.y);
         this.mass = mass || 0;
         this.gravity = gravity || 0;
-        this.acceleration = new Vector(0,0);
-        this.friction = new Vector(0,0);
+        this.force = new Vector(0,0);
+        this.friction = new Vector(.1,.1);
     }
 }
 

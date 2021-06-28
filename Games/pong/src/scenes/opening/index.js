@@ -21,17 +21,16 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
        this.world.registerSystem(StateSystem);
        this.world.registerSystem(HandleCollides);
        this.world.registerSystem(PhysicSystem);
+       this.loadActors(actors)
        this.loadMap('map1');
-       this.loadActors(actors);
+       ;
     }
 
     setup(loader, resources){
         const {PIXI, global, world, stage} = this;
         const {player} = this.actors.list;
 
-        const transform = player.components.get('Transform');
-
-        transform.x = 0;
+       
     //     let sheet = new PIXI.BaseTexture.from(resources["player"].url);
     //     let playerSheet = {};
     //     let h = 8;
@@ -103,7 +102,7 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     // //     // }, 1000)
     stage.position.set(600/2, 600/2);
     //     this._stage.pivot.set(this.player.x, this.player.y)
-    console.log(this.actors.list.player.components.get('Physics'));
+   
     }
 
     update(dt){

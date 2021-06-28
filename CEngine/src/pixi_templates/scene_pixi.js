@@ -1,6 +1,6 @@
 import Scene from '../modules/scene/scene';
 import {components} from '../modules/ecs/index';
-import {createVertices, createVerticesFromSize} from '../libs/utils';
+import {createVertices, createVerticesFromSize, getCenterOfPoly} from '../libs/utils';
 import Vector from '../libs/vectors';
 
 class PixiScene extends Scene{
@@ -68,7 +68,7 @@ class PixiScene extends Scene{
     addToLayer(name, object){
         this._layers[name].addChild(object);
     }
-
+ 
     loadMap(mapName, ...fn){
         const map = this.map.maps.get(mapName);
         const comp = components.getComponents();
@@ -79,10 +79,10 @@ class PixiScene extends Scene{
                 this.createLayer(name, properties.zindex || 0);
             }
             for(const item of layer.data) {
-                const {position} = item;
+                const {position, location} = item;
                 const composed = [];
                 // add new transform location
-                composed.push(new comp.Transform(new Vector(position.x, position.y), position.rotation, new Vector(position.scale, position.scale)));
+                composed.push(new comp.Transform(new Vector(position.x, position.y), position.rotation, new Vector(position.scale, position.scale), new Vector(location.w, location.h)));
                 // this is the pixi instance so we know we have access to pixi
                 // check if there any animations on the tile
                 const mappedPixiItems = this._mapPixiLoader(item, comp);
@@ -103,7 +103,8 @@ class PixiScene extends Scene{
                         }
                     }
                     if(vertices){
-                        composed.push(new comp.System_bounding_box(vertices));
+                        const center = getCenterOfPoly(vertices);
+                        composed.push(new comp.System_bounding_box(vertices, center));
                     }
                     
                 }
@@ -114,7 +115,7 @@ class PixiScene extends Scene{
             }
         })
     }
-
+ 
     _mapPixiLoader({animation, location, position, spriteSheet}, components){
         const composedComponents = [];
         let PIXItem = null;
@@ -174,7 +175,7 @@ class PixiScene extends Scene{
             PIXItem.x = position.x;
             PIXItem.y = position.y;
             PIXItem.loop = loop;
-            PIXItem.anchor.set(anchor|| .5);
+            PIXItem.anchor.set(.5);
             PIXItem.animationSpeed = speed || .5;
             PIXItem.rotation = rotation || 0;
             //player.play();

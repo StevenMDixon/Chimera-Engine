@@ -8,31 +8,25 @@ class Physics extends Chimera.systemTemplate{
         this.targetComponents = ['Physics'];
         this.excludeComponents = [];
     }
-
+ 
     onCreate(){
         return
     }
 
-    update(h,dt){
+    update(h, dt){
         for(const [i, item] of this.cachedEntities){
-            const transform = item.components.get('Transform');
-            const {velocity, acceleration, friction} = item.components.get('Physics');
+            const {pos} = item.components.get('Transform');
+            const {velocity, force, friction, gravity} = item.components.get('Physics');
+            
+            force.add(new Vector(0, gravity || .001));
+            
+            velocity.add(new Vector(force.x * dt, force.y * dt));
 
-            velocity.add(Vector.multiplybyInt(acceleration, (dt/100)));
+            pos.add(new Vector(velocity.x * dt, velocity.y * dt));
 
-            transform.pos.add(new Vector(velocity.x, velocity.y));
-            //pos.set({x: Math.floor(pos.x), y: Math.floor(pos.y)})
-            // if(e.hasComponent('Gravity')){
-            //     velocity.add(e.getComponent("Gravity").gravity)
-            // }
-
-            //pos.set({x: round(pos.x), y: round(pos.y)})
-            velocity.set(new Vector(
-                velocity.x * .1, 
-                velocity.y * .1
-            ));
-
-            acceleration.set(new Vector(0,0));
+            velocity.set(Vector.multiply(velocity, friction));
+            
+            force.multiply(0);
         }
     }
 

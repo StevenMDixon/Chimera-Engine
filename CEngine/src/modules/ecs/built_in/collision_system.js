@@ -1,102 +1,107 @@
+
 import System from '../system';
 import {SAT} from "../../../libs/collision";
-import {getCenterOfPoly, calculateResolutionVector} from "../../../libs/utils";
+import {getCenterOfPoly, rotateVertice, convertToCollidable} from "../../../libs/utils";
 import Vector from '../../../libs/vectors';
+
 
 class Collision_System extends System {
     constructor(){
       super();
       this.targetComponents = ["Transform", "System_bounding_box"];
       this.excludeComponents = [];  
-      this.tempObjectsForCollission = {
-          obj1: {
-            pos: {x: 0, y: 0},
-            vertices: []
-          },
-          obj2: {
-            pos: {x: 0, y: 0},
-            vertices: []
-          }
-      },
       this.once = 0;
+      this.collisions = new Map();
     }
 
-    onCreate(){
-        //this.subscribe('&assignCommand', (e, i)=>this.handleEvent(e, i));
-    }
+    // e1: -- , collissions: []
 
-    clearTempObject(obj){
-       obj.pos = {};
-       obj.vertices = [];
-    }
+    update(h, dt){
+        const items = Array.from(this.cachedEntities, ([name, value]) => (value));
 
-    update(dt){
-        
-        //for(let y = 0; y < this.cachedEntities.length; y++){
-        for (const [i, fentity] of this.cachedEntities){
+        for(let k = 0; k < items.length; k++){
+            const movable = items[k].components.get('Movable');
+            if(!movable) continue;
             
-            //const fentity = this.cachedEntities[y];
-            const ftransform = fentity.getComponent('Transform');
-            const fHitBox = fentity.getComponent('System_bounding_box');
-            
-            // Maths 
-            this.tempObjectsForCollission.obj1.vertices = this.createOffsetVertices(ftransform.pos, fHitBox.vertices);
-            this.tempObjectsForCollission.obj1.pos = getCenterOfPoly(this.tempObjectsForCollission.obj1.vertices);
-            
-            //for(let x = 0; x < this.cachedEntities.length; x++)
-            for (const [x, sentity] of this.cachedEntities)
-            {
-                // make sure we don't check against itself!
-               if(x == i) continue;
+            for(let l = 0; l < items.length; l++){
+                if(k == l) continue;
+                const e1 = convertToCollidable(items[k]);
+                const e2 = convertToCollidable(items[l]);
 
-               const stransform = sentity.getComponent('Transform');
-               const sHitBox = sentity.getComponent('System_bounding_box');
-               // Maths 2
-               this.tempObjectsForCollission.obj2.vertices = this.createOffsetVertices(stransform.pos, sHitBox.vertices);
-               this.tempObjectsForCollission.obj2.pos = getCenterOfPoly(this.tempObjectsForCollission.obj2.vertices);
+                const collision = SAT(e1, e2);
+                const diff = Math.hypot(e2.pos.x - e1.pos.x, e2.pos.y - e1.pos.y);
 
-               const collision = SAT(this.tempObjectsForCollission.obj2, this.tempObjectsForCollission.obj1);
-
-            //    if(this.once < 1000 && collision){
-            //     console.log(this.tempObjectsForCollission.obj2.pos)
-            //     this.once += 1;
-            // }
-                // console.log(collision)
                 if(collision){
-                    let resolveVector = calculateResolutionVector(collision);
-                    this.publish('&collisionEvent', {e1: fentity, e2: sentity, resolution: resolveVector});
-                }   
-                
-                // if(this.once < 100 && collision){
-                //     console.log(this.tempObjectsForCollission)
-                //     this.once += 1;
-                // }
-                this.clearTempObject(this.tempObjectsForCollission.obj2)
+                    this.addCollision(items[k], [items[l], diff, collision]);
+                }
+
             }
-            
-            this.clearTempObject(this.tempObjectsForCollission.obj1)
+            this.publishCollision();
         }
     }
 
-    handleEvent(event, {entity, data}){
-        // const commandList = entity.components.get('CommandList');
-        // commandList.push(data);
-    }
 
-    createOffsetVertices(position, vertices){
-        //let calcPos = Vector.divide(position, 2)
-        let v = [];
-        //get the center of the boundy polygon
-        let center =  getCenterOfPoly(vertices);
-        let nDiff = Vector.subtract(position, center);
-
-        for(let i = 0; i < vertices.length; i++){
-            let newv = Vector.add(nDiff, vertices[i])
-            v.push(newv);
+    addCollision(entity, collisionData){
+       
+        //this.collisions.set()
+        if(this.collisions.has(entity)){
+            let currentCollision = this.collisions.get(entity);
+            let letAddCollision = true;
+            let [e1, d2, col1] = collisionData;
+            for(const collisions of currentCollision){
+                 const [e2, d2, col2] = collisions;
+                 if(col1.overlap == col2.overlap && col1.mtvaxis.y == col2.mtvaxis.y && col1.mtvaxis.x == col2.mtvaxis.x){
+                     letAddCollision = false;
+                 }
+            }
+            if(letAddCollision){
+                this.collisions.set(entity, [...currentCollision, collisionData]);
+            }
+        }else {
+            this.collisions.set(entity, [collisionData])
         }
-
-        return v;
     }
+
+    publishCollision(){
+        for( const [entity, collisionData] of this.collisions){
+            this.publishImmediate('&collisionEvent', {entity, collisionData});
+        }
+        this.collisions.clear();
+    }
+
+    // convertToCollidable(entity){
+    //     const {position, vertices, center} = entity.components.get('System_bounding_box');
+    //     const Transform = entity.components.get('Transform');
+    //     return this.mapVertices(Transform, vertices);
+    // }
+
+    // mapVertices(transform, vertices){
+    //     const results = [];
+    //     const npos = new Vector(0,0);
+    //     const {pos: position , rotation, size, scale} = transform;
+    //     // @Todo implement scaling...
+    //     // Update each vertex from the center of the object to the correct offset
+    //     for (const vertex of vertices){
+    //         results.push(Vector.add(position, vertex));
+    //     }
+        
+    //     // handle rotation only if the object is rotated
+    //     if(rotation != 0){
+    //         // get difference in objects current pos and center of translated polygon divide by two to get offset.
+    //         let center = Vector.add(position, Vector.divide(size, 2));
+    //         results.forEach(vertex => {
+    //             let t = rotateVertice(center, vertex, rotation);
+    //             vertex.set(t);
+    //         })
+    //     }
+        
+    //     // get the collission boxes center only after translation and rotation and scaling
+    //     npos.set(getCenterOfPoly(results));
+        
+    //     return {pos: npos, vertices: results};
+    // }
 }
+
+
 
 export default Collision_System;

@@ -7,7 +7,7 @@ import mapModule from './modules/loader/map_loader';
 import sceneModule from './modules/scene';
 import soundModule from './modules/sound';
 import debugStatsModule from './modules/debugStats';
-import {ECSModule, components, system} from './modules/ecs';
+import {ECSModule} from './modules/ecs';
 import Stats from 'stats.js'
 
 
@@ -33,8 +33,12 @@ class GameEngine {
                 }
             }
         );
+        this.once = 0
         this._stats = new Stats();
         this._lastTime = 0;
+        this._timestep = 1000 / 120;
+        this._delta = 0;
+        this._lastFrameTimeMs = 0;
     }
 
     setConfig(configObject){
@@ -76,35 +80,64 @@ class GameEngine {
         loader.onComplete.add(() => {
             sceneModule.createScenes(config.scenes, this.store.data);
             this._run();
+
         })
     }
 
-    _run(ts = 0){
+    _run(timestamp = 0){
         const {debug, renderer, fps} = this.store.data;
-        const {currentScene} = sceneModule
-        //console.log(this.store.data)
-        requestAnimationFrame(this._run.bind(this));
-        
-       // if(ts - this._lastTime < (1000 / fps) ) return 
+        const {currentScene} = sceneModule;
 
+
+        // if (timestamp < this._lastFrameTimeMs + (1000 / 300)) {
+        //     requestAnimationFrame(this._run.bind(this));
+        //     return;
+        // }
+
+        this._delta += timestamp - this._lastFrameTimeMs;
+        this._lastFrameTimeMs = timestamp;
         if(debug){
             this._stats.begin();
         }
-        
-        if(currentScene){
-            currentScene.update(ts - this._lastTime);
-            currentScene.world._runUpdate(ts - this._lastTime);
-            renderer.render(sceneModule.currentScene);
+
+        let numUpdates = 0;
+        while (this._delta >= this._timestep) {
+            currentScene.update(this._timestep);
+            currentScene.world._runUpdate(this._timestep);
             eventModule.finalize(currentScene._name);
+            this._delta -= this._timestep;
+            if(++numUpdates > 10){
+                break;
+            }
         }
+        //console.log(this.store.data)
+
+
+        // requestAnimationFrame(this._run.bind(this));
+
+
+        // if(ts - this._lastTime < (1000 / fps) ) return;
+
+        // const dt = ((ts - this._lastTime)/100);
+
+        
+        
+
+
+        // if(currentScene){
+        //     
+        renderer.render(sceneModule.currentScene);
+        //     
+        // }
     
         if(debug){
             this._stats.end();
         }
 
-        this._lastTime = ts;
+        // this._lastTime = ts;
 
         debugStatsModule.renderStats();
+        requestAnimationFrame(this._run.bind(this));
     };
 
     _addDebugInfo(){
@@ -156,6 +189,8 @@ class GameEngine {
 //         Vector
 //     }
 // }
+
+
 
 
 export default new GameEngine();

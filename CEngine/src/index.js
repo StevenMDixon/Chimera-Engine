@@ -1,4 +1,6 @@
 import Vector from './libs/vectors';
+import utils from './libs/utils';
+import Collision from './libs/collision';
 import {system, components} from './modules/ecs';
 import engine from './core';
 import {PixiScene} from './pixi_templates/index';
@@ -9,7 +11,7 @@ import {PixiScene} from './pixi_templates/index';
 // components: components.comp,
 // Vector
 
-export {Vector, system as systemTemplate, PixiScene as Scene, engine};
+export {Vector, system as systemTemplate, PixiScene as Scene, engine, utils, Collision};
 
 
 export default {
@@ -17,5 +19,7 @@ export default {
     sceneTemplates: {PixiScene},
     systemTemplate: system,
     components: components.comp,
-    Vector
+    Vector,
+    utils, 
+    Collision
 }

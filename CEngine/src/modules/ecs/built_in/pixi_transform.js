@@ -14,6 +14,8 @@ class Pixi_Transform_System extends System {
         const transform = entity.components.get('Transform');
         const {pixi} = entity.components.get('Pixi');
 
+        // pixi.x = transform.pos.x - pixi.width/2;
+        // pixi.y = transform.pos.y - pixi.height/2;
         pixi.x = transform.pos.x;
         pixi.y = transform.pos.y;
         pixi.rotation = transform.rotation;

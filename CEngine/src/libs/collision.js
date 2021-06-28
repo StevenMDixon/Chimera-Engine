@@ -88,7 +88,7 @@ function SAT(p1, p2){
     }
 
     // Return our freshly created collision object
-    return {p1, p2, MTVAxis, smallestOverlap};
+    return new Collision(p1, p2, MTVAxis, smallestOverlap);
 }
 
 
@@ -188,24 +188,16 @@ function circlecircle(c1, c2) {
     return
 }
 
-
-const Collision = {
-    init: function(b1, b2, mtv, overlap) {
+class Collision{
+    constructor(b1, b2, mtv, overlap){
         this.body1 = b1;
         this.body2 = b2;
         this.mtvaxis = mtv;
         this.overlap = overlap;
-        this.penetration = {x: mtv.x * overlap, y: mtv.y * overlap};
+        this.penetration = new Vector(mtv.x * overlap, mtv.y * overlap);
     }
-};
-
-// Convenience constructor
-const collision = function(b1, b2, mtv, overlap) {
-    let c = Object.create(Collision);
-    c.init(b1, b2, mtv, overlap);
-    return c;
-};
-
-
+}
 
 export {AABB, SAT}
+
+export default {AABB, SAT}

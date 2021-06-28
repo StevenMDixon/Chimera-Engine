@@ -23,7 +23,7 @@ export function createVerticesFromSize(x,y,w,h){
 }
 
 export function calculateResolutionVector(collisionData){
-    return Vector.multiply(collisionData.MTVAxis, {x: collisionData.smallestOverlap, y: collisionData.smallestOverlap});
+    return Vector.multiply(collisionData.MTVAxis, new Vector(collisionData.smallestOverlap, collisionData.smallestOverlap));
 }
 
 
@@ -33,34 +33,71 @@ export function partition(array, isValid) {
     }, [[], []]);
 }
 
-// export function convertToCollidable(gameObject){
-//     const newE = {};
+export function clamp (num, min, max) {
+    return Math.min(Math.max(num, min), max);
+}
 
-//     if(gameObject.hasComponent("Polygon")){
-//         const {vertices} = gameObject.getComponent("Polygon");
-//         newE['vertices'] = vertices;
-//         newE['pos'] = getCenterOfPoly(vertices);
-//     }else if(gameObject.hasComponent("Size")){
-//         let {pos} = gameObject.getComponent("Position");
-//         let {size} = gameObject.getComponent("Size");
-//         let vertices = createVerticesFromSize(pos, size);
-//         newE['og'] = new Vector2D(pos.x, pos.y);
-//         newE['pos'] = new Vector2D(pos.x + size.x/2,pos.y + size.y/2)
-//         newE['vertices'] = vertices;
-//     }
+export function degToRad(deg) {
+    return deg * Math.PI / 180;
+}
 
-//     return newE;
-// }
+export function rotateVertice(center, point, radian){
+    const cos = Math.cos(radian);
+    const sin = Math.sin(radian);
 
-// export function createCollidable(x,y,w,h){
-//    const pos = new Vector2D(x, y), size = new Vector2D(w,h);
-//    return {
-//        og: new Vector2D(x, y),
-//        pos: new Vector2D( x + w/2, y + h/2),
-//        vertices: createVerticesFromSize(pos, size)
-//    }
-// }
+    const nPoint = Vector.subtract(point, center);
+
+    let x = (center.x) + ((cos * nPoint.x) - (sin * nPoint.y));
+    let y = (center.y) + ((sin * nPoint.x) + (cos * nPoint.y));
+
+    return new Vector(x, y);
+}
 
 export function random(min, max) {
     return Math.random() * (max - min) + min;
+}
+
+export function convertToCollidable(entity){
+    const {vertices} = entity.components.get('System_bounding_box');
+    const Transform = entity.components.get('Transform');
+    return mapVertices(Transform, vertices);
+}
+
+export function mapVertices(transform, vertices){
+    const results = [];
+    const npos = new Vector(0,0);
+    const {pos: position , rotation, size, scale} = transform;
+    // @Todo implement scaling...
+    // Update each vertex from the center of the object to the correct offset
+    for (const vertex of vertices){
+        results.push(Vector.add(position, vertex));
+    }
+    
+    // handle rotation only if the object is rotated
+    if(rotation != 0){
+        // get difference in objects current pos and center of translated polygon divide by two to get offset.
+        let center = Vector.add(position, Vector.divide(size, 2));
+        results.forEach(vertex => {
+            let t = rotateVertice(center, vertex, rotation);
+            vertex.set(t);
+        });
+    }
+    
+    // get the collission boxes center only after translation and rotation and scaling
+    npos.set(getCenterOfPoly(results));
+    
+    return {pos: npos, vertices: results};
+}
+
+
+export default {
+    random,
+    partition,
+    createVertices,
+    getCenterOfPoly,
+    calculateResolutionVector,
+    clamp,
+    rotateVertice,
+    convertToCollidable,
+    mapVertices
 }

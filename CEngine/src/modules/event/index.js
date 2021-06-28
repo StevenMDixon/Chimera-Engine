@@ -27,7 +27,7 @@ class EventManager {
 
     publishEventtoChild(event, payload, childName){
         const h = this.eventHandlers.get(childName);
-        h.publish(event, payload);
+        h.publishImmediate(event, payload);
     }
 
     subscribe(event, fn){
