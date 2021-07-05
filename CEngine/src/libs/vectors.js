@@ -4,6 +4,10 @@ class Vector {
         this.y = y;
     }
 
+    get(){
+        return [this.x, this.y];
+    }
+
     set(vector){
         this.x = vector.x;
         this.y = vector.y;

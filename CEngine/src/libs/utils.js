@@ -5,7 +5,7 @@ export function getCenterOfPoly(vertices){
         acc.add(cur);
         return acc;
     }, new Vector(0,0)).divide(vertices.length);
-}  
+}
 
 export function createVertices(arrofV){
     return arrofV.map(vertice => {
@@ -15,7 +15,7 @@ export function createVertices(arrofV){
 
 export function createVerticesFromSize(x,y,w,h){
     return [
-        new Vector(x, y), 
+        new Vector(x, y),
         new Vector(x + w, y),
         new Vector(x + w, y + h),
         new Vector(x, y + h)
@@ -58,35 +58,43 @@ export function random(min, max) {
 }
 
 export function convertToCollidable(entity){
-    const {vertices} = entity.components.get('System_bounding_box');
+    const Box = entity.components.get('System_bounding_box');
     const Transform = entity.components.get('Transform');
-    return mapVertices(Transform, vertices);
+    return mapVertices(Transform, Box.vertices);
 }
 
 export function mapVertices(transform, vertices){
-    const results = [];
-    const npos = new Vector(0,0);
+    const results = [...vertices];
+   // console.log(results)
     const {pos: position , rotation, size, scale} = transform;
     // @Todo implement scaling...
     // Update each vertex from the center of the object to the correct offset
-    for (const vertex of vertices){
-        results.push(Vector.add(position, vertex));
+
+    for(let i = 0; i < results.length; i++){
+        results[i] = new Vector(0,0).add(position).add(vertices[i])
+
+        if(rotation != 0){
+            let center = Vector.add(position, Vector.divide(size, 2));
+            let t = rotateVertice(center, results[i], rotation);
+            results[i] = t
+        }
+
+       // results.push(Vector.add(position, vertices[i]));
     }
-    
+
     // handle rotation only if the object is rotated
-    if(rotation != 0){
-        // get difference in objects current pos and center of translated polygon divide by two to get offset.
-        let center = Vector.add(position, Vector.divide(size, 2));
-        results.forEach(vertex => {
-            let t = rotateVertice(center, vertex, rotation);
-            vertex.set(t);
-        });
-    }
-    
-    // get the collission boxes center only after translation and rotation and scaling
-    npos.set(getCenterOfPoly(results));
-    
-    return {pos: npos, vertices: results};
+    // if(rotation != 0){
+    //     // get difference in objects current pos and center of translated polygon divide by two to get offset.
+
+    //     for(let k = 0; k < results.length; k++){
+    //         let t = rotateVertice(center, results[k], rotation);
+    //         results[k].set(t);
+    //     }
+
+    // }
+
+
+    return {pos: getCenterOfPoly(results), vertices: results};
 }
 
 

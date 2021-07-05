@@ -39,6 +39,7 @@ class Renderer {
             this._autoResize();
         }
 
+       
     }
 
     render(scene){

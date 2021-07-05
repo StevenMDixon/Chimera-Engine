@@ -1,8 +1,7 @@
 
 import System from '../system';
 import {SAT} from "../../../libs/collision";
-import {getCenterOfPoly, rotateVertice, convertToCollidable} from "../../../libs/utils";
-import Vector from '../../../libs/vectors';
+import {getCenterOfPoly, rotateVertice, convertToCollidable, mapVertices} from "../../../libs/utils";
 
 
 class Collision_System extends System {
@@ -14,48 +13,62 @@ class Collision_System extends System {
       this.collisions = new Map();
     }
 
-    // e1: -- , collissions: []
-
     update(h, dt){
-        const items = Array.from(this.cachedEntities, ([name, value]) => (value));
+        for(const [id1, entity1] of this.cachedEntities){
+        if(!entity1.hasComponents(['Movable'])) continue;
+        const e1 =  convertToCollidable(entity1);
+        const collisions = entity1.components.get('System_Collisions')
+        for(const [id2, entity2] of this.cachedEntities){
+            if(id1 == id2) continue;
+            // let {Transform: t2, System_bounding_box: b2} = entity2.getComponents('Transform', 'System_bounding_box');
+            //const e2 = mapVertices(t2, b2.vertices)//
+            const e2 = convertToCollidable(entity2);
+            const collision = SAT(e1, e2);
+            const diff = 0//Math.hypot(e2.pos.x - e1.pos.x, e2.pos.y - e1.pos.y);
 
-        for(let k = 0; k < items.length; k++){
-            const movable = items[k].components.get('Movable');
-            if(!movable) continue;
-            
-            for(let l = 0; l < items.length; l++){
-                if(k == l) continue;
-                const e1 = convertToCollidable(items[k]);
-                const e2 = convertToCollidable(items[l]);
-
-                const collision = SAT(e1, e2);
-                const diff = Math.hypot(e2.pos.x - e1.pos.x, e2.pos.y - e1.pos.y);
-
-                if(collision){
-                    this.addCollision(items[k], [items[l], diff, collision]);
-                }
-
+            if(collision){
+                this.addCollision(entity1, [entity2, diff, collision]);
             }
-            this.publishCollision();
+        }
+        // reset collision data for moving objects if no collisions occured.
+        if(!this.collisions.has(entity1)){
+            collisions.left = 0;
+            collisions.right = 0;
+            collisions.top = 0;
+            collisions.bottom = 0;
+        }
+
+        this.publishCollision();
         }
     }
 
 
     addCollision(entity, collisionData){
-       
-        //this.collisions.set()
         if(this.collisions.has(entity)){
             let currentCollision = this.collisions.get(entity);
+
             let letAddCollision = true;
+            let insertIndex = 0;
             let [e1, d2, col1] = collisionData;
-            for(const collisions of currentCollision){
-                 const [e2, d2, col2] = collisions;
-                 if(col1.overlap == col2.overlap && col1.mtvaxis.y == col2.mtvaxis.y && col1.mtvaxis.x == col2.mtvaxis.x){
-                     letAddCollision = false;
-                 }
+            
+            if(currentCollision.length != 0){
+                //filter out duplicated collisions
+                for(let i = 0; i < currentCollision.length; i++){
+                    const [e2, d2, col2] = currentCollision[i];
+                    if(col1.overlap == col2.overlap && 
+                        col1.mtvaxis.y == col2.mtvaxis.y && 
+                        col1.mtvaxis.x == col2.mtvaxis.x){
+                        letAddCollision = false;
+                    }else {
+                        // sort collissions
+                        if(col1.overlap <= col2.overlap) insertIndex = i+1;
+                    }
+
+                }
             }
+
             if(letAddCollision){
-                this.collisions.set(entity, [...currentCollision, collisionData]);
+                currentCollision.splice(insertIndex, 0, collisionData);
             }
         }else {
             this.collisions.set(entity, [collisionData])
@@ -68,38 +81,6 @@ class Collision_System extends System {
         }
         this.collisions.clear();
     }
-
-    // convertToCollidable(entity){
-    //     const {position, vertices, center} = entity.components.get('System_bounding_box');
-    //     const Transform = entity.components.get('Transform');
-    //     return this.mapVertices(Transform, vertices);
-    // }
-
-    // mapVertices(transform, vertices){
-    //     const results = [];
-    //     const npos = new Vector(0,0);
-    //     const {pos: position , rotation, size, scale} = transform;
-    //     // @Todo implement scaling...
-    //     // Update each vertex from the center of the object to the correct offset
-    //     for (const vertex of vertices){
-    //         results.push(Vector.add(position, vertex));
-    //     }
-        
-    //     // handle rotation only if the object is rotated
-    //     if(rotation != 0){
-    //         // get difference in objects current pos and center of translated polygon divide by two to get offset.
-    //         let center = Vector.add(position, Vector.divide(size, 2));
-    //         results.forEach(vertex => {
-    //             let t = rotateVertice(center, vertex, rotation);
-    //             vertex.set(t);
-    //         })
-    //     }
-        
-    //     // get the collission boxes center only after translation and rotation and scaling
-    //     npos.set(getCenterOfPoly(results));
-        
-    //     return {pos: npos, vertices: results};
-    // }
 }
 
 

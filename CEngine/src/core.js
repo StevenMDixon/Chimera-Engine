@@ -36,7 +36,7 @@ class GameEngine {
         this.once = 0
         this._stats = new Stats();
         this._lastTime = 0;
-        this._timestep = 1000 / 120;
+        this._timestep = 1000 / 240 ;
         this._delta = 0;
         this._lastFrameTimeMs = 0;
     }
@@ -89,10 +89,10 @@ class GameEngine {
         const {currentScene} = sceneModule;
 
 
-        // if (timestamp < this._lastFrameTimeMs + (1000 / 300)) {
-        //     requestAnimationFrame(this._run.bind(this));
-        //     return;
-        // }
+        if (timestamp < this._lastFrameTimeMs + this._timestep) {
+            requestAnimationFrame(this._run.bind(this));
+            return;
+        }
 
         this._delta += timestamp - this._lastFrameTimeMs;
         this._lastFrameTimeMs = timestamp;
@@ -106,7 +106,7 @@ class GameEngine {
             currentScene.world._runUpdate(this._timestep);
             eventModule.finalize(currentScene._name);
             this._delta -= this._timestep;
-            if(++numUpdates > 10){
+            if(++numUpdates > 1){
                 break;
             }
         }

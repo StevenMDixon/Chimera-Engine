@@ -1,6 +1,7 @@
 
 import Chimera from 'ChimeraEngine';
 import {Vector} from 'ChimeraEngine'
+import collision from 'ChimeraEngine/src/libs/collision';
 
 class Physics extends Chimera.systemTemplate{
     constructor(e){
@@ -10,6 +11,7 @@ class Physics extends Chimera.systemTemplate{
     }
  
     onCreate(){
+        console.log(this._sceneContext.stage)
         return
     }
 
@@ -17,8 +19,12 @@ class Physics extends Chimera.systemTemplate{
         for(const [i, item] of this.cachedEntities){
             const {pos} = item.components.get('Transform');
             const {velocity, force, friction, gravity} = item.components.get('Physics');
+            const collisions = item.components.get('System_Collisions');
             
-            force.add(new Vector(0, gravity || .001));
+            if(!collisions.bottom){
+                force.add(new Vector(0, gravity || .02));
+            }
+            
             
             velocity.add(new Vector(force.x * dt, force.y * dt));
 
@@ -30,8 +36,8 @@ class Physics extends Chimera.systemTemplate{
         }
     }
 
-    handleEvent({entity, data}){
-    }
+    // handleEvent({entity, data}){
+    // }
 }
 
 export default Physics;

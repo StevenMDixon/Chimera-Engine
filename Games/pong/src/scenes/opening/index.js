@@ -100,7 +100,7 @@ class Opening extends Chimera.sceneTemplates.PixiScene {
     // //     //     //pixi.rotation = .5;
     // //     //     pixi.textures = PixiAnimations.two
     // //     // }, 1000)
-    stage.position.set(600/2, 600/2);
+    //stage.position.set(600/2, 600/2);
     //     this._stage.pivot.set(this.player.x, this.player.y)
    
     }

@@ -41,7 +41,7 @@ class ActorLoader {
 
            if(componentList && !componentList.System_bounding_box){
                 let vertices = createVerticesFromSize(0, 0, size.w, size.h);
-                actor.push(new availableComponents['System_bounding_box'](vertices));
+                actor.push(new availableComponents.System_bounding_box(vertices));
             } 
        }
 
@@ -66,7 +66,7 @@ class ActorLoader {
 
        // add built-in components
        actor.push(new availableComponents.Commands());
-
+       actor.push(new availableComponents.System_Collisions());
        // allow for user defined functions like pixi related animations
        if(userFN) {
         for(const fn of userFN){

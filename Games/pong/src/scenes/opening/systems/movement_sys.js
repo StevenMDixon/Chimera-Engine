@@ -13,35 +13,37 @@ class MovementSystem extends systemTemplate{
             const transform = item.components.get('Transform');
             const state = item.components.get('State');
             const {force} = item.components.get('Physics');
+
+            const movememtStatic = .03;
             
             const movementVector = new Vector(0,0);
             if(inputs[38]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
-                movementVector.add(new Vector(0,-.01))
+                movementVector.add(new Vector(0,-movememtStatic))
                 //transform.y -= 2 * (dt/100);
             }
             if(inputs[39]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
-                movementVector.add(new Vector(.01,0))
+                movementVector.add(new Vector(movememtStatic,0))
                 //transform.x += 2 * (dt/100);
             }
             if(inputs[37]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
-                movementVector.add(new Vector(-.01,0))
+                movementVector.add(new Vector(-movememtStatic,0))
                 //transform.x -= 2 * (dt/100);
             }
             if(inputs[40]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
-                movementVector.add(new Vector(0,.01))
+                movementVector.add(new Vector(0,movememtStatic))
                 //transform.y += 2 * (dt/100);
             }
             
             if(inputs[32]){
-                movementVector.add(new Vector(0,-.08))
+                movementVector.add(new Vector(0,-.05 ))
             }
             if(!inputs[38] && !inputs[40] && !inputs[39] && !inputs[37] && !inputs[32] ){
                 state.previousState = state.currentState;

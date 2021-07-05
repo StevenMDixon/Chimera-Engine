@@ -28,7 +28,7 @@ class Transform extends Component{
     }
 };
 
-class CameraFocusable extends Component{
+class CameraFocus extends Component{
     constructor(isPrimary = false){
         super();
         this.primary = isPrimary;
@@ -103,6 +103,22 @@ class Physics extends Component{
     }
 }
 
+class System_Collisions extends Component{
+    constructor(){
+        super();
+        this.left = 0;
+        this.right = 0;
+        this.bottom = 0;
+        this.top = 0;
+    }
+}
+
+class System_Veiwable extends Component{
+    constructor(){
+        this.active = true;
+    }
+}
+
 class System_solid extends Component{}
 
 class Components{
@@ -112,7 +128,7 @@ class Components{
             Movable,
             Inputs,
             State,
-            CameraFocusable,
+            CameraFocus,
             Emitter,
             Particle,
             Transform,
@@ -123,7 +139,9 @@ class Components{
             Commands,
             Physics,
             System_bounding_box,
-            System_solid
+            System_solid,
+            System_Veiwable,
+            System_Collisions
         }
     }
 

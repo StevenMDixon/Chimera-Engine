@@ -22,8 +22,11 @@ class Entity {
         return this.components.get(name);
     }
 
-    getComponents(){
-        return this.components.entries;
+    getComponents(...names){
+        return [...names].reduce((acc, cur) => {
+            acc[cur] = this.components.get(cur);
+            return acc;
+        }, {})
     }
 
     hasComponents(names){
