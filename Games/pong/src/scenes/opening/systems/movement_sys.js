@@ -5,6 +5,7 @@ class MovementSystem extends systemTemplate{
         super();
         this.targetComponents = ["Inputs", "Player", "Transform", "Physics"];
         this.excludeComponents = [];
+        this.timer = 0;
     }
 
     update(h,dt){
@@ -13,42 +14,41 @@ class MovementSystem extends systemTemplate{
             const transform = item.components.get('Transform');
             const state = item.components.get('State');
             const {force} = item.components.get('Physics');
+            const Collissions = item.components.get('System_Collisions');
 
-            const movememtStatic = .03;
+            const movememtStatic = .01;
             
             const movementVector = new Vector(0,0);
             if(inputs[38]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
                 movementVector.add(new Vector(0,-movememtStatic))
-                //transform.y -= 2 * (dt/100);
             }
             if(inputs[39]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
                 movementVector.add(new Vector(movememtStatic,0))
-                //transform.x += 2 * (dt/100);
             }
             if(inputs[37]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
                 movementVector.add(new Vector(-movememtStatic,0))
-                //transform.x -= 2 * (dt/100);
             }
             if(inputs[40]){
                 state.previousState = state.currentState;
                 state.currentState = 'walking'
                 movementVector.add(new Vector(0,movememtStatic))
-                //transform.y += 2 * (dt/100);
             }
+
             
-            if(inputs[32]){
-                movementVector.add(new Vector(0,-.05 ))
+            
+            if(inputs[32] && Collissions.bottom && this.timer > 500){
+                movementVector.add(new Vector(0,-2))
+                this.timer = 0;
             }
             if(!inputs[38] && !inputs[40] && !inputs[39] && !inputs[37] && !inputs[32] ){
                 state.previousState = state.currentState;
                 state.currentState = 'idle'
-                //movementVector.set(new Vector(0,0))
             }
             if(inputs[90]){
                 // transform.scale.x += 1;
@@ -61,10 +61,12 @@ class MovementSystem extends systemTemplate{
                 transform.rotation = 0;
             }
             if(force){
-                force.add(movementVector);
+                force.set(movementVector);
             } else {
                 //transform.pos.add(movementVector);
             }
+
+            this.timer += dt;
             
         }
     }

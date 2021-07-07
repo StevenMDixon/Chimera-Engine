@@ -30,7 +30,7 @@ const actors = [
                ]],
             CameraFocus: true
         },
-        tags: ["Movable", "Player"],
+        tags: ["Movable", "Player", "Platformer_Physics"],
         animation: {
             resource: "player",
             loop: true,

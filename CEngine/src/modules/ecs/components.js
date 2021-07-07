@@ -119,6 +119,14 @@ class System_Veiwable extends Component{
     }
 }
 
+class Platformer_Physics extends Component {
+    constructor(){
+        super();
+        this.float = 5; 
+        this.up = 2;
+    }
+}
+
 class System_solid extends Component{}
 
 class Components{
@@ -141,7 +149,8 @@ class Components{
             System_bounding_box,
             System_solid,
             System_Veiwable,
-            System_Collisions
+            System_Collisions,
+            Platformer_Physics
         }
     }
 
