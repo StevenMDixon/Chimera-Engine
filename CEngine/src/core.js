@@ -36,7 +36,7 @@ class GameEngine {
         this.once = 0
         this._stats = new Stats();
         this._lastTime = 0;
-        this._timestep = 1000 / 240 ;
+        this._timestep = 1000 / 360 ;
         this._delta = 0;
         this._lastFrameTimeMs = 0;
     }
@@ -106,7 +106,7 @@ class GameEngine {
             currentScene.world._runUpdate(this._timestep);
             eventModule.finalize(currentScene._name);
             this._delta -= this._timestep;
-            if(++numUpdates > 1){
+            if(++numUpdates > 5){
                 break;
             }
         }

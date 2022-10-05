@@ -20,7 +20,7 @@ class PixiCamera extends System {
             if(!primary) continue;
 
             let CameraResVector = new Vector(this._sceneContext.stage.pivot._x, this._sceneContext.stage.pivot._y);
-            CameraResVector.vLinearInt(Transform.pos, dt/10);
+            CameraResVector.vLinearInt(Transform.pos, dt/1000);
 
             if(this.once < 100){
                 // console.log(this._sceneContext.stage.pivot);
